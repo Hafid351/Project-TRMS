@@ -1,0 +1,1055 @@
+<script>
+    function handleCity() {
+        const provinceid = document.getElementById("provinceid")?.value;
+        fetch(
+        `/profile/profile_wizard/country/city?` +
+            new URLSearchParams({
+            provinceid: provinceid,
+            })
+        )
+        .then((response) => response.json())
+        .then((value) => {
+        const data = value.City
+        const container = document.getElementById("cityid")
+        let city = ""
+        data.forEach(item => {
+            city += `<option value="${item.ID}">${item.Name}</option>`
+        })
+        container.innerHTML = city 
+        })
+    }
+
+//   //CREATE
+//   fetch(`/profile/profile_wizard_step-1`)
+//   .then((response) => response.json())
+//   .then((value) => {
+//     const profileid = value.Data.ID
+//     localStorage.setItem('profile', profileid)
+//   })
+
+//   //READ
+//   localStorage.getItem('profile')
+
+//   //DELETE
+//   localStorage.removeItem('profile')
+</script>
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Profile Wizard</title>
+        <link href="/css/styles.css" rel="stylesheet" />
+        <link rel="stylesheet" href="/css/all.min.css">
+        <link rel="stylesheet" href="/css/adminlte.min.css">
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <!-- Google Font: Source Sans Pro -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="/css/all.min.css">
+        <!-- daterange picker -->
+        <link rel="stylesheet" href="/css/daterangepicker.css">
+        <!-- iCheck for checkboxes and radio inputs -->
+        <link rel="stylesheet" href="/css/icheck-bootstrap.min.css">
+        <!-- Bootstrap Color Picker -->
+        <link rel="stylesheet" href="/css/bootstrap-colorpicker.min.css">
+        <!-- Tempusdominus Bootstrap 4 -->
+        <link rel="stylesheet" href="/css/tempusdominus-bootstrap-4.min.css">
+        <!-- Select2 -->
+        <link rel="stylesheet" href="/css/select2.min.css">
+        <link rel="stylesheet" href="/css/select2-bootstrap4.min.css">
+        <!-- Bootstrap4 Duallistbox -->
+        <link rel="stylesheet" href="/css/bootstrap-duallistbox.min.css">
+        <!-- BS Stepper -->
+        <link rel="stylesheet" href="/css/bs-stepper.min.css">
+        <!-- dropzonejs -->
+        <link rel="stylesheet" href="/css/dropzone.min.css">
+        <!-- Theme style -->
+        <link rel="stylesheet" href="/css/adminlte.min.css">
+        <!-- dropzonejs -->
+        <link rel="stylesheet" href="/css/dropzone.min.css">
+        <!-- Upload Photo -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css"  />
+        <!-- Upload Photo -->
+        <style>
+            .container {
+            margin: 20px auto;
+            max-width: 640px;
+            }
+        
+            img {
+            max-width: 100%;
+            }
+        
+            .cropper-view-box,
+            .cropper-face {
+            border-radius: 50%;
+            }
+        
+            /* The css styles for `outline` do not follow `border-radius` on iOS/Safari (#979). */
+            .cropper-view-box {
+                outline: 0;
+                box-shadow: 0 0 0 1px #39f;
+            }
+            </style>
+        <!-- checkbox disabled -->
+        <!--link rel="stylesheet" href="css/bootstrap.min2.css"-->
+        <!--link rel="stylesheet" href="css/stylenew.css"-->
+    </head>
+    <body> 
+        <nav class="sb-topnav navbar navbar-expand navbar-light bg-light">
+            <!-- Navbar Brand-->
+            <a class="navbar-brand ps-3" href="/dashboard"><b>TOG</b> Recruitment</a>
+            <!-- Sidebar Toggle-->
+            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+            <!-- Navbar Search-->
+            <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+                <div class="input-group">
+                    <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
+                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
+                </div>
+            </form>
+            <!-- Navbar-->
+            <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="/user">Manage User</a></li>
+                        <li><a class="dropdown-item" href="kelolauser.html">Manage User Access</a></li>
+                        <li><hr class="dropdown-divider"/></li>
+                        <li><a class="dropdown-item" href="/">Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div id="layoutSidenav">
+            <div id="layoutSidenav_nav">
+                <nav class="sb-sidenav accordion sb-sidenav-light" id="sidenavAccordion">
+                    <div class="sb-sidenav-menu">
+                        <div class="nav">
+                            <div class="sb-sidenav-menu-heading">DASHBOARD</div>
+                            <a class="nav-link" href="/dashboard">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                Dashboard Chart
+                            </a>
+                            <a class="nav-link active" href="/profile">
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-user"></i></div>
+                                Profile
+                            </a>
+                            <div class="sb-sidenav-menu-heading">Main Menu</div>
+                            <a class="nav-link" href="/skill">
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-handshake"></i></div>
+                                Skills
+                            </a>
+                            <a class="nav-link" href="/skillcategory">
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-handshake"></i></div>
+                                Skill Categories
+                            </a>
+                            <a class="nav-link" href="/position">
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-briefcase"></i></div>
+                                Positions
+                            </a>
+                            <a class="nav-link" href="/positioncategory">
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-briefcase"></i></div>
+                                Position Categories
+                            </a>
+                            <a class="nav-link" href="/departement">
+                                <div class="sb-nav-link-icon"><i class="fa-regular fa-building"></i></div>
+                                Departement
+                            </a>
+                            <a class="nav-link" href="/university">
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-building-columns"></i></div>
+                                University
+                            </a>
+                            <a class="nav-link" href="/company">
+                                <div class="sb-nav-link-icon"><i class="fa-regular fa-building"></i></div>
+                                Company
+                            </a>
+                            <a class="nav-link" href="/industry">
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-industry"></i></div>
+                                Industry
+                            </a>
+                            <a class="nav-link" href="/country">
+                                <div class="sb-nav-link-icon"><i class="fas fa-flag"></i></div>
+                                Country
+                            </a>
+                            <a class="nav-link" href="/language">
+                                <div class="sb-nav-link-icon"><i class="fas fa-language"></i></div>
+                                Language
+                            </a>
+                            <div class="sb-sidenav-menu-heading">Other Menu</div>
+                            <a class="nav-link" href="charts.html">
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
+                                Search
+                            </a>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid px-4">
+                        <h1 class="mt-4">Profile Wizard</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
+                            <li class="breadcrumb-item"><a href="/profile">Profile Home</a></li>
+                            <li class="breadcrumb-item active">Profile Wizard</li>
+                        </ol>
+                        <!-- /.row -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card card-default">
+                                    <div class="card-header">
+                                        <h3 class="card-title"><b>Form Wizard</b></h3>
+                                    </div>
+                                    <div class="card-body p-0">
+                                        <div class="bs-stepper">
+                                            <div class="bs-stepper-header" role="tablist">
+                                            <!-- your steps here -->
+                                                <div class="step" data-target="#profile-part">
+                                                    <button type="button" class="step-trigger" role="tab" aria-controls="profile-part" id="profile-part-trigger">
+                                                    <span class="bs-stepper-circle">1</span>
+                                                    <span class="bs-stepper-label">PROFILE</span>
+                                                    </button>
+                                                </div>
+                                                <div class="line"></div>
+                                                <div class="step" data-target="#education-part">
+                                                    <button type="button" class="step-trigger" role="tab" aria-controls="education-part" id="education-part-trigger">
+                                                    <span class="bs-stepper-circle">2</span>
+                                                    <span class="bs-stepper-label">EDUCATION</span>
+                                                    </button>
+                                                </div>
+                                                <div class="line"></div>
+                                                <div class="step" data-target="#working-part">
+                                                    <button type="button" class="step-trigger" role="tab" aria-controls="working-part" id="working-part-trigger">
+                                                    <span class="bs-stepper-circle">3</span>
+                                                    <span class="bs-stepper-label">WORKING EXPERIENCE</span>
+                                                    </button>
+                                                </div>
+                                                <div class="line"></div>
+                                                <div class="step" data-target="#language-part">
+                                                    <button type="button" class="step-trigger" role="tab" aria-controls="language-part" id="language-part-trigger">
+                                                    <span class="bs-stepper-circle">4</span>
+                                                    <span class="bs-stepper-label">LANGUAGE</span>
+                                                    </button>
+                                                </div>
+                                                <div class="line"></div>
+                                                <div class="step" data-target="#training-part">
+                                                    <button type="button" class="step-trigger" role="tab" aria-controls="training-part" id="training-part-trigger">
+                                                    <span class="bs-stepper-circle">5</span>
+                                                    <span class="bs-stepper-label">TRAINING</span>
+                                                    </button>
+                                                </div>
+                                                <div class="line"></div>
+                                                <div class="step" data-target="#files-part">
+                                                    <button type="button" class="step-trigger" role="tab" aria-controls="files-part" id="files-part-trigger">
+                                                    <span class="bs-stepper-circle">6</span>
+                                                    <span class="bs-stepper-label">FILES</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="bs-stepper-content">
+                                                <!-- your steps content here -->
+                                                <div id="profile-information">
+                                                    <div id="profile-part" class="content" role="tabpanel" aria-labelledby="profile-part-trigger">
+                                                        <center><h3 class="title-step">STEP 1 PROFILE</h3></center>
+                                                        <div class="form-group">
+                                                        <label for="exampleInputEmail1">Email Address</label>
+                                                        <input type="email" class="form-control" id="email" name="email" placeholder="Enter Your Email">
+                                                        </div>
+                                                        <div class="form-group">
+                                                        <label for="exampleInputPassword1">Fullname</label>
+                                                        <input type="text" class="form-control" id="fullname" name="fullname" placeholder="Enter Your Fullname">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Country</label>
+                                                            <select class="form-select" id="countryid" name="countryid" style="width: 100%;">
+                                                                <option selected disabled>Select Country</option>
+                                                                {{if .Country}} {{range .Country}}
+                                                                <option value="{{.ID}}">{{.Name}}</option>
+                                                                {{end}} {{end}}
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Province</label>
+                                                            <select class="form-select" id="provinceid" name="provinceid" onchange="handleCity()" style="width: 100%;">
+                                                                <option selected disabled>Select Province</option>
+                                                                {{if .Province}} {{range .Province}}    
+                                                                <option value="{{.ID}}">{{.Name}}</option>
+                                                                {{end}} {{end}}
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>City</label>
+                                                            <select class="form-select" id="cityid" name="cityid" style="width: 100%;">
+                                                                <option selected disabled>Select City</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Birthday Date</label>
+                                                            <div class="input-group date" data-target-input="nearest">
+                                                                <input type="text" class="form-control datetimepicker-input" id="dob" name="dob" placeholder="Enter Your Birthday Date" data-target="#reservationdate"/>
+                                                                <div class="input-group-append" data-target="#dob" data-toggle="datetimepicker">
+                                                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Phone Number</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                                            </div>
+                                                            <input type="text" id="phonenumber" name="phonenumber" placeholder="Enter Your Phone Number" class="form-control">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Other Phone Number</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                                            </div>
+                                                            <input type="text" id="otherphonenumber" name="otherphonenumber" placeholder="Enter Your Other Phone Number" class="form-control">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Id Card</label>
+                                                            <select class="form-select" id="identificationid" name="identificationid" style="width: 100%;">
+                                                                <option selected disabled>Select Id Card</option>
+                                                                {{if .Identification}} {{range .Identification}}
+                                                                <option value="{{.ID}}">{{.Name}}</option>
+                                                                {{end}} {{end}}
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="inputEstimatedBudget">No ID</label>
+                                                            <input type="number" id="idcardno" name="idcardno" placeholder="Enter Your No ID" class="form-control">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="inputEstimatedBudget">Height (cm)</label>
+                                                            <input type="number" id="height" name="height" placeholder="Enter Your Height" class="form-control">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="inputEstimatedBudget">Weight (kg)</label>
+                                                            <input type="number" id="weight" name="weight" placeholder="Enter Your Weight" class="form-control">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Status</label>
+                                                            <select class="form-select" id="maritalstatus" name="maritalstatus" style="width: 100%;">
+                                                                <option selected disabled>Select Status</option>
+                                                                {{if .Status}} {{range .Status}}
+                                                                <option value="{{.ID}}">{{.Name}}</option>
+                                                                {{end}} {{end}}
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Gender</label>
+                                                            <select class="form-select" id="gender" name="gender" style="width: 100%;">
+                                                                <option selected disabled>Select Gender</option>
+                                                                <option value="Male">Male</option>
+                                                                <option value="Female">Female</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Nationality</label>
+                                                            <select class="form-select" id="nationalityid" name="nationalityid" style="width: 100%;">
+                                                                <option selected disabled>Select Nationality</option>
+                                                                <option value="WNI">WNI</option>
+                                                                <option value="WNA">WNA</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Address</label>
+                                                            <textarea class="form-control" rows="3" id="address" name="address" placeholder="Enter Full Address"></textarea>
+                                                        </div>
+                                                        <div class="form-group">
+                                                        <label for="exampleInputEmail1">Birthday City</label>
+                                                        <input type="text" class="form-control" id="pob" name="pob" placeholder="Enter Your Birthday City">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Religion</label>
+                                                            <select class="form-select" id="religionid" name="religionid" style="width: 100%;">
+                                                                <option selected disabled>Select Religion</option>
+                                                                {{if .Religion}} {{range .Religion}}
+                                                                <option value="{{.ID}}">{{.Name}}</option>
+                                                                {{end}} {{end}}
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Applied Position</label>
+                                                            <select class="form-select" id="jobtitle" name="jobtitle" style="width: 100%;">
+                                                                <option selected disabled>Select Your Position</option>
+                                                                {{if .Position}} {{range .Position}}
+                                                                <option value="{{.ID}}">{{.Name}}</option>
+                                                                {{end}} {{end}}
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                        <label for="exampleInputEmail1">Salary Expectation</label>
+                                                        <input type="text" class="form-control" id="salaryexpectation" name="salaryexpectation" placeholder="Enter Your Salary Expectation">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="exampleInputEmail1">Instagram</label>
+                                                            <input type="text" class="form-control" id="instagramprofile" name="instagramprofile" placeholder="Enter Your Instagram Profile">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="exampleInputEmail1">Facebook</label>
+                                                            <input type="text" class="form-control" id="facebookprofile" name="facebookprofile" placeholder="Enter Your Facebook Profile">
+                                                        </div>  
+                                                        <div class="form-group">
+                                                            <label for="exampleInputEmail1">LinkedIn</label>
+                                                            <input type="text" class="form-control" id="linkedinprofile" name="linkedinprofile" placeholder="Enter Your Instagram Profile">
+                                                        </div>  
+                                                        <div class="form-group">
+                                                            <label>About</label>
+                                                            <textarea class="form-control" rows="3" id="about" name="about" placeholder="Describe About You"></textarea>
+                                                        </div>
+                                                        <div class="container">	
+                                                            <div class="row">
+                                                                <div class="col-lg-6" align="center">
+                                                                    <label onclick="start_cropping()">Browse Image</label>
+                                                                    <div id="display_image_div">
+                                                                        <img name="display_image_data" id="display_image_data" src="" alt="">
+                                                                    </div>
+                                                                    <input type="hidden" name="cropped_image_data" id="cropped_image_data">
+                                                                    <br>
+                                                                    <input type="file" name="browse_image" id="browse_image" class="form-control" >	 
+                                                                </div>
+                                                                <div class="col-lg-6" align="center">
+                                                                    <label>Preview Profile Picture</label>
+                                                                    <div id="cropped_image_result">
+                                                                        <img style="width: 350px;" src=""/>
+                                                                    </div>
+                                                                    <br>
+                                                                    <button type="button" class="btn btn-success" id="crop_button" >Crop</button>
+                                                                    <!--button type="button" class="btn btn-danger" id="download_button" onclick="download()">Download</button-->
+                                                                    <button type="button" class="btn btn-warning" id="upload_button" onclick="upload()">Upload</button>
+                                                                </div>	
+                                                            </div><!--  end row -->
+                                                        </div><!-- end container -->
+                                                        <button class="btn btn-primary" type="button" onclick="nextEducation(1)">Next</button>
+                                                    </div>
+                                                </div>
+                                                <div id="profile-education">
+                                                    <div id="education-part" class="content" role="tabpanel" aria-labelledby="education-part-trigger">
+                                                        <center><h3 class="title-step">STEP 2 EDUCATION</h3></center>
+                                                        <div class="form-group">
+                                                            <div class="form-group">
+                                                                <label>Qualification</label>
+                                                                <select class="form-select" id="qualificationid" onchange="showForm()" style="width: 100%;">
+                                                                    <option selected="selected">Select Education Level</option>
+                                                                    <!-- <option value=1>SD</option>
+                                                                    <option value=2>SMP</option>
+                                                                    <option value=3>SMA</option>
+                                                                    <option value=4>D1</option>
+                                                                    <option value=5>D2</option>
+                                                                    <option value=6>D3</option>
+                                                                    <option value=7>D4</option>
+                                                                    <option value=8>S1</option>
+                                                                    <option value=9>S2</option>
+                                                                    <option value=10>S3</option> -->
+                                                                </select>
+                                                                <div id="formContainer">
+                                                                </div>
+                                                            </div>
+                                                            <button style="background-color:green; margin-left: 925px;" onclick="saveEducation()" class="add_field_button btn btn-info active">Save</button>
+                                                        </div>
+                                                        <div>
+                                                            <table class="table table-striped" border="1">
+                                                                <thead>
+                                                                    <tr>
+                                                                    <th>No</th>
+                                                                    <th>Education Level</th>
+                                                                    <th>Education Name</th>
+                                                                    <th>Score / GPA</th>
+                                                                    <th>Year Start</th>
+                                                                    <th>Year End</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <th >1</th>
+                                                                        <th>SD</th>
+                                                                        <th>SDN Gelam II</th>
+                                                                        <th>90</th>
+                                                                        <th>2008</th>
+                                                                        <th>2013</th>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                        <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
+                                                        <button class="btn btn-primary" onclick="nextWork(2)">Next</button>
+                                                    </div>
+                                                </div>
+                                                <div id="profile-working">
+                                                    <div id="working-part" class="content" role="tabpanel" aria-labelledby="working-part-trigger">
+                                                        <center><h3 class="title-step">STEP 3 WORKING EXPERIENCE</h3></center>
+                                                        <div class="form-group">
+                                                            <div class="form-group">
+                                                                <div class="form-group">
+                                                                    <label>Company</label>
+                                                                    <select class="form-select" id="companyid" name="companyid" style="width: 100%;">
+                                                                        <option selected disabled>Select Company</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Country</label>
+                                                                    <select class="form-select" id="countrycompany" name="countrycompany" style="width: 100%;">
+                                                                        <option selected disabled>Select Country</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Province</label>
+                                                                    <select class="form-select" id="provincecompany" name="provincecompany" style="width: 100%;">
+                                                                        <option selected disabled>Select Province</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Position Level</label>
+                                                                    <select class="form-select" id="positionlevelid" name="positionlevelid" style="width: 100%;">
+                                                                        <option selected disabled>Select Position Level</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="inputEstimatedBudget">Salary (Rp)</label>
+                                                                    <input type="number" id="salary" name="salary" class="form-control">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Experience Desc</label>
+                                                                    <textarea class="form-control" id="experiencedesc" name="experiencedesc" rows="3" placeholder="Your Experience Description"></textarea>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Start Date</label>
+                                                                    <div class="input-group date" data-target-input="nearest">
+                                                                        <div class="input-group-append" data-target="#startdate" data-toggle="datetimepicker">
+                                                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                                                        </div>
+                                                                        <input type="text" class="form-control datetimepicker-input" id="startdate" name="startdate" placeholder="Enter Your Birthday Date" data-target="#reservationdate"/>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Start Position</label>
+                                                                    <select class="form-select" id="jobtitle" name="jobtitle" style="width: 100%;">
+                                                                        <option selected disabled>Select Start Position</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="checkbox-card">
+                                                                    <div class="checkbox">
+                                                                        <label>
+                                                                            <input type="checkbox" class="checkme"> I'm Not Here Now
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label>End Date</label>
+                                                                        <div class="input-group date" data-target-input="nearest">
+                                                                            <div class="input-group-append" data-target="#enddate" data-toggle="datetimepicker">
+                                                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                                                            </div>
+                                                                            <input type="text" class="form-control datetimepicker-input" id="enddate" name="enddate" placeholder="Enter Your Birthday Date" data-target="#reservationdate"/>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label>Last Position</label>
+                                                                        <select class="form-select" id="lastpositionjobtitle" name="lastpositionjobtitle" style="width: 100%;">
+                                                                            <option selected disabled>Select Last Position</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label>Reason Leaving</label>
+                                                                        <textarea class="form-control" id="reasonleaving" name="reasonleaving" rows="3" placeholder="Your Reason Leaving"></textarea>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Skill</label>
+                                                                    <select class="select2" id="skillid" name="skillid" multiple="multiple" data-placeholder="Select Skill (2 or more)" style="width: 100%;">
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
+                                                        <button class="btn btn-primary" onclick="nextLanguage(3)">Next</button>
+                                                    </div>
+                                                </div>
+                                                <div id="profile-language">
+                                                    <div id="language-part" class="content" role="tabpanel" aria-labelledby="language-part-trigger">
+                                                        <center><h3 class="title-step">STEP 4 LANGUAGE</h3></center>
+                                                        <div class="form-group">
+                                                            <div class="form-group">
+                                                                <div class="form-group">
+                                                                    <label>Language</label>
+                                                                    <select class="form-select" id="languagecode" name="languagecode" style="width: 100%;">
+                                                                        <option selected disabled>Select Language</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Speaking Level</label>
+                                                                    <select class="form-select" id="spokenlevel" name="spokenlevel" style="width: 100%;">
+                                                                        <option selected disabled>Select Speaking Level</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Writing Level</label>
+                                                                    <select class="form-select" id="writenlevel" name="writenlevel" style="width: 100%;">
+                                                                        <option selected disabled>Select Writing Level</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Listening Level</label>
+                                                                    <select class="form-select" id="listeninglevel" name="listeninglevel" style="width: 100%;">
+                                                                        <option selected disabled>Select Listening Level</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
+                                                        <button class="btn btn-primary" onclick="nextTraining(4)">Next</button>
+                                                    </div>
+                                                </div>
+                                                <div id="profile-training">
+                                                    <div id="training-part" class="content" role="tabpanel" aria-labelledby="training-part-trigger">
+                                                        <center><h3 class="title-step">STEP 5 TRAINING</h3></center>
+                                                        <div class="form-group">
+                                                            <div class="form-group">
+                                                                <div class="form-group">
+                                                                    <label for="exampleInputEmail1">Training Title</label>
+                                                                    <input type="text" class="form-control" id="trainingtitle" name="trainingtitle" placeholder="Enter Training Title">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="exampleInputEmail1">Vendor</label>
+                                                                    <input type="text" class="form-control" id="vendor" name="vendor" placeholder="Enter Vendor">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Training Year</label>
+                                                                    <div class="input-group date" data-target-input="nearest">
+                                                                        <input type="text" class="form-control datetimepicker-input" id="trainingyear" name="trainingyear" placeholder="Enter Training Date" data-target="#reservationdate"/>
+                                                                        <div class="input-group-append" data-target="#trainingyear" data-toggle="datetimepicker">
+                                                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="inputEstimatedBudget">Duration (day)</label>
+                                                                    <input type="number" id="durationday" name="durationday" class="form-control">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="exampleInputEmail1">Financed by</label>
+                                                                    <div class="form-check" id="financedby" name="financedby">
+                                                                        <input class="form-check-input" type="radio" value="Company">
+                                                                        <label class="form-check-label">Company</label>
+                                                                    </div>
+                                                                    <div class="form-check" id="financedby" name="financedby">
+                                                                        <input class="form-check-input" type="radio" value="Personal">
+                                                                        <label class="form-check-label">Personal</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
+                                                        <button class="btn btn-primary" onclick="nextFiles(5)">Next</button>
+                                                    </div>
+                                                </div>
+                                                <div id="profile-files">
+                                                    <div id="files-part" class="content" role="tabpanel" aria-labelledby="files-part-trigger">
+                                                        <center><h3 class="title-step">STEP 6 FILES</h3></center>
+                                                        <div class="form-group">
+                                                            <div class="card card-default">
+                                                                <div class="card-header">
+                                                                    <h3 class="card-title"><b>Input Files</b> <small><em></em></small></h3>
+                                                                </div>
+                                                                <div class="card-body">
+                                                                    <div id="actions" class="row">
+                                                                        <div class="col-lg-6">
+                                                                            <div class="btn-group w-100">
+                                                                                <span class="btn btn-success col fileinput-button">
+                                                                                    <i class="fas fa-plus"></i>
+                                                                                    <span>Add files</span>
+                                                                                </span>
+                                                                                <button type="submit" class="btn btn-primary col start">
+                                                                                    <i class="fas fa-upload"></i>
+                                                                                    <span>Start upload</span>
+                                                                                </button>
+                                                                                <button type="reset" class="btn btn-warning col cancel">
+                                                                                    <i class="fas fa-times-circle"></i>
+                                                                                    <span>Cancel upload</span>
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-lg-6 d-flex align-items-center">
+                                                                            <div class="fileupload-process w-100">
+                                                                                <div id="total-progress" class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                                                                                    <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="table table-striped files" id="previews">
+                                                                        <div id="template" class="row mt-2">
+                                                                            <div class="col-auto">
+                                                                                <span class="preview"><img src="data:," alt="" data-dz-thumbnail /></span>
+                                                                            </div>
+                                                                            <div class="col d-flex align-items-center">
+                                                                                <p class="mb-0">
+                                                                                    <span class="lead" data-dz-name></span>
+                                                                                    (<span data-dz-size></span>)
+                                                                                </p>
+                                                                                <strong class="error text-danger" data-dz-errormessage></strong>
+                                                                            </div>
+                                                                            <div class="col-4 d-flex align-items-center">
+                                                                                <div class="progress progress-striped active w-100" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                                                                                    <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-auto d-flex align-items-center">
+                                                                                <div class="btn-group">
+                                                                                    <button class="btn btn-primary start">
+                                                                                        <i class="fas fa-upload"></i>
+                                                                                        <span>Input</span>
+                                                                                    </button>
+                                                                                    <button data-dz-remove class="btn btn-warning cancel">
+                                                                                        <i class="fas fa-times-circle"></i>
+                                                                                        <span>Cancel</span>
+                                                                                    </button>
+                                                                                    <button data-dz-remove class="btn btn-danger delete">
+                                                                                        <i class="fas fa-trash"></i>
+                                                                                        <span>Delete</span>
+                                                                                    </button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- /.card-body -->
+                                                            </div>
+                                                        </div>
+                                                        <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
+                                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <!-- /.card-body -->
+                                        <!--div class="card-footer">
+                                            Visit <a href="https://github.com/Johann-S/bs-stepper/#how-to-use-it">bs-stepper documentation</a> for more examples and information about the plugin.
+                                        </div-->
+                                        </div>
+                                    </div>
+                                <!-- /.card -->
+                                </div>
+                            </div>
+                        </div>                          
+                    </div>
+                    
+                </main>
+                
+            </div>
+        </div>
+        
+        
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="/js/scripts.js"></script>
+        <script src="/js/dropdown-education.js"></script>
+        <script src="/js/datatables-simple-demo.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+        <!-- jQuery -->
+        <script src="/js/jquery.min.js"></script>
+        <!-- Bootstrap 4 -->
+        <script src="/js/bootstrap.bundle.min.js"></script>
+        <!-- Select2 -->
+        <script src="/js/select2.full.min.js"></script>
+        <!-- Bootstrap4 Duallistbox -->
+        <script src="/js/jquery.bootstrap-duallistbox.min.js"></script>
+        <!-- InputMask -->
+        <script src="/js/moment.min.js"></script>
+        <script src="/js/jquery.inputmask.min.js"></script>
+        <!-- date-range-picker -->
+        <script src="/js/daterangepicker.js"></script>
+        <!-- bootstrap color picker -->
+        <script src="/js/bootstrap-colorpicker.min.js"></script>
+        <!-- Tempusdominus Bootstrap 4 -->
+        <script src="/js/tempusdominus-bootstrap-4.min.js"></script>
+        <!-- Bootstrap Switch -->
+        <script src="/js/bootstrap-switch.min.js"></script>
+        <!-- BS-Stepper -->
+        <script src="/js/bs-stepper.min.js"></script>
+        <!-- dropzonejs -->
+        <script src="/js/dropzone.min.js"></script>
+        <!-- AdminLTE App -->
+        <script src="/js/adminlte.min.js"></script>
+        <!-- CheckBox Form -->
+        <!--script src="js/jquery-latest.min.js"></script-->
+        <script>
+            $(function(){
+                $(".checkme").click(function(event) {
+                    var x = $(this).is(':checked');
+                    if (x == true) {
+                        $(this).parents(".checkbox-card").find('.passport-box').show();
+                        $(this).parents(".checkbox-card").find('.apply-box').hide();
+                    }
+                    else{
+                        $(this).parents(".checkbox-card").find('.passport-box').hide();
+                        $(this).parents(".checkbox-card").find('.apply-box').show();
+                    }
+                });
+            })
+        </script>
+        <!-- crop foto -->
+        <!--script src="https://code.jquery.com/jquery-3.5.1.min.js"></script-->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+        <script>
+            $("body").on("change", "#browse_image", function(e) {
+                var files = e.target.files;
+                var done = function(url) {        
+                    $('#display_image_div').html('');
+                    $("#display_image_div").html('<img name="display_image_data" id="display_image_data" src="'+url+'" alt="Uploaded Picture">');
+                    
+                };
+                if (files && files.length > 0) {
+                    file = files[0];
+
+                    if (URL) {
+                        done(URL.createObjectURL(file));
+                    } else if (FileReader) {
+                        reader = new FileReader();
+                        reader.onload = function(e) {
+                            done(reader.result);
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                }
+                
+                var image = document.getElementById('display_image_data');
+                var button = document.getElementById('crop_button');
+                var result = document.getElementById('cropped_image_result');
+                var croppable = false;
+                var cropper = new Cropper(image, {
+                aspectRatio: 1,
+                viewMode: 1,
+                ready: function () {
+                croppable = true;
+                },
+                });
+
+                button.onclick = function () {
+            
+                var croppedCanvas;
+                var roundedCanvas;
+                var roundedImage;
+            
+                if (!croppable) {
+                return;
+                }
+
+                // Crop
+                croppedCanvas = cropper.getCroppedCanvas();
+
+                // Round
+                roundedCanvas = getRoundedCanvas(croppedCanvas);
+
+                // Show
+                roundedImage = document.createElement('img');
+                    
+                roundedImage.src = roundedCanvas.toDataURL()
+                result.innerHTML = '';
+                result.appendChild(roundedImage);
+                };	
+            });
+            
+            function getRoundedCanvas(sourceCanvas) {
+            var canvas = document.createElement('canvas');
+            var context = canvas.getContext('2d');
+            var width = sourceCanvas.width;
+            var height = sourceCanvas.height;
+
+            canvas.width = width;
+            canvas.height = height;
+            context.imageSmoothingEnabled = true;
+            context.drawImage(sourceCanvas, 0, 0, width, height);
+            context.globalCompositeOperation = 'destination-in';
+            context.beginPath();
+            context.arc(width / 2, height / 2, Math.min(width, height) / 2, 0, 2 * Math.PI, true);
+            context.fill();
+            return canvas;
+            }
+            
+            function download()
+            {
+                var linkSource = $('#cropped_image_result img').attr('src');
+                var fileName = 'download.png';	
+                const downloadLink = document.createElement("a");
+                downloadLink.href = linkSource;
+                downloadLink.download = fileName;
+                downloadLink.click();
+            }
+            
+            function upload() {
+                var base64data = $('#cropped_image_result img').attr('src');
+                //alert(base64data);
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: "crop_image_upload.php",
+                    data: {image: base64data},
+                    success: function(response) { 
+                        if(response.status == true)
+                        {
+                            alert(response.msg);
+                        }
+                        else
+                        {
+                            alert("Image not uploaded.");
+                        }
+                    }
+                });
+            }
+            
+        </script>
+        <!--other-->
+        <script>
+        $(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2()
+        
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+            theme: 'bootstrap4'
+            })
+        
+            //Datemask dd/mm/yyyy
+            $('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })
+            //Datemask2 mm/dd/yyyy
+            $('#datemask2').inputmask('mm/dd/yyyy', { 'placeholder': 'mm/dd/yyyy' })
+            //Money Euro
+            $('[data-mask]').inputmask()
+        
+            //Date picker
+            $('#dob').datetimepicker({
+                format: 'YYYY-MM-DD'
+            });
+
+            $('#yearstart').datetimepicker({
+                format: 'YYYY-MM-DD'
+            });
+            
+            $('#yearend').datetimepicker({
+                format: 'YYYY-MM-DD'
+            });
+
+            $('#startdate').datetimepicker({
+                format: 'YYYY-MM-DD'
+            });
+
+            $('#enddate').datetimepicker({
+                format: 'YYYY-MM-DD'
+            });
+
+            $('#trainingyear').datetimepicker({
+                format: 'YYYY-MM-DD'
+            });
+          
+            //Date range as a button
+            $('#daterange-btn').daterangepicker(
+            {
+                ranges   : {
+                'Today'       : [moment(), moment()],
+                'Yesterday'   : [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                'Last 7 Days' : [moment().subtract(6, 'days'), moment()],
+                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                'This Month'  : [moment().startOf('month'), moment().endOf('month')],
+                'Last Month'  : [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                },
+                startDate: moment().subtract(29, 'days'),
+                endDate  : moment()
+            },
+            function (start, end) {
+                $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'))
+            }
+            )
+        
+            //Timepicker
+            $('#timepicker').datetimepicker({
+            format: 'LT'
+            })
+        
+            //Bootstrap Duallistbox
+            $('.duallistbox').bootstrapDualListbox()
+        
+            //Colorpicker
+            $('.my-colorpicker1').colorpicker()
+            //color picker with addon
+            $('.my-colorpicker2').colorpicker()
+        
+            $('.my-colorpicker2').on('colorpickerChange', function(event) {
+            $('.my-colorpicker2 .fa-square').css('color', event.color.toString());
+            })
+        
+            $("input[data-bootstrap-switch]").each(function(){
+            $(this).bootstrapSwitch('state', $(this).prop('checked'));
+            })
+        
+        })
+        // BS-Stepper Init
+        document.addEventListener('DOMContentLoaded', function () {
+            window.stepper = new Stepper(document.querySelector('.bs-stepper'))
+        })
+        
+        // DropzoneJS Demo Code Start
+        Dropzone.autoDiscover = false
+        
+        // Get the template HTML and remove it from the doumenthe template HTML and remove it from the doument
+        var previewNode = document.querySelector("#template")
+        previewNode.id = ""
+        var previewTemplate = previewNode.parentNode.innerHTML
+        previewNode.parentNode.removeChild(previewNode)
+        
+        var myDropzone = new Dropzone(document.body, { // Make the whole body a dropzone
+            url: "/target-url", // Set the url
+            thumbnailWidth: 80,
+            thumbnailHeight: 80,
+            parallelUploads: 20,
+            previewTemplate: previewTemplate,
+            autoQueue: false, // Make sure the files aren't queued until manually added
+            previewsContainer: "#previews", // Define the container to display the previews
+            clickable: ".fileinput-button" // Define the element that should be used as click trigger to select files.
+        })
+        
+        myDropzone.on("addedfile", function(file) {
+            // Hookup the start button
+            file.previewElement.querySelector(".start").onclick = function() { myDropzone.enqueueFile(file) }
+        })
+        
+        // Update the total progress bar
+        myDropzone.on("totaluploadprogress", function(progress) {
+            document.querySelector("#total-progress .progress-bar").style.width = progress + "%"
+        })
+        
+        myDropzone.on("sending", function(file) {
+            // Show the total progress bar when upload starts
+            document.querySelector("#total-progress").style.opacity = "1"
+            // And disable the start button
+            file.previewElement.querySelector(".start").setAttribute("disabled", "disabled")
+        })
+        
+        // Hide the total progress bar when nothing's uploading anymore
+        myDropzone.on("queuecomplete", function(progress) {
+            document.querySelector("#total-progress").style.opacity = "0"
+        })
+        
+        // Setup the buttons for all transfers
+        // The "add files" button doesn't need to be setup because the config
+        // `clickable` has already been specified.
+        document.querySelector("#actions .start").onclick = function() {
+            myDropzone.enqueueFiles(myDropzone.getFilesWithStatus(Dropzone.ADDED))
+        }
+        document.querySelector("#actions .cancel").onclick = function() {
+            myDropzone.removeAllFiles(true)
+        }
+        // DropzoneJS Demo Code End
+        </script>
+    </body>
+</html>
