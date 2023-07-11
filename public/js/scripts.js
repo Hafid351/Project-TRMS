@@ -104,9 +104,7 @@ function nextEducation(step) {
                 Qualification += `<option value="${item.ID}">${item.Name}</option>`
             })
             console.log(Qualification)
-            
-            container.innerHTML = Qualification 
-            
+            container.innerHTML = Qualification
             console.log(container)
             })
         } else {
@@ -118,94 +116,62 @@ function nextEducation(step) {
 
 function nextWork(step) {
     if (step == 2) {
-        const profileid =  localStorage.getItem("profile")
-        const qualificationid = document.querySelector('#qualificationid')?.value;
-        const universityid = document.querySelector('#universityid')?.value;
-        const departementid = document.querySelector('#departementid')?.value;
-        const origin = document.querySelector('#origin')?.value;
-        const major = document.querySelector('#major')?.value;
-        const gpa = document.querySelector('#gpa')?.value;
-        const yearstart = document.querySelector('#yearstart')?.value;
-        const yearend = document.querySelector('#yearend')?.value;
-        const payload = {
-            "profileid": Number(profileid)?? '',
-            "qualificationid": Number(qualificationid)?? '',
-            "universityid": Number(universityid)?? '',
-            "departementid": Number(departementid)?? '',
-            "originsma": origin?? '',
-            "majorsma": major?? '',
-            "gpa": gpa?? '',
-            "yearstart": Number(yearstart)?? '',
-            "yearend": Number(yearend)?? '',
-        }
-        fetch(`/profile/profile-wizard?step=${step}`, {
-            method: `POST`,
-            headers: {
-                'content-Type': 'application/json'
-            },
-            body: JSON.stringify(payload)
-        })
+        stepper.next()
+        fetch( `/profile/profile-wizard?step=${step}`)
         .then((response) => response.json())
         .then((value) => {
-            if (value.Data == "Ok") {
-                stepper.next()
-                fetch( `/profile/profile-wizard?step=${step}`)
-                    .then((response) => response.json())
-                    .then((value) => {
-                    const data = value.Data
-                    const company = value.Company
-                    const country = value.Country
-                    const province = value.Province
-                    const positionlevel = value.PositionLevel
-                    const position = value.Position
-                    const skill = value.Skill
-                    const container = document.getElementById("companyid")
-                    const container2 = document.getElementById("countrycompany")
-                    const container3 = document.getElementById("provincecompany")
-                    const container4 = document.getElementById("positionlevelid")
-                    const container5 = document.getElementById("jobtitle")
-                    const container6 = document.getElementById("lastpositionjobtitle")
-                    const container7 = document.getElementById("skillid")
-                    let Company = ""
-                    company.forEach(item => {
-                        Company += `<option value="${item.ID}">${item.Name}</option>`
-                    })
-                    let Country = ""
-                    country.forEach(item => {
-                        Country += `<option value="${item.ID}">${item.Name}</option>`
-                    })
-                    let Province = ""
-                    province.forEach(item => {
-                        Province += `<option value="${item.ID}">${item.Name}</option>`
-                    })
-                    let PositionLevel = ""
-                    positionlevel.forEach(item => {
-                        PositionLevel += `<option value="${item.ID}">${item.Name}</option>`
-                    })
-                    let Position = ""
-                    position.forEach(item => {
-                        Position += `<option value="${item.ID}">${item.Name}</option>`
-                    })
-                    let LastPosition = ""
-                    position.forEach(item => {
-                        LastPosition += `<option value="${item.ID}">${item.Name}</option>`
-                    })
-                    let Skill = ""
-                    skill.forEach(item => {
-                        Skill += `<option value="${item.ID}">${item.Name}</option>`
-                    })
-                    container.innerHTML = Company 
-                    container2.innerHTML = Country
-                    container3.innerHTML = Province
-                    container4.innerHTML = PositionLevel
-                    container5.innerHTML = Position
-                    container6.innerHTML = LastPosition
-                    container7.innerHTML = Skill
-                    })
-            } else {
-                alert (value.Data)
-            }
+        const data = value.Data
+        const company = value.Company
+        const country = value.Country
+        const province = value.Province
+        const positionlevel = value.PositionLevel
+        const position = value.Position
+        const skill = value.Skill
+        const container = document.getElementById("companyid")
+        const container2 = document.getElementById("countrycompany")
+        const container3 = document.getElementById("provincecompany")
+        const container4 = document.getElementById("positionlevelid")
+        const container5 = document.getElementById("jobtitle")
+        const container6 = document.getElementById("lastpositionjobtitle")
+        const container7 = document.getElementById("skillid")
+        let Company = ""
+        company.forEach(item => {
+            Company += `<option value="${item.ID}">${item.Name}</option>`
         })
+        let Country = ""
+        country.forEach(item => {
+            Country += `<option value="${item.ID}">${item.Name}</option>`
+        })
+        let Province = ""
+        province.forEach(item => {
+            Province += `<option value="${item.ID}">${item.Name}</option>`
+        })
+        let PositionLevel = ""
+        positionlevel.forEach(item => {
+            PositionLevel += `<option value="${item.ID}">${item.Name}</option>`
+        })
+        let Position = ""
+        position.forEach(item => {
+            Position += `<option value="${item.ID}">${item.Name}</option>`
+        })
+        let LastPosition = ""
+        position.forEach(item => {
+            LastPosition += `<option value="${item.ID}">${item.Name}</option>`
+        })
+        let Skill = ""
+        skill.forEach(item => {
+            Skill += `<option value="${item.ID}">${item.Name}</option>`
+        })
+        container.innerHTML = Company 
+        container2.innerHTML = Country
+        container3.innerHTML = Province
+        container4.innerHTML = PositionLevel
+        container5.innerHTML = Position
+        container6.innerHTML = LastPosition
+        container7.innerHTML = Skill
+        })
+    } else {
+        alert (value.Data)
     }
 }
 
@@ -356,3 +322,4 @@ function nextFiles(step) {
         })
     }
 }
+

@@ -195,8 +195,11 @@ type ProfileEducation struct {
 	gorm.Model
 	ProfileId       int    `json:"ProfileId"`
 	QualificationId int    `json:"QualificationId"`
+	Qualification   string `gorm:"->" json:"Qualification"`
 	UniversityId    int    `json:"UniversityId"`
+	University      string `gorm:"->" json:"University"`
 	DepartementId   int    `json:"DepartementId"`
+	Departement     string `gorm:"->" json:"Departement"`
 	OriginSchool    string `json:"OriginSchool"`
 	MajorSMA        string `json:"MajorSMA"`
 	Gpa             string `json:"Gpa"`

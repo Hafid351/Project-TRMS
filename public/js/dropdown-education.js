@@ -11,20 +11,22 @@ function createFormGroup(labelText, inputElement) {
     return formGroup;
 }
 
-function createInput(labelText, inputType, inputName) {
+function createInput(labelText, inputType, inputName, inputId) {
     var input = document.createElement("input");
     input.classList.add("form-control");
     input.type = inputType;
     input.name = inputName;
+    input.id = inputId;
 
     return createFormGroup(labelText, input);
 }
 
-function createNumericInput(labelText, inputName) {
+function createNumericInput(labelText, inputName, inputId) {
     var input = document.createElement("input");
     input.classList.add("form-control");
     input.type = "number";
     input.name = inputName;
+    input.id = inputId;
 
     return createFormGroup(labelText, input);
 }
@@ -52,25 +54,25 @@ function showForm() {
     console.log(qualification)
 
     if (qualification === "1" || qualification === "2") {
-        formContainer.appendChild(createInput("School Name", "text", "originschool"));
-        formContainer.appendChild(createInput("GPA / Score", "text", "gpa"));
-        formContainer.appendChild(createNumericInput("Year Start", "yearstart"));
-        formContainer.appendChild(createNumericInput("Year End", "yearend"));
+        formContainer.appendChild(createInput("School Name", "text", "originschool, origin"));
+        formContainer.appendChild(createInput("GPA / Score", "text", "gpa", "gpa"));
+        formContainer.appendChild(createNumericInput("Year Start", "yearstart", "yearstrat"));
+        formContainer.appendChild(createNumericInput("Year End", "yearend", "yearend"));
     } else if (qualification === "3") {
-        formContainer.appendChild(createInput("School Name", "text", "originschool"));
-        formContainer.appendChild(createInput("Departement", "text", "departement"));
-        formContainer.appendChild(createInput("GPA / Score", "text", "gpa"));
-        formContainer.appendChild(createNumericInput("Year Start", "yearstart"));
-        formContainer.appendChild(createNumericInput("Year End", "yearend"));
+        formContainer.appendChild(createInput("School Name", "text", "origin", "origin"));
+        formContainer.appendChild(createInput("Major", "text", "major", "major"));
+        formContainer.appendChild(createInput("GPA / Score", "text", "gpa", "gpa"));
+        formContainer.appendChild(createNumericInput("Year Start", "yearstart", "yearstart"));
+        formContainer.appendChild(createNumericInput("Year End", "yearend", "yearend"));
     } else if (qualification === "4" || qualification === "5" || qualification === "6" || qualification === "7" || qualification === "8" || qualification === "9" || qualification === "10") {
-        fetch(`/profile/profile-wizard?step=1`)
+        fetch(`/profile/profile-wizard/qualification`)
             .then((response) => response.json())
             .then((value) => {
                 formContainer.appendChild(createSelect("University", "universityid", "universityid", value.University));
                 formContainer.appendChild(createSelect("Departement", "departementid", "departementid", value.Departement));
-                formContainer.appendChild(createInput("GPA / Score", "text", "gpa"));
-                formContainer.appendChild(createNumericInput("Year Start:", "yearstart"));
-                formContainer.appendChild(createNumericInput("Year End", "yearend"));
+                formContainer.appendChild(createInput("GPA / Score", "text", "gpa", "gpa"));
+                formContainer.appendChild(createNumericInput("Year Start:", "yearstart", "yearstart"));
+                formContainer.appendChild(createNumericInput("Year End", "yearend", "yearend"));
             })
     };
 }

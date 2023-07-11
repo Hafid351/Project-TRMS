@@ -131,18 +131,12 @@ func ProfileWizardView(c *fiber.Ctx) error {
 	case 1:
 		data := []model.ProfileEducation{}
 		qualification := []model.Qualification{}
-		university := []model.University{}
-		departement := []model.Departement{}
 		services.DB.Db.Find(&data)
-		services.DB.Db.Find(&qualification)
-		services.DB.Db.Find(&university)
-		services.DB.Db.Find(&departement)
+		services.DB.Db.Order("id ASC").Find(&qualification)
 		return c.Status(200).JSON(fiber.Map{
 			"Message":       "Success",
 			"Data":          data,
 			"Qualification": qualification,
-			"University":    university,
-			"Departement":   departement,
 		})
 	case 2:
 		data := []model.ProfileWorkExperience{}
@@ -356,18 +350,13 @@ func CreateProfileWizard(c *fiber.Ctx) error {
 func ProfileWizardEducationView(c *fiber.Ctx) error {
 	data := []model.ProfileEducation{}
 	id := c.QueryInt("profileid")
-	qualification := []model.Qualification{}
-	university := []model.University{}
-	departement := []model.Departement{}
-	services.DB.Db.Where("profile_id", id).Find(&data)
-	services.DB.Db.Find(&qualification)
-	services.DB.Db.Find(&university)
-	services.DB.Db.Find(&departement)
-	return c.Render("profile/profile_wizard_step-2", fiber.Map{
-		"Data":          data,
-		"Qualification": qualification,
-		"University":    university,
-		"Departement":   departement,
+	services.DB.Db.Select("profile_educations.profile_id AS profileid, qualifications.name AS qualification, universities.name AS university, departements.name AS departement, profile_educations.origin_school AS school, profile_educations.major_sma AS major, profile_educations.gpa, profile_educations.year_start, profile_educations.year_end").
+		Joins("JOIN qualifications ON qualifications.id = profile_educations.qualification_id").
+		Joins("JOIN universities ON universities.id = profile_educations.university_id").
+		Joins("JOIN departements ON departements.id = profile_educations.departement_id").
+		Where("profile_id", id).Order("qualification ASC").Find(&data)
+	return c.Status(200).JSON(fiber.Map{
+		"Data": data,
 	})
 }
 
@@ -383,10 +372,8 @@ func CreateProfileWizardEducation(c *fiber.Ctx) error {
 	if result.Error != nil {
 		return c.Status(500).SendString(result.Error.Error())
 	}
-	fmt.Printf("User ID : %d\n", data.ID)
 	return c.Status(200).JSON(fiber.Map{
-		"Data":      "Ok",
-		"Profileid": data.ID,
+		"Data": "Ok",
 	})
 }
 
@@ -574,5 +561,17 @@ func GetProfileSkill(c *fiber.Ctx) error {
 	return c.Status(200).JSON(fiber.Map{
 		"Message": "Success",
 		"Skill":   skill,
+	})
+}
+
+func GetQualification(c *fiber.Ctx) error {
+	university := []model.University{}
+	departement := []model.Departement{}
+	services.DB.Db.Find(&university)
+	services.DB.Db.Find(&departement)
+	return c.Status(200).JSON(fiber.Map{
+		"Message":     "Success",
+		"University":  university,
+		"Departement": departement,
 	})
 }

@@ -443,15 +443,6 @@
                                                                 <label>Qualification</label>
                                                                 <select class="form-select" id="qualificationid" onchange="showForm()" style="width: 100%;">
                                                                     <option selected="selected">Select Education Level</option>
-                                                                    <!-- <option value=1>SD</option>
-                                                                    <option value=2>SMP</option>
-                                                                    <option value=3>SMA</option>
-                                                                    <option value=4>D1</option>
-                                                                    <option value=5>D2</option>
-                                                                    <option value=6>D3</option>
-                                                                    <option value=7>D4</option>
-                                                                    <option value=8>S1</option>
-                                                                    <option value=9>S2</option>
                                                                     <option value=10>S3</option> -->
                                                                 </select>
                                                                 <div id="formContainer">
@@ -466,20 +457,13 @@
                                                                     <th>No</th>
                                                                     <th>Education Level</th>
                                                                     <th>Education Name</th>
+                                                                    <th>Education Major</th>
                                                                     <th>Score / GPA</th>
                                                                     <th>Year Start</th>
                                                                     <th>Year End</th>
                                                                     </tr>
                                                                 </thead>
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <th >1</th>
-                                                                        <th>SD</th>
-                                                                        <th>SDN Gelam II</th>
-                                                                        <th>90</th>
-                                                                        <th>2008</th>
-                                                                        <th>2013</th>
-                                                                    </tr>
+                                                                <tbody id="tableEducation">
                                                                 </tbody>
                                                             </table>
                                                         </div>
@@ -571,6 +555,29 @@
                                                                     </select>
                                                                 </div>
                                                             </div>
+                                                            <button style="background-color:green; margin-left: 925px;" class="add_field_button btn btn-info active">Save</button>
+                                                        </div>
+                                                        <div>
+                                                            <table class="table table-striped" border="1">
+                                                                <thead>
+                                                                    <tr>
+                                                                    <th>No</th>
+                                                                    <th>Company</th>
+                                                                    <th>Position Level</th>
+                                                                    <th>Start Date</th>
+                                                                    <th>Start Position</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody id="tableWorkExperience">
+                                                                    <tr>
+                                                                        <th >1</th>
+                                                                        <th>PT. Gunung Harta Transport Solution</th>
+                                                                        <th>CEO</th>
+                                                                        <th>05/20/2020</th>
+                                                                        <th>Driver</th>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
                                                         </div>
                                                         <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
                                                         <button class="btn btn-primary" onclick="nextLanguage(3)">Next</button>
@@ -782,6 +789,7 @@
         <script src="/js/adminlte.min.js"></script>
         <!-- CheckBox Form -->
         <!--script src="js/jquery-latest.min.js"></script-->
+        <script src="/js/save.js"></script>
         <script>
             $(function(){
                 $(".checkme").click(function(event) {
