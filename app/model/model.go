@@ -209,18 +209,18 @@ type ProfileEducation struct {
 
 type ProfileWorkExperience struct {
 	gorm.Model
-	ProfileId             int    `json:"ProfileId"`
-	JobTittle             int    `json:"JobTittle"`
-	CompanyId             int    `json:"CompanyId"`
-	CountryId             int    `json:"CountryId"`
-	ProvinceId            int    `json:"ProvinceId"`
-	PositionlevelId       int    `json:"PositionlevelId"`
-	Salary                int    `json:"Salary"`
-	ExperienceDesc        string `json:"ExperienceDesc"`
-	StartDate             string `json:"StartDate"`
-	EndDate               string `json:"EndDate"`
-	LastPositionJobtittle int    `json:"LastPositionJobtittle"`
-	ReasonLeaving         string `json:"ReasonLeaving"`
+	ProfileId            int    `json:"ProfileId"`
+	JobTitle             int    `json:"JobTitle"`
+	CompanyId            int    `json:"CompanyId"`
+	CountryId            int    `json:"CountryId"`
+	ProvinceId           int    `json:"ProvinceId"`
+	PositionlevelId      int    `json:"PositionlevelId"`
+	Salary               int    `json:"Salary"`
+	ExperienceDesc       string `json:"ExperienceDesc"`
+	StartDate            string `json:"StartDate"`
+	EndDate              string `json:"EndDate"`
+	LastPositionJobtitle int    `json:"LastPositionJobtitle"`
+	ReasonLeaving        string `json:"ReasonLeaving"`
 }
 
 type ProfileLanguage struct {
