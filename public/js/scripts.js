@@ -131,7 +131,7 @@ function nextWork(step) {
         const container2 = document.getElementById("countrycompany")
         const container3 = document.getElementById("provincecompany")
         const container4 = document.getElementById("positionlevelid")
-        const container5 = document.getElementById("jobtitle")
+        const container5 = document.getElementById("startpositionjobtitle")
         const container6 = document.getElementById("lastpositionjobtitle")
         const container7 = document.getElementById("skillid")
         let Company = ""
@@ -150,9 +150,9 @@ function nextWork(step) {
         positionlevel.forEach(item => {
             PositionLevel += `<option value="${item.ID}">${item.Name}</option>`
         })
-        let Position = ""
+        let StartPosition = ""
         position.forEach(item => {
-            Position += `<option value="${item.ID}">${item.Name}</option>`
+            StartPosition += `<option value="${item.ID}">${item.Name}</option>`
         })
         let LastPosition = ""
         position.forEach(item => {
@@ -166,7 +166,7 @@ function nextWork(step) {
         container2.innerHTML = Country
         container3.innerHTML = Province
         container4.innerHTML = PositionLevel
-        container5.innerHTML = Position
+        container5.innerHTML = StartPosition
         container6.innerHTML = LastPosition
         container7.innerHTML = Skill
         })

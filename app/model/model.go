@@ -201,7 +201,7 @@ type ProfileEducation struct {
 	DepartementId   int    `json:"DepartementId"`
 	Departement     string `gorm:"->" json:"Departement"`
 	OriginSchool    string `json:"OriginSchool"`
-	MajorSMA        string `json:"MajorSMA"`
+	MajorSma        string `json:"MajorSma"`
 	Gpa             string `json:"Gpa"`
 	YearStart       int    `json:"YearStart"`
 	YearEnd         int    `json:"YearEnd"`

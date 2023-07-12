@@ -54,12 +54,12 @@ function showForm() {
     console.log(qualification)
 
     if (qualification === "1" || qualification === "2") {
-        formContainer.appendChild(createInput("School Name", "text", "originschool, origin"));
+        formContainer.appendChild(createInput("School Name", "text", "origindasar", "origindasar"));
         formContainer.appendChild(createInput("GPA / Score", "text", "gpa", "gpa"));
-        formContainer.appendChild(createNumericInput("Year Start", "yearstart", "yearstrat"));
+        formContainer.appendChild(createNumericInput("Year Start", "yearstart", "yearstart"));
         formContainer.appendChild(createNumericInput("Year End", "yearend", "yearend"));
     } else if (qualification === "3") {
-        formContainer.appendChild(createInput("School Name", "text", "origin", "origin"));
+        formContainer.appendChild(createInput("School Name", "text", "originlanjut", "originlanjut"));
         formContainer.appendChild(createInput("Major", "text", "major", "major"));
         formContainer.appendChild(createInput("GPA / Score", "text", "gpa", "gpa"));
         formContainer.appendChild(createNumericInput("Year Start", "yearstart", "yearstart"));
