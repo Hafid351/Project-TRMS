@@ -144,53 +144,23 @@ function saveWorkExperience() {
                 const container = document.getElementById("tableWorkExperience")
                 let Data = ""
                 let no = 1;
-                // benerin kodingan ini ke bawah
-                if (data.length > 0) {
-                    data.forEach(item => {
-                        const qualification = item.Qualification
-                        console.log(item)
-                        console.log(qualification)
-                        if (qualification === "SD" || qualification === "SMP") {
-                                Data += `
-                                <tr>
-                                    <th>${no++}</th>
-                                    <th>${item.Qualification}</th>
-                                    <th>${item.OriginSchool}</th>
-                                    <th>-</th>
-                                    <th>${item.Gpa}</th>
-                                    <th>${item.YearStart}</th>
-                                    <th>${item.YearEnd}</th>
-                                </tr>
-                                `
-                        } else if (qualification === "SMA / SMK") {
-                                Data += `
-                                <tr>
-                                    <th>${no++}</th>
-                                    <th>${item.Qualification}</th>
-                                    <th>${item.OriginSchool}</th>
-                                    <th>${item.MajorSma}</th>
-                                    <th>${item.Gpa}</th>
-                                    <th>${item.YearStart}</th>
-                                    <th>${item.YearEnd}</th>
-                                </tr>
-                                `
-                        } else if (qualification === "D1" || qualification === "D2" || qualification === "D3" || qualification === "D4" || qualification === "S1" || qualification === "S2" || qualification === "S3") {
-                                Data += `
-                                <tr>
-                                    <th>${no++}</th>
-                                    <th>${item.Qualification}</th>
-                                    <th>${item.University}</th>
-                                    <th>${item.Departement}</th>
-                                    <th>${item.Gpa}</th>
-                                    <th>${item.YearStart}</th>
-                                    <th>${item.YearEnd}</th>
-                                </tr>
-                                `
-                        } else {
-                            Data = "<tr><td colspan='7'>No data available</td></tr>";
-                        }
-                    })
-                }
+                data.forEach(item => {
+                    Data += `
+                    <tr>
+                        <th>${no++}</th>
+                        <th>${item.CompanyId}</th>
+                        <th>${item.CountryId}</th>
+                        <th>${item.ProvinceId}</th>
+                        <th>${item.PositionlevelId}</th>
+                        <th>${item.Salary}</th>
+                        <th>${item.ExperienceDesc}</th>
+                        <th>${item.StartDate}</th>
+                        <th>${item.JobTitle}</th>
+                        <th>${item.LastPositionJobTitle}</th>
+                        <th>${item.ReasonLeaving}</th>
+                    </tr>
+                    `
+                })
                 container.innerHTML = Data
                 console.log(container)
                 })
