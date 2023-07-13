@@ -117,7 +117,7 @@ function nextEducation(step) {
 function nextWork(step) {
     if (step == 2) {
         stepper.next()
-        fetch( `/profile/profile-wizard?step=${step}`)
+        fetch(`/profile/profile-wizard?step=${step}`)
         .then((response) => response.json())
         .then((value) => {
         const data = value.Data
@@ -131,8 +131,8 @@ function nextWork(step) {
         const container2 = document.getElementById("countrycompany")
         const container3 = document.getElementById("provincecompany")
         const container4 = document.getElementById("positionlevelid")
-        const container5 = document.getElementById("startpositionjobtitle")
-        const container6 = document.getElementById("lastpositionjobtitle")
+        const container5 = document.getElementById("startpositionjobtittle")
+        const container6 = document.getElementById("lastpositionjobtittle")
         const container7 = document.getElementById("skillid")
         let Company = ""
         company.forEach(item => {
@@ -177,149 +177,56 @@ function nextWork(step) {
 
 function nextLanguage(step) {
     if (step == 3) {
-        const profileid =  localStorage.getItem("profile")
-        const companyid = document.querySelector('#companyid')?.value;
-        const countryid = document.querySelector('#countrycompany')?.value;
-        const provinceid = document.querySelector('#provincecompany')?.value;
-        const positionlevelid = document.querySelector('#positionlevelid')?.value;
-        const salary = document.querySelector('#salary')?.value;
-        const experiencedesc = document.querySelector('#experiencedesc')?.value;
-        const startdate = document.querySelector('#startdate')?.value;
-        const jobtitle = document.querySelector('#jobtitle')?.value;
-        const enddate = document.querySelector('#enddate')?.value;
-        const lastpositionjobtitle = document.querySelector('#lastpositionjobtitle')?.value;
-        const reasonleaving = document.querySelector('#reasonleaving')?.value;
-        const skillid = document.querySelector('#skillid')?.value;
-        const payload = {
-            "profileid": Number(profileid)?? '',
-            "companyid": Number(companyid)?? '',
-            "countryid": Number(countryid)?? '',
-            "provinceid": Number(provinceid)?? '',
-            "positionlevelid": Number(positionlevelid)?? '',
-            "salary": Number(salary)?? '',
-            "experiencedesc": experiencedesc?? '',
-            "startdate": new Date(startdate)?? '',
-            "jobtitle": Number(jobtitle)?? '',
-            "enddate": new Date(enddate)?? '',
-            "lastpositionjobtitle": Number(lastpositionjobtitle)?? '',
-            "reasonleaving": reasonleaving?? '',
-            "skillid": Number(skillid)?? '',
-        }
-        fetch(`/profile/profile-wizard?step=${step}`, {
-            method: `POST`,
-            headers: {
-                'content-Type': 'application/json'
-            },
-            body: JSON.stringify(payload)
-        })
+        stepper.next()
+        fetch(`/profile/profile-wizard?step=${step}`)
         .then((response) => response.json())
         .then((value) => {
-            if (value.Data == "Ok") {
-                localStorage.setItem("profile", value.Profileid)
-                stepper.next()
-            fetch(`/profile/profile_wizard/step-4?`)
-                .then((response) => response.json())
-                .then((value) => {
-                const data = value.Data
-                const language = value.Language
-                const languagelevel = value.LanguageLevel
-                const container = document.getElementById("languagecode")
-                const container2 = document.getElementById("spokenlevel")
-                const container3 = document.getElementById("writenlevel")
-                const container4 = document.getElementById("listeninglevel")
-                let Language = ""
-                language.forEach(item => {
-                    Language += `<option value="${item.ID}">${item.Name}</option>`
-                })
-                let SpokenLevel = ""
-                languagelevel.forEach(item => {
-                    SpokenLevel += `<option value="${item.ID}">${item.Name}</option>`
-                })
-                let WritenLevel = ""
-                languagelevel.forEach(item => {
-                    WritenLevel += `<option value="${item.ID}">${item.Name}</option>`
-                })
-                let ListeningLevel = ""
-                languagelevel.forEach(item => {
-                    ListeningLevel += `<option value="${item.ID}">${item.Name}</option>`
-                })
-                container.innerHTML = Language
-                container2.innerHTML = SpokenLevel
-                container3.innerHTML = WritenLevel
-                container4.innerHTML = ListeningLevel
-                })
-            } else {
-                alert (value.Data)
-            }
+        const data = value.Data
+        const language = value.Language
+        const languagelevel = value.LanguageLevel
+        const container = document.getElementById("languagecode")
+        const container2 = document.getElementById("spokenlevel")
+        const container3 = document.getElementById("writtenlevel")
+        const container4 = document.getElementById("listeninglevel")
+        let Language = ""
+        language.forEach(item => {
+            Language += `<option value="${item.ID}">${item.Name}</option>`
         })
+        let SpokenLevel = ""
+        languagelevel.forEach(item => {
+            SpokenLevel += `<option value="${item.ID}">${item.Name}</option>`
+        })
+        let WrittenLevel = ""
+        languagelevel.forEach(item => {
+            WrittenLevel += `<option value="${item.ID}">${item.Name}</option>`
+        })
+        let ListeningLevel = ""
+        languagelevel.forEach(item => {
+            ListeningLevel += `<option value="${item.ID}">${item.Name}</option>`
+        })
+        container.innerHTML = Language
+        container2.innerHTML = SpokenLevel
+        container3.innerHTML = WrittenLevel
+        container4.innerHTML = ListeningLevel
+        })
+    } else {
+        alert (value.Data)
     }
 }
 
 function nextTraining(step) {
     if (step == 4) {
-        const profileid =  localStorage.getItem("profile")
-        const languagecode = document.querySelector('#languagecode')?.value;
-        const spokenlevel = document.querySelector('#spokenlevel')?.value;
-        const writenlevel = document.querySelector('#writenlevel')?.value;
-        const listeninglevel = document.querySelector('#listeninglevel')?.value;
-        const payload = {
-            "profileid": Number(profileid)?? '',
-            "languagecode": Number(languagecode)?? '',
-            "spokenlevel": Number(spokenlevel)?? '',
-            "writenlevel": Number(writenlevel)?? '',
-            "listeninglevel": Number(listeninglevel)?? '',
-        }
-        fetch(`/profile/profile-wizard?step=${step}`, {
-            method: `POST`,
-            headers: {
-                'content-Type': 'application/json'
-            },
-            body: JSON.stringify(payload)
-        })
-        .then((response) => response.json())
-        .then((value) => {
-            if (value.Data == "Ok") {
-                localStorage.setItem("profile", value.Profileid)
-                stepper.next(step)
-            } else {
-                alert (value.Data)
-            }
-        })
+        stepper.next(step)
+    } else {
+        alert (value.Data)
     }
 }
 
 function nextFiles(step) {
     if (step == 5) {
-        const profileid =  localStorage.getItem("profile")
-        const trainingtitle = document.querySelector('#trainingtitle')?.value;
-        const vendor = document.querySelector('#vendor')?.value;
-        const trainingyear = document.querySelector('#trainingyear')?.value;
-        const durationday = document.querySelector('#durationday')?.value;
-        const financedby = document.querySelector('#financedby')?.value;
-        const payload = {
-            "profileid": Number(profileid)?? '',
-            "trainingtitle": trainingtitle?? '',
-            "vendor": vendor?? '',
-            "trainingyear": new Date(trainingyear)?? '',
-            "durationday": Number(durationday)?? '',
-            "financedby": financedby?? '',
-        }
-        fetch(`/profile/profile-wizard?step=${step}`, {
-            method: `POST`,
-            headers: {
-                'content-Type': 'application/json'
-            },
-            body: JSON.stringify(payload)
-        })
-        .then((response) => response.json())
-        .then((value) => {
-            if (value.Data == "Ok") {
-                localStorage.setItem("profile", value.Profileid)
-                stepper.next(step)
-            } else {
-                alert (value.Data)
-            }
-        })
+        stepper.next(step)
+    } else {
+        alert (value.Data)
     }
 }
 

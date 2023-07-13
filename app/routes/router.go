@@ -138,4 +138,10 @@ func Handlers(app *fiber.App) {
 	profile.Get("/profile-wizard/qualification", controller.GetQualification)
 	profile.Post("/profile-wizard/education", controller.CreateProfileWizardEducation)
 	profile.Get("/profile-wizard/education", controller.ProfileWizardEducationView)
+	profile.Post("/profile-wizard/work", controller.CreateProfileWizardWorkExperience)
+	profile.Get("/profile-wizard/work", controller.ProfileWizardWorkExperienceView)
+	profile.Post("/profile-wizard/language", controller.CreateProfileWizardLanguage)
+	profile.Get("/profile-wizard/language", controller.ProfileWizardLanguageView)
+	profile.Post("/profile-wizard/training", controller.CreateProfileWizardTraining)
+	profile.Get("/profile-wizard/training", controller.ProfileWizardTrainingView)
 }

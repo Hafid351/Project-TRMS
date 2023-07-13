@@ -91,10 +91,10 @@ function saveEducation() {
                 console.log(container)
                 })
             }
-        }
-        )
+        })
 }
-function saveWorkExperience() {
+
+function saveWork() {
     const profileid =  localStorage.getItem("profile")
     const companyid = document.querySelector('#companyid')?.value;
     const countryid = document.querySelector('#countrycompany')?.value;
@@ -103,9 +103,9 @@ function saveWorkExperience() {
     const salary = document.querySelector('#salary')?.value;
     const experiencedesc = document.querySelector('#experiencedesc')?.value;
     const startdate = document.querySelector('#startdate')?.value;
-    const jobtitle = document.querySelector('#jobtitle')?.value;
+    const startpositionjobtittle = document.querySelector('#startpositionjobtittle')?.value;
     const enddate = document.querySelector('#enddate')?.value;
-    const lastpositionjobtitle = document.querySelector('#lastpositionjobtitle')?.value;
+    const lastpositionjobtittle = document.querySelector('#lastpositionjobtittle')?.value;
     const reasonleaving = document.querySelector('#reasonleaving')?.value;
     const skillid = document.querySelector('#skillid')?.value;
     const payload = {
@@ -117,54 +117,157 @@ function saveWorkExperience() {
         "salary": Number(salary)?? '',
         "experiencedesc": experiencedesc?? '',
         "startdate": new Date(startdate)?? '',
-        "jobtitle": Number(jobtitle)?? '',
+        "jobtittle": Number(startpositionjobtittle)?? '',
         "enddate": new Date(enddate)?? '',
-        "lastpositionjobtitle": Number(lastpositionjobtitle)?? '',
+        "lastpositionjobtittle": Number(lastpositionjobtittle)?? '',
         "reasonleaving": reasonleaving?? '',
         "skillid": Number(skillid)?? '',
-        }
-        fetch(`/profile/profile-wizard/workexperience`, {
-            method: `POST`,
-            headers: {
-                'content-Type': 'application/json'
-            },
-            body: JSON.stringify(payload)
-        })
-        .then((response) => response.json())
-        .then((value) => {
-            if (value.Data == "Ok") {
-                const profileid =  localStorage.getItem("profile")
-                fetch(`/profile/profile-wizard/workexperience?`+
-                    new URLSearchParams({
-                    profileid: profileid,
-                }))
-                .then((response) => response.json())
-                .then((value) => {
+    }
+    fetch(`/profile/profile-wizard/work`, {
+        method: `POST`,
+        headers: {
+            'content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    })
+    .then((response) => response.json())
+    .then((value) => {
+        if (value.Data == "Ok") {
+            const profileid =  localStorage.getItem("profile")
+            fetch(`/profile/profile-wizard/work?`+
+                new URLSearchParams({
+                profileid: profileid,
+            }))
+            .then((response) => response.json())
+            .then((value) => {
                 const data = value.Data
                 const container = document.getElementById("tableWorkExperience")
+                console.log(data)
                 let Data = ""
                 let no = 1;
                 data.forEach(item => {
                     Data += `
                     <tr>
                         <th>${no++}</th>
-                        <th>${item.CompanyId}</th>
-                        <th>${item.CountryId}</th>
-                        <th>${item.ProvinceId}</th>
-                        <th>${item.PositionlevelId}</th>
-                        <th>${item.Salary}</th>
-                        <th>${item.ExperienceDesc}</th>
-                        <th>${item.StartDate}</th>
-                        <th>${item.JobTitle}</th>
-                        <th>${item.LastPositionJobTitle}</th>
-                        <th>${item.ReasonLeaving}</th>
+                        <th>${item.Company}</th>
+                        <th>${item.Positionlevel}</th>
+                        <th>${item.StartDate}}</th>
+                        <th>${item.Startpositionjobtittle}</th>
                     </tr>
                     `
                 })
                 container.innerHTML = Data
                 console.log(container)
-                })
-            }
+            })  
         }
-        )
+    })       
+}
+
+function saveLanguage() {
+    const profileid =  localStorage.getItem("profile")
+    const languagecode = document.querySelector('#languagecode')?.value;
+    const spokenlevel = document.querySelector('#spokenlevel')?.value;
+    const writtenlevel = document.querySelector('#writtenlevel')?.value;
+    const listeninglevel = document.querySelector('#listeninglevel')?.value;
+    const payload = {
+        "profileid": Number(profileid)?? '',
+        "languagecode": Number(languagecode)?? '',
+        "spokenlevel": Number(spokenlevel)?? '',
+        "writtenlevel": Number(writtenlevel)?? '',
+        "listeninglevel": Number(listeninglevel)?? '',
+    }
+    fetch(`/profile/profile-wizard/language`, {
+        method: `POST`,
+        headers: {
+            'content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    })
+    .then((response) => response.json())
+    .then((value) => {
+        if (value.Data == "Ok") {
+            const profileid =  localStorage.getItem("profile")
+            fetch(`/profile/profile-wizard/language?`+
+                new URLSearchParams({
+                profileid: profileid,
+            }))
+            .then((response) => response.json())
+            .then((value) => {
+                const data = value.Data
+                const container = document.getElementById("tableLanguage")
+                console.log(data)
+                let Data = ""
+                let no = 1;
+                data.forEach(item => {
+                    Data += `
+                    <tr>
+                        <th>${no++}</th>
+                        <th>${item.Language}</th>
+                        <th>${item.Spokenlevel}</th>
+                        <th>${item.Writtenlevel}</th>
+                        <th>${item.Listeninglevel}</th>
+                    </tr>
+                    `
+                })
+                container.innerHTML = Data
+                console.log(container)
+            })  
+        }
+    })       
+}
+
+function saveTraining() {
+    const profileid =  localStorage.getItem("profile")
+    const trainingtittle = document.querySelector('#trainingtittle')?.value;
+    const vendor = document.querySelector('#vendor')?.value;
+    const trainingyear = document.querySelector('#trainingyear')?.value;
+    const durationday = document.querySelector('#durationday')?.value;
+    const financedby = document.querySelector('#financedby')?.value;
+    const payload = {
+        "profileid": Number(profileid)?? '',
+        "trainingtittle": trainingtittle?? '',
+        "vendor": vendor?? '',
+        "trainingyear": Number(trainingyear)?? '',
+        "durationday": Number(durationday)?? '',
+        "financedby": financedby?? '',
+    }
+    fetch(`/profile/profile-wizard/training`, {
+        method: `POST`,
+        headers: {
+            'content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    })
+    .then((response) => response.json())
+    .then((value) => {
+        if (value.Data == "Ok") {
+            const profileid =  localStorage.getItem("profile")
+            fetch(`/profile/profile-wizard/training?`+
+                new URLSearchParams({
+                profileid: profileid,
+            }))
+            .then((response) => response.json())
+            .then((value) => {
+                const data = value.Data
+                const container = document.getElementById("tableTraining")
+                console.log(data)
+                let Data = ""
+                let no = 1;
+                data.forEach(item => {
+                    Data += `
+                    <tr>
+                        <th>${no++}</th>
+                        <th>${item.TrainingTittle}</th>
+                        <th>${item.TrainingYear}</th>
+                        <th>${item.DurationDay}</th>
+                        <th>${item.Vendor}</th>
+                        <th>${item.FinancedBy}</th>
+                    </tr>
+                    `
+                })
+                container.innerHTML = Data
+                console.log(container)
+            })  
+        }
+    })       
 }

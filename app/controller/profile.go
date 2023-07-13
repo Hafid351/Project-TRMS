@@ -350,7 +350,6 @@ func CreateProfileWizard(c *fiber.Ctx) error {
 func ProfileWizardEducationView(c *fiber.Ctx) error {
 	data := []model.ProfileEducation{}
 	id := c.QueryInt("profileid")
-	//services.DB.Db.Raw("SELECT profile_educations.profile_id AS profileid, qualifications.name AS qualification, universities.name AS university, departements.name AS departement, profile_educations.origin_school AS school, profile_educations.major_sma AS major, profile_educations.gpa, profile_educations.year_start, profile_educations.year_end FROM profile_educations JOIN qualifications ON qualifications.id = profile_educations.qualification_id LEFT JOIN universities ON universities.id = profile_educations.university_id LEFT JOIN departements ON departements.id = profile_educations.departement_id").Where("profile_id", id).Order("qualification ASC").Find(&data)
 	services.DB.Db.Select("profile_educations.profile_id AS profileid, qualifications.name AS qualification, universities.name AS university, departements.name AS departement, profile_educations.origin_school, profile_educations.major_sma, profile_educations.gpa, profile_educations.year_start, profile_educations.year_end").
 		Joins("JOIN qualifications ON qualifications.id = profile_educations.qualification_id").
 		Joins("LEFT JOIN universities ON universities.id = profile_educations.university_id").
@@ -380,30 +379,17 @@ func CreateProfileWizardEducation(c *fiber.Ctx) error {
 
 func ProfileWizardWorkExperienceView(c *fiber.Ctx) error {
 	data := []model.ProfileWorkExperience{}
-	company := []model.Company{}
-	country := []model.Country{}
-	province := []model.Province{}
-	positionlevel := []model.JobPositionLevel{}
-	position := []model.Position{}
-	skillcategory := []model.SkillCategory{}
-	skill := []model.Skill{}
-	services.DB.Db.Find(&data)
-	services.DB.Db.Find(&company)
-	services.DB.Db.Find(&country)
-	services.DB.Db.Find(&province)
-	services.DB.Db.Find(&positionlevel)
-	services.DB.Db.Find(&position)
-	services.DB.Db.Find(&skillcategory)
-	services.DB.Db.Find(&skill)
-	return c.Render("profile/profile_wizard_step-3", fiber.Map{
-		"Data":          data,
-		"Company":       company,
-		"Country":       country,
-		"Province":      province,
-		"PositionLevel": positionlevel,
-		"Position":      position,
-		"SkillCategory": skillcategory,
-		"Skill":         skill,
+	id := c.QueryInt("profileid")
+	services.DB.Db.Select("profile_work_experiences.profile_id AS profileid, positions.name AS startpositionjobtittle, companies.name AS company, countries.name AS country, provinces.name AS province, job_position_levels.name AS positionlevel, profile_work_experiences.salary, profile_work_experiences.experience_desc, profile_work_experiences.start_date, profile_work_experiences.end_date, positions.name AS lastpositionjobtittle, profile_work_experiences.reason_leaving").
+		Joins("LEFT JOIN positions ON positions.id = profile_work_experiences.jobtittle").
+		Joins("LEFT JOIN companies ON companies.id = profile_work_experiences.company_id").
+		Joins("LEFT JOIN countries ON countries.id = profile_work_experiences.country_id").
+		Joins("LEFT JOIN provinces ON provinces.id = profile_work_experiences.province_id").
+		Joins("LEFT JOIN job_position_levels ON job_position_levels.id = profile_work_experiences.positionlevel_id").
+		Joins("LEFT JOIN positions AS last_position ON last_position.id = profile_work_experiences.last_position_jobtittle").
+		Where("profile_id", id).Order("company_id ASC").Find(&data)
+	return c.Status(200).JSON(fiber.Map{
+		"Data": data,
 	})
 }
 
@@ -419,24 +405,22 @@ func CreateProfileWizardWorkExperience(c *fiber.Ctx) error {
 	if result.Error != nil {
 		return c.Status(500).SendString(result.Error.Error())
 	}
-	fmt.Printf("User ID : %d\n", data.ID)
 	return c.Status(200).JSON(fiber.Map{
-		"Data":      "Ok",
-		"Profileid": data.ID,
+		"Data": "Ok",
 	})
 }
 
 func ProfileWizardLanguageView(c *fiber.Ctx) error {
 	data := []model.ProfileLanguage{}
-	language := []model.Language{}
-	languagelevel := []model.LanguageLevel{}
-	services.DB.Db.Find(&data)
-	services.DB.Db.Find(&language)
-	services.DB.Db.Find(&languagelevel)
-	return c.Render("profile/profile_wizard_step-4", fiber.Map{
-		"Data":          data,
-		"Language":      language,
-		"LanguageLevel": languagelevel,
+	id := c.QueryInt("profileid")
+	services.DB.Db.Select("profile_languages.profile_id AS profileid, languages.name AS language, spoken_levels.name AS spokenlevel, written_levels.name AS writtenlevel, listening_levels.name AS listeninglevel").
+		Joins("LEFT JOIN languages ON languages.id = profile_languages.language_code").
+		Joins("LEFT JOIN language_levels AS spoken_levels ON spoken_levels.id = profile_languages.spoken_level").
+		Joins("LEFT JOIN language_levels AS written_levels ON written_levels.id = profile_languages.written_level").
+		Joins("LEFT JOIN language_levels AS listening_levels ON listening_levels.id = profile_languages.listening_level").
+		Where("profile_id", id).Order("language_code ASC").Find(&data)
+	return c.Status(200).JSON(fiber.Map{
+		"Data": data,
 	})
 }
 
@@ -452,17 +436,17 @@ func CreateProfileWizardLanguage(c *fiber.Ctx) error {
 	if result.Error != nil {
 		return c.Status(500).SendString(result.Error.Error())
 	}
-	fmt.Printf("User ID : %d\n", data.ID)
 	return c.Status(200).JSON(fiber.Map{
-		"Data":      "Ok",
-		"Profileid": data.ID,
+		"Data": "Ok",
 	})
 }
 
 func ProfileWizardTrainingView(c *fiber.Ctx) error {
 	data := []model.ProfileTraining{}
-	services.DB.Db.Find(&data)
-	return c.Render("profile/profile_wizard_step-5", fiber.Map{
+	id := c.QueryInt("profileid")
+	services.DB.Db.Select("profile_trainings.profile_id AS profileid, profile_trainings.training_tittle, profile_trainings.vendor, profile_trainings.training_year, profile_trainings.duration_day, profile_trainings.financed_by").
+		Where("profile_id", id).Order("training_tittle ASC").Find(&data)
+	return c.Status(200).JSON(fiber.Map{
 		"Data": data,
 	})
 }
@@ -479,10 +463,8 @@ func CreateProfileWizardTraining(c *fiber.Ctx) error {
 	if result.Error != nil {
 		return c.Status(500).SendString(result.Error.Error())
 	}
-	fmt.Printf("User ID : %d\n", data.ID)
 	return c.Status(200).JSON(fiber.Map{
-		"Data":      "Ok",
-		"Profileid": data.ID,
+		"Data": "Ok",
 	})
 }
 

@@ -199,7 +199,7 @@ type ProfileEducation struct {
 	UniversityId    int    `json:"UniversityId"`
 	University      string `gorm:"->" json:"University"`
 	DepartementId   int    `json:"DepartementId"`
-	Departement     string `json:"Departement"`
+	Departement     string `gorm:"->" json:"Departement"`
 	OriginSchool    string `json:"OriginSchool"`
 	MajorSma        string `json:"MajorSma"`
 	Gpa             string `json:"Gpa"`
@@ -209,27 +209,34 @@ type ProfileEducation struct {
 
 type ProfileWorkExperience struct {
 	gorm.Model
-	ProfileId            int    `json:"ProfileId"`
-	JobTitle             int    `json:"JobTitle"`
-	CompanyId            int    `json:"CompanyId"`
-	CountryId            int    `json:"CountryId"`
-	ProvinceId           int    `json:"ProvinceId"`
-	PositionlevelId      int    `json:"PositionlevelId"`
-	Salary               int    `json:"Salary"`
-	ExperienceDesc       string `json:"ExperienceDesc"`
-	StartDate            string `json:"StartDate"`
-	EndDate              string `json:"EndDate"`
-	LastPositionJobtitle int    `json:"LastPositionJobtitle"`
-	ReasonLeaving        string `json:"ReasonLeaving"`
+	ProfileId              int       `json:"ProfileId"`
+	Jobtittle              int       `json:"JobTittle"`
+	Startpositionjobtittle string    `gorm:"->" json:"Startpositionjobtittle"`
+	CompanyId              int       `json:"CompanyId"`
+	Company                string    `gorm:"->" json:"Company"`
+	CountryId              int       `json:"CountryId"`
+	ProvinceId             int       `json:"ProvinceId"`
+	PositionlevelId        int       `json:"PositionlevelId"`
+	Positionlevel          string    `gorm:"->" json:"Positionlevel"`
+	Salary                 int       `json:"Salary"`
+	ExperienceDesc         string    `json:"ExperienceDesc"`
+	StartDate              time.Time `json:"StartDate"`
+	EndDate                time.Time `json:"EndDate"`
+	LastPositionJobtittle  int       `json:"LastPositionJobtittle"`
+	ReasonLeaving          string    `json:"ReasonLeaving"`
 }
 
 type ProfileLanguage struct {
 	gorm.Model
-	ProfileId      int `json:"ProfileId"`
-	LanguageCode   int `json:"LanguageCode"`
-	SpokenLevel    int `json:"SpokenLevel"`
-	WritenLevel    int `json:"WritenLevel"`
-	ListeningLevel int `json:"ListeningLevel"`
+	ProfileId      int    `json:"ProfileId"`
+	LanguageCode   int    `json:"LanguageCode"`
+	Language       string `gorm:"->" json:"Language"`
+	SpokenLevel    int    `json:"SpokenLevel"`
+	Spokenlevel    string `gorm:"->" json:"Spokenlevel"`
+	WrittenLevel   int    `json:"WrittenLevel"`
+	Writtenlevel   string `gorm:"->" json:"Writtenlevel"`
+	ListeningLevel int    `json:"ListeningLevel"`
+	Listeninglevel string `gorm:"->" json:"Listeninglevel"`
 }
 
 type ProfileTraining struct {
