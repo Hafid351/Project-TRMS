@@ -426,9 +426,9 @@
                                                                         <img style="width: 350px;" src=""/>
                                                                     </div>
                                                                     <br>
-                                                                    <button type="button" class="btn btn-success" id="crop_button" >Crop</button>
+                                                                    <button type="button" class="btn btn-success" id="crop_button">Crop</button>
                                                                     <!--button type="button" class="btn btn-danger" id="download_button" onclick="download()">Download</button-->
-                                                                    <button type="button" class="btn btn-warning" id="upload_button" onclick="upload()">Upload</button>
+                                                                    <button type="button" class="btn btn-warning" id="upload_button">Upload</button>
                                                                 </div>	
                                                             </div><!--  end row -->
                                                         </div><!-- end container -->
@@ -915,27 +915,92 @@
                 downloadLink.download = fileName;
                 downloadLink.click();
             }
-            
+
             function upload() {
-                var base64data = $('#cropped_image_result img').attr('src');
-                //alert(base64data);
-                $.ajax({
-                    type: "POST",
-                    dataType: "json",
-                    url: "crop_image_upload.php",
-                    data: {image: base64data},
-                    success: function(response) { 
-                        if(response.status == true)
-                        {
-                            alert(response.msg);
-                        }
-                        else
-                        {
-                            alert("Image not uploaded.");
-                        }
+                const image = document.querySelector("#cropped_image_result img");
+                const base64data = image.src;
+                console.log(image)
+                // Kirim base64data ke server menggunakan Fetch API (GoFiber)
+                fetch("/profile/profile-wizard/profile", {
+                    method: "POST",
+                    headers: {
+                    "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ image: base64data }),
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                    if (data.status === true) {
+                        alert(data.msg);
+                    } else {
+                        alert("Image not uploaded.");
                     }
-                });
-            }
+                    })
+                    .catch((error) => {
+                    console.error("Error:", error);
+                    });
+                }
+
+            // function upload() {
+            //     const image = document.querySelector("#cropped_image_result img");
+            //     const file = dataURLtoFile(image.src, "image.jpg"); // Mengubah base64 menjadi file
+
+            //     const formData = new FormData();
+            //     formData.append("image", file);
+
+            //     fetch("/profile/profile-wizard/profile", {
+            //         method: "POST",
+            //         body: formData,
+            //     })
+            //         .then((response) => response.json())
+            //         .then((data) => {
+            //         if (data.status === true) {
+            //             alert(data.msg);
+            //         } else {
+            //             alert("Image not uploaded.");
+            //         }
+            //         })
+            //         .catch((error) => {
+            //         console.error("Error:", error);
+            //         });
+            //     }
+
+                // // Fungsi untuk mengubah base64 menjadi file
+                // function dataURLtoFile(dataURL, filename) {
+                //     const arr = dataURL.split(",");
+                //     const mime = arr[0].match(/:(.*?);/)[1];
+                //     const bstr = atob(arr[1]);
+                //     let n = bstr.length;
+                //     const u8arr = new Uint8Array(n);
+                //     while (n--) {
+                //         u8arr[n] = bstr.charCodeAt(n);
+                //     }
+                //     return new File([u8arr], filename, { type: mime });
+                //     }
+
+
+
+            
+            // function upload() {
+            //     var base64data = $('#cropped_image_result img').attr('src');
+            //     //alert(base64data);
+            //     $.ajax({
+            //         type: "POST",
+            //         dataType: "json",
+            //         url: "crop_image_upload.php",
+            //         data: {image: base64data},
+            //         success: function(response) { 
+            //             if(response.status == true)
+            //             {
+            //                 alert(response.msg);
+            //             }
+            //             else
+            //             {
+            //                 alert("Image not uploaded.");
+            //             }
+            //         }
+            //     });
+            // }
             
         </script>
         <!--other-->

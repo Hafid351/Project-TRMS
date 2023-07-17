@@ -347,6 +347,62 @@ func CreateProfileWizard(c *fiber.Ctx) error {
 	}
 }
 
+func ProfileWizardProfileView(c *fiber.Ctx) error {
+	data := []model.Profile{}
+	country := []model.Country{}
+	province := []model.Province{}
+	religion := []model.Religion{}
+	status := []model.MaritalStatus{}
+	identification := []model.Identification{}
+	position := []model.Position{}
+	// db.Find(&data)
+	services.DB.Db.Find(&data)
+	services.DB.Db.Find(&country)
+	services.DB.Db.Find(&province)
+	services.DB.Db.Find(&religion)
+	services.DB.Db.Find(&status)
+	services.DB.Db.Find(&identification)
+	services.DB.Db.Find(&position)
+	return c.Render("profile/profile-wizard", fiber.Map{
+		"Data":           data,
+		"Country":        country,
+		"Province":       province,
+		"Religion":       religion,
+		"Status":         status,
+		"Identification": identification,
+		"Position":       position,
+	})
+}
+
+func CreateProfileWizardProfile(c *fiber.Ctx) error {
+	// Ambil data gambar dari body request
+	var requestData struct {
+		Image string `json:"image"`
+	}
+	if err := c.BodyParser(&requestData); err != nil {
+		return c.Status(500).JSON(fiber.Map{
+			"Data": "Failed to parse request body!",
+		})
+	}
+
+	// Simpan informasi gambar ke dalam basis data
+	data := model.Profile{
+		// Isi dengan data lain yang diperlukan
+		Photo: requestData.Image,
+	}
+	result := services.DB.Db.Create(&data)
+	if result.Error != nil {
+		return c.Status(500).JSON(fiber.Map{
+			"Data": "Create Data Error!",
+		})
+	}
+
+	return c.Status(200).JSON(fiber.Map{
+		"status": true,
+		"msg":    "Image uploaded successfully",
+	})
+}
+
 func ProfileWizardEducationView(c *fiber.Ctx) error {
 	data := []model.ProfileEducation{}
 	id := c.QueryInt("profileid")

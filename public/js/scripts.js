@@ -81,6 +81,28 @@ function nextEducation(step) {
             "dob": new Date(dob)?? '',
             "pob": pob?? ''
         }
+            const image = document.querySelector("#cropped_image_result img");
+            const base64data = image.src;
+            console.log(image)
+            // Kirim base64data ke server menggunakan Fetch API (GoFiber)
+            fetch("/profile/profile-wizard/profile", {
+                method: "POST",
+                headers: {
+                "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ image: base64data }),
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                if (data.status === true) {
+                    alert(data.msg);
+                } else {
+                    alert("Image not uploaded.");
+                }
+                })
+                .catch((error) => {
+                console.error("Error:", error);
+                });
         fetch(`/profile/profile-wizard?step=${step}`, {
             method: `POST`,
             headers: {
@@ -229,4 +251,3 @@ function nextFiles(step) {
         alert (value.Data)
     }
 }
-

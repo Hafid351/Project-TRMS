@@ -55,6 +55,88 @@ func GetTable(c *fiber.Ctx) error {
 	})
 }
 
+// TRYING DASHBOARD KEAHLIAN
+// func GetData(c *fiber.Ctx) error {
+// 	data := []model.Dashboard{}
+
+// 	// Menambahkan indeks pada kolom skills.id dan Profile_Skills.skill_id jika belum ada
+// 	if err := services.DB.Db.Exec("CREATE INDEX IF NOT EXISTS idx_skills_id ON skills(id)").Error; err != nil {
+// 		return err
+// 	}
+// 	if err := services.DB.Db.Exec("CREATE INDEX IF NOT EXISTS idx_profile_skills_skill_id ON profile_skills(skill_id)").Error; err != nil {
+// 		return err
+// 	}
+
+// 	// Menggunakan RAW query untuk mengoptimasi performa
+// 	query := `SELECT skills.name AS skill, skills.id AS id, COUNT(*) AS total
+// 		FROM skills
+// 		FULL JOIN profile_skills AS Profile_Skills ON skills.id = Profile_Skills.skill_id
+// 		GROUP BY skill, skills.id
+// 		ORDER BY total DESC`
+
+// 	if err := services.DB.Db.Raw(query).Scan(&data).Error; err != nil {
+// 		return err
+// 	}
+
+// 	return c.JSON(fiber.Map{
+// 		"Data": data,
+// 	})
+// }
+
+// func GetTable(c *fiber.Ctx) error {
+// 	search := c.Query("search")
+// 	perPage, err := strconv.Atoi(c.Query("perPage", "5"))
+// 	if err != nil {
+// 		return c.SendString("perPage harus angka")
+// 	}
+// 	page, err := strconv.Atoi(c.Query("page", "1"))
+// 	if err != nil {
+// 		return c.SendString("page harus angka")
+// 	}
+// 	offset := (page - 1) * perPage
+
+// 	// Menambahkan indeks pada kolom skills.id jika belum ada
+// 	services.DB.Db.Exec("CREATE INDEX IF NOT EXISTS idx_skills_id ON skills(id)")
+
+// 	var table []model.Skill1
+// 	query := services.DB.Db.Table("skills").
+// 		Select("skills.name", "COUNT(*) AS total").
+// 		Joins("JOIN profile_skills AS Profile_Skills ON skills.id = Profile_Skills.skill_id").
+// 		Preload("ProfileSkills").
+// 		Group("skills.name, skills.id").
+// 		Order("total DESC").
+// 		Offset(offset).
+// 		Limit(perPage)
+
+// 	if search != "" {
+// 		query = query.Where("skills.name ILIKE ?", "%"+search+"%")
+// 	}
+
+// 	query.Find(&table)
+
+// 	var total int64
+// 	countQuery := services.DB.Db.Joins("JOIN profile_skills AS Profile_Skills ON skills.id = Profile_Skills.skill_id").
+// 		Group("skills.name, skills.id").
+// 		Order("total DESC").
+// 		Model(&model.Skill1{})
+
+// 	if search != "" {
+// 		countQuery = countQuery.Where("skills.name ILIKE ?", "%"+search+"%")
+// 	}
+
+// 	countQuery.Count(&total)
+
+// 	return c.JSON(fiber.Map{
+// 		"Table":      table,
+// 		"TotalData":  total,
+// 		"Page":       page,
+// 		"TotalPages": int(math.Ceil(float64(total) / float64(perPage))),
+// 		"PerPage":    perPage,
+// 	})
+// }
+
+//END OF TRYING DASHBOARD KEAHLIAN
+
 func GetData1(c *fiber.Ctx) error {
 	data := []model.Dashboard1{}
 	services.DB.Db.Raw("SELECT source.name AS name, source.id AS id, source.total FROM (SELECT departements.name AS name, departements.id AS id, COUNT(*) AS total FROM departements FULL JOIN profile_educations AS profile_educations ON departements.id = profile_educations.departement_id GROUP BY departements.name, departements.id ORDER BY departements.name ASC, departements.id ASC) AS source WHERE source.total BETWEEN 100 AND 700 AND ((source.total <> 127) OR (source.total IS NULL))").Find(&data)
