@@ -1,44 +1,44 @@
-<script>
-    const handleDelete = (id) => {
-      const isConfirmed = confirm("Are you sure?");
-      if (isConfirmed) {
-        return fetch(`/positioncategory/${id}`, {
-          method: "DELETE",
-        }).then(() => {
-          alert("Data deleted successufuly");
-          document.location.reload();
-        });
-      }
-    };
-  
-    function handleSearch() {
-      const search = document.querySelector("#search")?.value ?? "";
-      const urlParams = new URLSearchParams(window.location.search);
-      urlParams.set("search", search);
-      document.location.search = urlParams;
+    <script>
+        const handleDelete = (id) => {
+        const isConfirmed = confirm("Are you sure?");
+        if (isConfirmed) {
+            return fetch(`/positioncategory/${id}`, {
+            method: "DELETE",
+            }).then(() => {
+            alert("Data deleted successufuly");
+            document.location.reload();
+            });
+        }
+        };
+    
+        function handleSearch() {
+        const search = document.querySelector("#search")?.value ?? "";
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.set("search", search);
+        document.location.search = urlParams;
+        }
+    
+        function handleNext() {
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.set("page", Number(urlParams.get("page") ?? 1) + 1);
+        document.location.search = urlParams;
+        }
+    
+        function handlePrev() {
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.set("page", Number(urlParams.get("page") ?? 1) - 1);
+        document.location.search = urlParams;
     }
-  
-    function handleNext() {
-      const urlParams = new URLSearchParams(window.location.search);
-      urlParams.set("page", Number(urlParams.get("page") ?? 1) + 1);
-      document.location.search = urlParams;
-    }
-  
-    function handlePrev() {
-    const urlParams = new URLSearchParams(window.location.search);
-    urlParams.set("page", Number(urlParams.get("page") ?? 1) - 1);
-    document.location.search = urlParams;
-  }
-  
-    window.onload = () => {
-      const urlSearchParams = new URLSearchParams(window.location.search);
-      const params = Object.fromEntries(urlSearchParams.entries());
-      const search = document.querySelector("#search");
-      console.log(params.search);
-      search.value = params.search??"";
-    };
-  </script>
-  
+    
+        window.onload = () => {
+        const urlSearchParams = new URLSearchParams(window.location.search);
+        const params = Object.fromEntries(urlSearchParams.entries());
+        const search = document.querySelector("#search");
+        console.log(params.search);
+        search.value = params.search??"";
+        };
+    </script>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
