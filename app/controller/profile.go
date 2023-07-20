@@ -1,15 +1,21 @@
 package controller
 
 import (
+	"crypto/sha1"
+	"encoding/hex"
 	"fmt"
+	"io/ioutil"
 	_ "log"
 	"math"
+	"path/filepath"
 	"strconv"
+	"time"
 	"trms/app/model"
 	"trms/app/services"
 
 	"github.com/gofiber/fiber/v2"
 	_ "golang.org/x/crypto/bcrypt"
+	"gorm.io/gorm"
 )
 
 func GetAllProfile(c *fiber.Ctx) error {
@@ -202,21 +208,95 @@ func CreateProfileWizard(c *fiber.Ctx) error {
 	step := c.QueryInt("step")
 	switch step {
 	case 1:
-		data := new(model.Profile)
-		if err := c.BodyParser(data); err != nil {
+		payload := new(model.Profile)
+		if err := c.BodyParser(payload); err != nil {
 			return c.Status(500).JSON(fiber.Map{
 				"Data": err.Error(),
 			})
 		}
-		if data.Email == "" {
+		if payload.Email == "" {
 			return c.Status(500).JSON(fiber.Map{
 				"Data": "Email Cannot be Empty!",
 			})
 		}
 		var profile model.Profile
-		if data.Email == profile.Email {
+		if payload.Email == profile.Email {
 			return c.Status(500).JSON(fiber.Map{
 				"Data": "Email Already Exists!",
+			})
+		}
+		var requestData struct {
+			gorm.Model
+			Fullname          string    `json:"Fullname"`
+			Gender            string    `json:"Gender"`
+			Photo             string    `json:"Photo"`
+			Image             string    `json:"image"`
+			Filename          string    `json:"fileName"`
+			CountryId         int       `json:"CountryId"`
+			ProvinceId        int       `json:"ProvinceId"`
+			CityId            int       `json:"CityId"`
+			Address           string    `json:"Address"`
+			NationalityId     string    `json:"NationalityId"`
+			Height            int       `json:"Height"`
+			Weight            int       `json:"Weight"`
+			ReligionId        int       `json:"ReligionId"`
+			MaritalStatus     int       `json:"Maritalstatus"`
+			IdentificationId  int       `json:"IdentificationId"`
+			IdCardNo          string    `json:"IdCardNo"`
+			PhoneNumber       string    `json:"PhoneNumber"`
+			OtherPhoneNumber  string    `json:"OtherPhoneNumber"`
+			Email             string    `json:"Email"`
+			SalaryExpectation int       `json:"SalaryExpectation"`
+			JobTitle          int       `json:"JobTitle"`
+			About             string    `json:"About"`
+			InstagramProfile  string    `json:"InstagramProfile"`
+			FacebookProfile   string    `json:"FacebookProfile"`
+			LinkedinProfile   string    `json:"LinkedinProfile"`
+			Dob               time.Time `json:"Dob"`
+			Pob               string    `json:"Pob"`
+		}
+		if err := c.BodyParser(&requestData); err != nil {
+			return c.Status(500).JSON(fiber.Map{
+				"Data": "Failed to parse request body!",
+			})
+		}
+		hash := sha1.New()
+		hash.Write([]byte(requestData.Image))
+		hashedImage := hex.EncodeToString(hash.Sum(nil)) + ".png"
+		data := model.Profile{
+			Fullname:          requestData.Fullname,
+			Gender:            requestData.Gender,
+			Photo:             requestData.Photo,
+			Avatar:            hashedImage,
+			Filename:          requestData.Filename,
+			CountryId:         requestData.CountryId,
+			ProvinceId:        requestData.ProvinceId,
+			CityId:            requestData.CityId,
+			Address:           requestData.Address,
+			NationalityId:     requestData.NationalityId,
+			Height:            requestData.Height,
+			Weight:            requestData.Weight,
+			ReligionId:        requestData.ReligionId,
+			MaritalStatus:     requestData.MaritalStatus,
+			IdentificationId:  requestData.IdentificationId,
+			IdCardNo:          requestData.IdCardNo,
+			PhoneNumber:       requestData.PhoneNumber,
+			OtherPhoneNumber:  requestData.OtherPhoneNumber,
+			Email:             requestData.Email,
+			SalaryExpectation: requestData.SalaryExpectation,
+			JobTitle:          requestData.JobTitle,
+			About:             requestData.About,
+			InstagramProfile:  requestData.InstagramProfile,
+			FacebookProfile:   requestData.FacebookProfile,
+			LinkedinProfile:   requestData.LinkedinProfile,
+			Dob:               requestData.Dob,
+			Pob:               requestData.Pob,
+		}
+		filePath := "./public/assets/img/" + hashedImage
+		err := ioutil.WriteFile(filepath.Clean(filePath), []byte(requestData.Image), 0644)
+		if err != nil {
+			return c.Status(500).JSON(fiber.Map{
+				"Data": "Failed to save image file!",
 			})
 		}
 		result := services.DB.Db.Create(&data)
@@ -374,34 +454,46 @@ func ProfileWizardProfileView(c *fiber.Ctx) error {
 	})
 }
 
-func CreateProfileWizardProfile(c *fiber.Ctx) error {
-	// Ambil data gambar dari body request
-	var requestData struct {
-		Image string `json:"image"`
-	}
-	if err := c.BodyParser(&requestData); err != nil {
-		return c.Status(500).JSON(fiber.Map{
-			"Data": "Failed to parse request body!",
-		})
-	}
+// func CreateProfileWizardProfile(c *fiber.Ctx) error {
+// 	var requestData struct {
+// 		Image    string `json:"image"`
+// 		FileName string `json:"fileName"`
+// 	}
 
-	// Simpan informasi gambar ke dalam basis data
-	data := model.Profile{
-		// Isi dengan data lain yang diperlukan
-		Photo: requestData.Image,
-	}
-	result := services.DB.Db.Create(&data)
-	if result.Error != nil {
-		return c.Status(500).JSON(fiber.Map{
-			"Data": "Create Data Error!",
-		})
-	}
+// 	if err := c.BodyParser(&requestData); err != nil {
+// 		return c.Status(500).JSON(fiber.Map{
+// 			"Data": "Failed to parse request body!",
+// 		})
+// 	}
 
-	return c.Status(200).JSON(fiber.Map{
-		"status": true,
-		"msg":    "Image uploaded successfully",
-	})
-}
+// 	hash := sha1.New()
+// 	hash.Write([]byte(requestData.Image))
+// 	hashedImage := hex.EncodeToString(hash.Sum(nil)) + ".png"
+
+// 	data := model.Profile{
+// 		Avatar:   hashedImage,
+// 		Filename: requestData.FileName,
+// 	}
+// 	result := services.DB.Db.Create(&data)
+// 	if result.Error != nil {
+// 		return c.Status(500).JSON(fiber.Map{
+// 			"Data": "Create Data Error!",
+// 		})
+// 	}
+
+// 	filePath := "./public/assets/img/" + hashedImage
+// 	err := ioutil.WriteFile(filepath.Clean(filePath), []byte(requestData.Image), 0644)
+// 	if err != nil {
+// 		return c.Status(500).JSON(fiber.Map{
+// 			"Data": "Failed to save image file!",
+// 		})
+// 	}
+
+// 	return c.Status(200).JSON(fiber.Map{
+// 		"status": true,
+// 		"msg":    "Image uploaded successfully",
+// 	})
+// }
 
 func ProfileWizardEducationView(c *fiber.Ctx) error {
 	data := []model.ProfileEducation{}
