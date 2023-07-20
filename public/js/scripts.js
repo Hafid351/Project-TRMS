@@ -53,6 +53,8 @@ function nextEducation(step) {
         const linkedinprofile = document.querySelector('#linkedinprofile')?.value;
         const dob = document.querySelector('#dob')?.value;
         const pob = document.querySelector('#pob')?.value;
+        var base64data = $('#cropped_image_result img').attr('src');
+        var fileName = $('#browse_image').prop('files')[0].name;
         const payload = {
             "fullname": fullname?? '',
             "gender": gender?? '',
@@ -79,30 +81,10 @@ function nextEducation(step) {
             "facebookprofile": facebookprofile?? '',
             "linkedinprofile": linkedinprofile?? '',
             "dob": new Date(dob)?? '',
-            "pob": pob?? ''
+            "pob": pob?? '',
+            "image": base64data?? '',
+            "filename": fileName?? ''
         }
-            const image = document.querySelector("#cropped_image_result img");
-            const base64data = image.src;
-            console.log(image)
-            // Kirim base64data ke server menggunakan Fetch API (GoFiber)
-            fetch("/profile/profile-wizard/profile", {
-                method: "POST",
-                headers: {
-                "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ image: base64data }),
-            })
-                .then((response) => response.json())
-                .then((data) => {
-                if (data.status === true) {
-                    alert(data.msg);
-                } else {
-                    alert("Image not uploaded.");
-                }
-                })
-                .catch((error) => {
-                console.error("Error:", error);
-                });
         fetch(`/profile/profile-wizard?step=${step}`, {
             method: `POST`,
             headers: {
@@ -130,6 +112,7 @@ function nextEducation(step) {
             console.log(container)
             })
         } else {
+            alert('Image not uploaded.');
             alert (value.Data)
         }
         })
