@@ -11,6 +11,7 @@
         <link rel="stylesheet" href="/css/all.min.css">
         <link rel="stylesheet" href="/css/adminlte.min.css">
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <script src="/js/alert.js"></script>
     </head>
     <body>
         <nav class="sb-topnav navbar navbar-expand navbar-light bg-light">
@@ -119,15 +120,17 @@
                             <div class="card card-primary">
                                 <!-- /.card-header -->
                                 <!-- form start -->
-                                <form action="/country/create_country" method="POST">
+                                <form id="countryForm">
                                     <div class="card-body">
                                         <div class="form-group">
-                                            <label for="exampleInputEmail1">Country Code</label>
-                                            <input type="text" class="form-control" id="code" name="code" placeholder="Enter Country Code">
+                                            <label for="exampleInputCountryCode">Country Code</label>
+                                            <input type="text" class="form-control" id="code" name="code" placeholder="Enter Country Code (Max 2 Character)">
+                                            <span id="codeError" style="color: red;"></span>
                                         </div>
                                         <div class="form-group">
-                                            <label for="exampleInputEmail1">Country Name</label>
+                                            <label for="exampleInputCountryName">Country Name</label>
                                             <input type="text" class="form-control" id="name" name="name" placeholder="Enter Country Name">
+                                            <span id="nameError" style="color: red;"></span>
                                         </div>
                                     </div>
                                     <!-- /.card-body -->
