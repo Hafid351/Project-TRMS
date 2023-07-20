@@ -59,17 +59,37 @@ func CreatePositionCategoryView(c *fiber.Ctx) error {
 	return c.Render("position_category/create_positioncategory", fiber.Map{})
 }
 
+// func CreatePositionCategory(c *fiber.Ctx) error {
+// 	data := new(model.PositionCategory)
+// 	if err := c.BodyParser(data); err != nil {
+// 		return c.Render("", fiber.Map{"Error": err.Error()})
+// 	}
+// 	if data.Name == "" {
+// 		return c.Render("", fiber.Map{"Error": "Nama Kategori is required"})
+// 	}
+
+// 	services.DB.Db.Create(&data)
+// 	return c.Redirect("/positioncategory")
+// }
+
 func CreatePositionCategory(c *fiber.Ctx) error {
 	data := new(model.PositionCategory)
 	if err := c.BodyParser(data); err != nil {
-		return c.Render("", fiber.Map{"Error": err.Error()})
+		return c.Status(500).JSON(fiber.Map{
+			"Message": err.Error(),
+		})
 	}
+
 	if data.Name == "" {
-		return c.Render("", fiber.Map{"Error": "Nama Kategori is required"})
+		return c.JSON(fiber.Map{
+			"Error": "Position Category Name must be filled",
+		})
 	}
 
 	services.DB.Db.Create(&data)
-	return c.Redirect("/positioncategory")
+	return c.JSON(fiber.Map{
+		"Message": "Position Category created successfully",
+	})
 }
 
 func UpdatePositionCategory(c *fiber.Ctx) error {

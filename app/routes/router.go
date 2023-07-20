@@ -136,7 +136,7 @@ func Handlers(app *fiber.App) {
 	profile.Get("/profile_wizard/skill", controller.GetProfileSkill)
 	profile.Get("/view/:id", controller.GetProfileView)
 	profile.Get("/profile-wizard/qualification", controller.GetQualification)
-	//profile.Post("/profile-wizard/profile", controller.CreateProfileWizardProfile)
+	profile.Post("/profile-wizard/profile", controller.CreateProfileWizardProfile)
 	profile.Get("/profile-wizard/profile", controller.ProfileWizardProfileView)
 	profile.Post("/profile-wizard/education", controller.CreateProfileWizardEducation)
 	profile.Get("/profile-wizard/education", controller.ProfileWizardEducationView)

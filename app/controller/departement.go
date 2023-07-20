@@ -72,6 +72,27 @@ func CreateDepartement(c *fiber.Ctx) error {
 	return c.Redirect("/departement")
 }
 
+//mohon bantuannya
+// func CreateDepartement(c *fiber.Ctx) error {
+// 	data := new(model.Departement)
+// 	if err := c.BodyParser(data); err != nil {
+// 		return c.Status(500).JSON(fiber.Map{
+// 			"Message": err.Error(),
+// 		})
+// 	}
+
+// 	if data.Name == "" {
+// 		return c.JSON(fiber.Map{
+// 			"Error": "Departement Name must be filled",
+// 		})
+// 	}
+
+// 	services.DB.Db.Create(&data)
+// 	return c.JSON(fiber.Map{
+// 		"Message": "Departement created successfully",
+// 	})
+// }
+
 func UpdateDepartement(c *fiber.Ctx) error {
 	id := c.Params("id")
 	data := new(model.Departement)

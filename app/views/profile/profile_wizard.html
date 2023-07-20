@@ -96,7 +96,7 @@
                 outline: 0;
                 box-shadow: 0 0 0 1px #39f;
             }
-        </style>
+            </style>
         <!-- checkbox disabled -->
         <!--link rel="stylesheet" href="css/bootstrap.min2.css"-->
         <!--link rel="stylesheet" href="css/stylenew.css"-->
@@ -423,15 +423,15 @@
                                                                 <div class="col-lg-6" align="center">
                                                                     <label>Preview Profile Picture</label>
                                                                     <div id="cropped_image_result">
-                                                                        <img style="width: 350px;" src="" alt="Cropped Image"/>
+                                                                        <img style="width: 350px;" src=""/>
                                                                     </div>
                                                                     <br>
                                                                     <button type="button" class="btn btn-success" id="crop_button">Crop</button>
                                                                     <!--button type="button" class="btn btn-danger" id="download_button" onclick="download()">Download</button-->
-                                                                    <!-- <button type="button" class="btn btn-warning" id="upload_button" onclick="upload()">Upload</button> -->
+                                                                    <button type="button" class="btn btn-warning" id="upload_button">Upload</button>
                                                                 </div>	
-                                                            </div>
-                                                        </div>
+                                                            </div><!--  end row -->
+                                                        </div><!-- end container -->
                                                         <button class="btn btn-primary" type="button" onclick="nextEducation(1)">Next</button>
                                                     </div>
                                                 </div>
@@ -836,9 +836,11 @@
                 var done = function(url) {        
                     $('#display_image_div').html('');
                     $("#display_image_div").html('<img name="display_image_data" id="display_image_data" src="'+url+'" alt="Uploaded Picture">');
+                    
                 };
                 if (files && files.length > 0) {
                     file = files[0];
+
                     if (URL) {
                         done(URL.createObjectURL(file));
                     } else if (FileReader) {
@@ -855,11 +857,11 @@
                 var result = document.getElementById('cropped_image_result');
                 var croppable = false;
                 var cropper = new Cropper(image, {
-                    aspectRatio: 1,
-                    viewMode: 1,
-                    ready: function () {
-                        croppable = true;
-                    },
+                aspectRatio: 1,
+                viewMode: 1,
+                ready: function () {
+                croppable = true;
+                },
                 });
 
                 button.onclick = function () {
@@ -869,7 +871,7 @@
                 var roundedImage;
             
                 if (!croppable) {
-                    return;
+                return;
                 }
 
                 // Crop
@@ -888,20 +890,20 @@
             });
             
             function getRoundedCanvas(sourceCanvas) {
-                var canvas = document.createElement('canvas');
-                var context = canvas.getContext('2d');
-                var width = sourceCanvas.width;
-                var height = sourceCanvas.height;
+            var canvas = document.createElement('canvas');
+            var context = canvas.getContext('2d');
+            var width = sourceCanvas.width;
+            var height = sourceCanvas.height;
 
-                canvas.width = width;
-                canvas.height = height;
-                context.imageSmoothingEnabled = true;
-                context.drawImage(sourceCanvas, 0, 0, width, height);
-                context.globalCompositeOperation = 'destination-in';
-                context.beginPath();
-                context.arc(width / 2, height / 2, Math.min(width, height) / 2, 0, 2 * Math.PI, true);
-                context.fill();
-                return canvas;
+            canvas.width = width;
+            canvas.height = height;
+            context.imageSmoothingEnabled = true;
+            context.drawImage(sourceCanvas, 0, 0, width, height);
+            context.globalCompositeOperation = 'destination-in';
+            context.beginPath();
+            context.arc(width / 2, height / 2, Math.min(width, height) / 2, 0, 2 * Math.PI, true);
+            context.fill();
+            return canvas;
             }
             
             function download()
@@ -914,32 +916,92 @@
                 downloadLink.click();
             }
 
-            // function upload() {
-            //     var base64data = $('#cropped_image_result img').attr('src');
-            //     var fileName = $('#browse_image').prop('files')[0].name;
+            function upload() {
+                const image = document.querySelector("#cropped_image_result img");
+                const base64data = image.src;
+                console.log(image)
+                // Kirim base64data ke server menggunakan Fetch API (GoFiber)
+                fetch("/profile/profile-wizard/profile", {
+                    method: "POST",
+                    headers: {
+                    "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ image: base64data }),
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                    if (data.status === true) {
+                        alert(data.msg);
+                    } else {
+                        alert("Image not uploaded.");
+                    }
+                    })
+                    .catch((error) => {
+                    console.error("Error:", error);
+                    });
+                }
 
-            //     fetch('/profile/profile-wizard/profile', {
-            //         method: 'POST',
-            //         headers: {
-            //             'Content-Type': 'application/json'
-            //         },
-            //         body: JSON.stringify({
-            //             image: base64data,
-            //             fileName: fileName
-            //         })
+            // function upload() {
+            //     const image = document.querySelector("#cropped_image_result img");
+            //     const file = dataURLtoFile(image.src, "image.jpg"); // Mengubah base64 menjadi file
+
+            //     const formData = new FormData();
+            //     formData.append("image", file);
+
+            //     fetch("/profile/profile-wizard/profile", {
+            //         method: "POST",
+            //         body: formData,
             //     })
-            //     .then(response => response.json())
-            //     .then(data => {
+            //         .then((response) => response.json())
+            //         .then((data) => {
             //         if (data.status === true) {
             //             alert(data.msg);
             //         } else {
-            //             alert('Image not uploaded.');
+            //             alert("Image not uploaded.");
             //         }
-            //     })
-            //     .catch(error => {
-            //         console.error('Error:', error);
+            //         })
+            //         .catch((error) => {
+            //         console.error("Error:", error);
+            //         });
+            //     }
+
+                // // Fungsi untuk mengubah base64 menjadi file
+                // function dataURLtoFile(dataURL, filename) {
+                //     const arr = dataURL.split(",");
+                //     const mime = arr[0].match(/:(.*?);/)[1];
+                //     const bstr = atob(arr[1]);
+                //     let n = bstr.length;
+                //     const u8arr = new Uint8Array(n);
+                //     while (n--) {
+                //         u8arr[n] = bstr.charCodeAt(n);
+                //     }
+                //     return new File([u8arr], filename, { type: mime });
+                //     }
+
+
+
+            
+            // function upload() {
+            //     var base64data = $('#cropped_image_result img').attr('src');
+            //     //alert(base64data);
+            //     $.ajax({
+            //         type: "POST",
+            //         dataType: "json",
+            //         url: "crop_image_upload.php",
+            //         data: {image: base64data},
+            //         success: function(response) { 
+            //             if(response.status == true)
+            //             {
+            //                 alert(response.msg);
+            //             }
+            //             else
+            //             {
+            //                 alert("Image not uploaded.");
+            //             }
+            //         }
             //     });
             // }
+            
         </script>
         <!--other-->
         <script>
