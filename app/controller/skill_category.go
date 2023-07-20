@@ -62,13 +62,21 @@ func CreateSkillCategoryView(c *fiber.Ctx) error {
 func CreateSkillCategory(c *fiber.Ctx) error {
 	data := new(model.SkillCategory)
 	if err := c.BodyParser(data); err != nil {
-		return c.Render("", fiber.Map{"Error": err.Error()})
+		return c.Status(500).JSON(fiber.Map{
+			"Message": err.Error(),
+		})
 	}
+
 	if data.Name == "" {
-		return c.Render("", fiber.Map{"Error": "Name is required"})
+		return c.JSON(fiber.Map{
+			"Error": "Skill Category Name must be filled",
+		})
 	}
+
 	services.DB.Db.Create(&data)
-	return c.Redirect("/skillcategory")
+	return c.JSON(fiber.Map{
+		"Message": "Skill Category created successfully",
+	})
 }
 
 func UpdateSkillCategory(c *fiber.Ctx) error {

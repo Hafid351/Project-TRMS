@@ -11,6 +11,7 @@
         <link rel="stylesheet" href="/css/all.min.css">
         <link rel="stylesheet" href="/css/adminlte.min.css">
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <script src="/js/alert.js"></script>
     </head>
     <body>
         <nav class="sb-topnav navbar navbar-expand navbar-light bg-light">
@@ -119,11 +120,12 @@
                             <div class="card card-primary">
                                 <!-- /.card-header -->
                                 <!-- form start -->
-                                <form action="/skillcategory/create_skillcategory" method="POST">
+                                <form id="skillCategoryForm">
                                     <div class="card-body">
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Skill Category Name</label>
                                             <input type="text" class="form-control" id="name" name="name" placeholder="Enter Skill Category Name">
+                                            <span id="nameError" style="color: red;"></span>
                                         </div>
                                     </div>
                                     <!-- /.card-body -->
@@ -131,6 +133,7 @@
                                         <button type="submit" class="btn btn-primary">Submit</button>
                                     </div>
                                 </form>
+                                
                             </div>
                         </section>
                     </div>
