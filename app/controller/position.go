@@ -24,12 +24,12 @@ func GetAllPosition(c *fiber.Ctx) error {
 	offset := (page - 1) * perPage
 	result := services.DB.Db.Select("positions.id, positions.name, position_categories.name as category").Joins("JOIN position_categories ON positions.category_id = position_categories.id")
 	if search != "" {
-		result = result.Where("name like ?", "%"+search+"%")
+		result = result.Where("name ILIKE ?", "%"+search+"%")
 	}
 	result.Offset(offset).Limit(perPage).Find(&data)
 	var total int64
 	if search != "" {
-		services.DB.Db.Where("name like ?", "%"+search+"%").Select("positions.id, positions.name, position_categories.name as category").Joins("JOIN position_categories ON positions.category_id = position_categories.id").Count(&total)
+		services.DB.Db.Where("name ILIKE ?", "%"+search+"%").Select("positions.id, positions.name, position_categories.name as category").Joins("JOIN position_categories ON positions.category_id = position_categories.id").Count(&total)
 	} else {
 		services.DB.Db.Model(&model.Position{}).Select("positions.id, positions.name, position_categories.name as category").Joins("JOIN position_categories ON positions.category_id = position_categories.id").Count(&total)
 		// SELECT positions.id, positions.name, position_categories.name as category FROM positions JOIN position_categories ON positions.category_id = position_categories.id

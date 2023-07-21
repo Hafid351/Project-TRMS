@@ -34,12 +34,12 @@ func GetAllUser(c *fiber.Ctx) error {
 	result := services.DB.Db.Select("users.id, users.username, users.fullname, users.email, roles.name AS role").Joins("JOIN roles ON users.roles_id = roles.id")
 	//SELECT users.id, users.username, users.fullname, users.email, roles.name AS role FROM "users" JOIN roles ON users.roles_id = roles.id
 	if search != "" {
-		result = result.Where("username like ?", "%"+search+"%")
+		result = result.Where("username ILIKE ?", "%"+search+"%")
 	}
 	result.Offset(offset).Limit(perPage).Find(&data)
 	var total int64
 	if search != "" {
-		services.DB.Db.Where("username like ?", "%"+search+"%").Select("users.id, users.username, users.fullname, users.email, roles.name AS role").Joins("JOIN roles ON users.roles_id = roles.id").Count(&total)
+		services.DB.Db.Where("username ILIKE ?", "%"+search+"%").Select("users.id, users.username, users.fullname, users.email, roles.name AS role").Joins("JOIN roles ON users.roles_id = roles.id").Count(&total)
 	} else {
 		services.DB.Db.Model(&model.User{}).Select("users.id, users.username, users.fullname, users.email, roles.name AS role").Joins("JOIN roles ON users.roles_id = roles.id").Count(&total)
 	}

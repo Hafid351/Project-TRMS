@@ -24,14 +24,14 @@ func GetAllCertificateCategory(c *fiber.Ctx) error {
 	result := services.DB.Db.Select("certificate_categories.id, certificate_categories.name, skills.name as skill, certificate_categories.files").Joins("JOIN skills ON certificate_categories.skills_id = skills.id")
 	//SELECT certificate_categories.id, certificate_categories.name, skills.name as skill, certificate_categories.files FROM "certificate_categories" JOIN skills ON certificate_categories.skills_id = skills.id
 	if search != "" {
-		result = result.Where("certificate_categories.name like ?", "%"+search+"%")
+		result = result.Where("certificate_categories.name ILIKE ?", "%"+search+"%")
 	}
 	result.Offset(offset).Limit(perPage).Find(&data)
 
 	var total int64
 
 	if search != "" {
-		services.DB.Db.Where("certificate_categories.name like ?", "%"+search+"%").Select("certificate_categories.id, certificate_categories.name, skills.name as skill, certificate_categories.files").Joins("JOIN skills ON certificate_categories.skills_id = skills.id").Count(&total)
+		services.DB.Db.Where("certificate_categories.name ILIKE ?", "%"+search+"%").Select("certificate_categories.id, certificate_categories.name, skills.name as skill, certificate_categories.files").Joins("JOIN skills ON certificate_categories.skills_id = skills.id").Count(&total)
 	} else {
 		services.DB.Db.Model(&model.CertificateCategory{}).Select("certificate_categories.id, certificate_categories.name, skills.name as skill, certificate_categories.files").Joins("JOIN skills ON certificate_categories.skills_id = skills.id").Count(&total)
 	}

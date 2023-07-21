@@ -98,7 +98,6 @@ type Company struct {
 type Industry struct {
 	gorm.Model
 	Name   string `json:"Name"`
-	Status string `json:"Status"`
 }
 
 type Country struct {

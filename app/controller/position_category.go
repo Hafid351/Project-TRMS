@@ -23,14 +23,14 @@ func GetAllPositionCategory(c *fiber.Ctx) error {
 	offset := (page - 1) * perPage
 	result := services.DB.Db
 	if search != "" {
-		result = result.Where("nama_kategori like ?", "%"+search+"%")
+		result = result.Where("nama_kategori ILIKE ?", "%"+search+"%")
 	}
 	result.Offset(offset).Limit(perPage).Find(&data)
 
 	var total int64
 
 	if search != "" {
-		services.DB.Db.Where("nama_kategori like ?", "%"+search+"%").Count(&total)
+		services.DB.Db.Where("nama_kategori ILIKE ?", "%"+search+"%").Count(&total)
 	} else {
 		services.DB.Db.Model(&model.PositionCategory{}).Count(&total)
 	}
@@ -59,37 +59,17 @@ func CreatePositionCategoryView(c *fiber.Ctx) error {
 	return c.Render("position_category/create_positioncategory", fiber.Map{})
 }
 
-// func CreatePositionCategory(c *fiber.Ctx) error {
-// 	data := new(model.PositionCategory)
-// 	if err := c.BodyParser(data); err != nil {
-// 		return c.Render("", fiber.Map{"Error": err.Error()})
-// 	}
-// 	if data.Name == "" {
-// 		return c.Render("", fiber.Map{"Error": "Nama Kategori is required"})
-// 	}
-
-// 	services.DB.Db.Create(&data)
-// 	return c.Redirect("/positioncategory")
-// }
-
 func CreatePositionCategory(c *fiber.Ctx) error {
 	data := new(model.PositionCategory)
 	if err := c.BodyParser(data); err != nil {
-		return c.Status(500).JSON(fiber.Map{
-			"Message": err.Error(),
-		})
+		return c.Render("", fiber.Map{"Error": err.Error()})
 	}
-
 	if data.Name == "" {
-		return c.JSON(fiber.Map{
-			"Error": "Position Category Name must be filled",
-		})
+		return c.Render("", fiber.Map{"Error": "Nama Kategori is required"})
 	}
 
 	services.DB.Db.Create(&data)
-	return c.JSON(fiber.Map{
-		"Message": "Position Category created successfully",
-	})
+	return c.Redirect("/positioncategory")
 }
 
 func UpdatePositionCategory(c *fiber.Ctx) error {

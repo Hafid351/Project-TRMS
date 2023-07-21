@@ -35,14 +35,14 @@ func GetTable(c *fiber.Ctx) error {
 	offset := (page - 1) * perPage
 	result := services.DB.Db.Table("skills").Select("skills.name", "COUNT(*) AS total").Joins("JOIN profile_skills AS Profile_Skills ON skills.id = Profile_Skills.skill_id")
 	if search != "" {
-		result = result.Where("name like ?", "%"+search+"%")
+		result = result.Where("name ILIKE ?", "%"+search+"%")
 	}
 	result.Group("skills.name, skills.id").Order("total DESC").Offset(offset).Limit(perPage).Find(&table)
 
 	var total int64
 
 	if search != "" {
-		services.DB.Db.Joins("JOIN profile_skills AS Profile_Skills ON skills.id = Profile_Skills.skill_id").Where("skills.name like ?", "%"+search+"%").Group("skills.name, skills.id").Order("total DESC").Count(&total)
+		services.DB.Db.Joins("JOIN profile_skills AS Profile_Skills ON skills.id = Profile_Skills.skill_id").Where("skills.name ILIKE ?", "%"+search+"%").Group("skills.name, skills.id").Order("total DESC").Count(&total)
 	} else {
 		services.DB.Db.Table("skills").Model(&model.Skill1{}).Joins("JOIN profile_skills AS Profile_Skills ON skills.id = Profile_Skills.skill_id").Group("skills.name, skills.id").Count(&total)
 	}
@@ -109,7 +109,7 @@ func GetTable(c *fiber.Ctx) error {
 // 		Limit(perPage)
 
 // 	if search != "" {
-// 		query = query.Where("skills.name ILIKE ?", "%"+search+"%")
+// 		query = query.Where("skills.name IILIKE ?", "%"+search+"%")
 // 	}
 
 // 	query.Find(&table)
@@ -121,7 +121,7 @@ func GetTable(c *fiber.Ctx) error {
 // 		Model(&model.Skill1{})
 
 // 	if search != "" {
-// 		countQuery = countQuery.Where("skills.name ILIKE ?", "%"+search+"%")
+// 		countQuery = countQuery.Where("skills.name IILIKE ?", "%"+search+"%")
 // 	}
 
 // 	countQuery.Count(&total)
@@ -172,14 +172,14 @@ func GetTable1(c *fiber.Ctx) error {
 	offset := (page - 1) * perPage
 	result := services.DB.Db.Table("departements").Select("departements.name", "COUNT(*) AS total").Joins("JOIN profile_educations AS profile_educations ON departements.id = profile_educations.departement_id")
 	if search != "" {
-		result = result.Where("name like ?", "%"+search+"%")
+		result = result.Where("name ILIKE ?", "%"+search+"%")
 	}
 	result.Group("departements.name, departements.id").Order("total DESC").Offset(offset).Limit(perPage).Find(&table)
 
 	var total int64
 
 	if search != "" {
-		services.DB.Db.Joins("JOIN profile_educations AS profile_educations ON departements.id = profile_educations.departement_id").Where("departements.name like ?", "%"+search+"%").Group("departements.name, departements.id").Order("total DESC").Count(&total)
+		services.DB.Db.Joins("JOIN profile_educations AS profile_educations ON departements.id = profile_educations.departement_id").Where("departements.name ILIKE ?", "%"+search+"%").Group("departements.name, departements.id").Order("total DESC").Count(&total)
 	} else {
 		services.DB.Db.Table("departements").Model(&model.Departement1{}).Joins("JOIN profile_educations AS profile_educations ON departements.id = profile_educations.departement_id").Group("departements.name, departements.id").Count(&total)
 	}
@@ -225,14 +225,14 @@ func GetTable2(c *fiber.Ctx) error {
 	offset := (page - 1) * perPage
 	result := services.DB.Db.Table("profiles").Select("positions.name", "COUNT(*) AS total").Joins("JOIN positions AS Positions ON profiles.job_title = Positions.id")
 	if search != "" {
-		result = result.Where("name like ?", "%"+search+"%")
+		result = result.Where("name ILIKE ?", "%"+search+"%")
 	}
 	result.Group("positions.name").Order("total DESC").Offset(offset).Limit(perPage).Find(&table)
 
 	var total int64
 
 	if search != "" {
-		services.DB.Db.Joins("JOIN positions AS Positions ON profiles.job_title = Positions.id").Where("positions.name like ?", "%"+search+"%").Group("positions.name").Order("total DESC").Count(&total)
+		services.DB.Db.Joins("JOIN positions AS Positions ON profiles.job_title = Positions.id").Where("positions.name ILIKE ?", "%"+search+"%").Group("positions.name").Order("total DESC").Count(&total)
 	} else {
 		services.DB.Db.Table("profiles").Model(&model.Position1{}).Joins("JOIN positions AS Positions ON profiles.job_title = Positions.id").Group("positions.name").Count(&total)
 	}
@@ -280,14 +280,14 @@ func GetTable3(c *fiber.Ctx) error {
 	offset := (page - 1) * perPage
 	result := services.DB.Db.Table("job_position_levels").Select("job_position_levels.name", "COUNT(*) AS total").Joins("JOIN profile_work_experiences AS Profile_Work_Experiences ON job_position_levels.id = Profile_Work_Experiences.positionlevel_id")
 	if search != "" {
-		result = result.Where("name like ?", "%"+search+"%")
+		result = result.Where("name ILIKE ?", "%"+search+"%")
 	}
 	result.Group("job_position_levels.name, Profile_Work_Experiences.salary").Order("total DESC").Offset(offset).Limit(perPage).Find(&table)
 
 	var total int64
 
 	if search != "" {
-		services.DB.Db.Joins("JOIN profile_work_experiences AS Profile_Work_Experiences ON job_position_levels.id = Profile_Work_Experiences.positionlevel_id").Where("job_position_levels.name like ?", "%"+search+"%").Group("job_position_levels.name, Profile_Work_Experiences.salary").Order("total DESC").Count(&total)
+		services.DB.Db.Joins("JOIN profile_work_experiences AS Profile_Work_Experiences ON job_position_levels.id = Profile_Work_Experiences.positionlevel_id").Where("job_position_levels.name ILIKE ?", "%"+search+"%").Group("job_position_levels.name, Profile_Work_Experiences.salary").Order("total DESC").Count(&total)
 	} else {
 		services.DB.Db.Table("job_position_levels").Model(&model.ProfileWorkExperience1{}).Joins("JOIN profile_work_experiences AS Profile_Work_Experiences ON job_position_levels.id = Profile_Work_Experiences.positionlevel_id").Group("job_position_levels.name, Profile_Work_Experiences.salary").Count(&total)
 	}

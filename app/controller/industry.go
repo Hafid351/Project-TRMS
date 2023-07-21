@@ -23,14 +23,14 @@ func GetAllIndustry(c *fiber.Ctx) error {
 	offset := (page - 1) * perPage
 	result := services.DB.Db
 	if search != "" {
-		result = result.Where("name like ?", "%"+search+"%")
+		result = result.Where("name ILIKE ?", "%"+search+"%")
 	}
 	result.Offset(offset).Limit(perPage).Find(&data)
 
 	var total int64
 
 	if search != "" {
-		services.DB.Db.Where("name like ?", "%"+search+"%").Count(&total)
+		services.DB.Db.Where("name ILIKE ?", "%"+search+"%").Count(&total)
 	} else {
 		services.DB.Db.Model(&model.Industry{}).Count(&total)
 	}

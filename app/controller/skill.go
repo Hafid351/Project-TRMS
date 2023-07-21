@@ -25,12 +25,12 @@ func GetAllSkill(c *fiber.Ctx) error {
 	offset := (page - 1) * perPage
 	result := services.DB.Db.Select("skills.id, skills.name, skill_categories.name as category").Joins("JOIN skill_categories ON skills.category_id = skill_categories.id")
 	if search != "" {
-		result = result.Where("skills.name like ?", "%"+search+"%")
+		result = result.Where("skills.name ILIKE ?", "%"+search+"%")
 	}
 	result.Offset(offset).Limit(perPage).Find(&data)
 	var total int64
 	if search != "" {
-		services.DB.Db.Where("skills.name like ?", "%"+search+"%").Select("skills.id, skills.name, skill_categories.name as category").Joins("JOIN skill_categories ON skills.category_id = skill_categories.id").Count(&total)
+		services.DB.Db.Where("skills.name ILIKE ?", "%"+search+"%").Select("skills.id, skills.name, skill_categories.name as category").Joins("JOIN skill_categories ON skills.category_id = skill_categories.id").Count(&total)
 	} else {
 		services.DB.Db.Model(&model.Skill{}).Select("skills.id, skills.name, skill_categories.name as category").Joins("JOIN skill_categories ON skills.category_id = skill_categories.id").Count(&total)
 		//SELECT skills.id, skills.name, skill_categories.name as category FROM skills JOIN skill_categories ON skills.kategori_id = skill_categories.id

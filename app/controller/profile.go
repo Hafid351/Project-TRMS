@@ -26,12 +26,12 @@ func GetAllProfile(c *fiber.Ctx) error {
 	offset := (page - 1) * perPage
 	result := services.DB.Db
 	if search != "" {
-		result = result.Where("fullname like ?", "%"+search+"%")
+		result = result.Where("fullname ILIKE ?", "%"+search+"%")
 	}
 	result.Offset(offset).Limit(perPage).Find(&data)
 	var total int64
 	if search != "" {
-		services.DB.Db.Where("fullname like ?", "%"+search+"%").Count(&total)
+		services.DB.Db.Where("fullname ILIKE ?", "%"+search+"%").Count(&total)
 	} else {
 		services.DB.Db.Model(&model.Profile{}).Count(&total)
 	}
