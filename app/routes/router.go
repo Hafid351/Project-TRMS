@@ -146,4 +146,5 @@ func Handlers(app *fiber.App) {
 	profile.Get("/profile-wizard/language", controller.ProfileWizardLanguageView)
 	profile.Post("/profile-wizard/training", controller.CreateProfileWizardTraining)
 	profile.Get("/profile-wizard/training", controller.ProfileWizardTrainingView)
+	profile.Post("/profile-wizard/files", controller.UploadFiles)
 }

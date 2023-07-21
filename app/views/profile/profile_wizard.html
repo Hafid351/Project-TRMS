@@ -18,20 +18,8 @@
         container.innerHTML = city 
         })
     }
-
-//   //CREATE
-//   fetch(`/profile/profile_wizard_step-1`)
-//   .then((response) => response.json())
-//   .then((value) => {
-//     const profileid = value.Data.ID
-//     localStorage.setItem('profile', profileid)
-//   })
-
-//   //READ
-//   localStorage.getItem('profile')
-
-//   //DELETE
-//   localStorage.removeItem('profile')
+  //DELETE
+    // localStorage.removeItem("profile");
 </script>
 
 <!DOCTYPE html>
@@ -74,9 +62,10 @@
         <link rel="stylesheet" href="/css/dropzone.min.css">
         <!-- Upload Photo -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css"  />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css"/>
+        <link rel="stylesheet" href="/css/upload.css">
         <!-- Upload Photo -->
-        <style>
+        <!-- <style>
             .container {
             margin: 20px auto;
             max-width: 640px;
@@ -96,7 +85,11 @@
                 outline: 0;
                 box-shadow: 0 0 0 1px #39f;
             }
+<<<<<<< Updated upstream
             </style>
+=======
+        </style> -->
+>>>>>>> Stashed changes
         <!-- checkbox disabled -->
         <!--link rel="stylesheet" href="css/bootstrap.min2.css"-->
         <!--link rel="stylesheet" href="css/stylenew.css"-->
@@ -447,7 +440,10 @@
                                                                 <div id="formContainer">
                                                                 </div>
                                                             </div>
-                                                            <button style="background-color:green; margin-left: 925px;" onclick="saveEducation()" class="add_field_button btn btn-info active">Save</button>
+                                                            <div class="buttonnext-container">
+                                                                <button style="background-color: rgb(109, 20, 20); font-size: 20px"  onclick="saveEducation()" class="add_field_button btn btn-info active">Save</button>
+                                                            </div>
+                                                            <!-- <button style="background-color:green; margin-left: 925px;" onclick="saveEducation()" class="add_field_button btn btn-info active">Save</button> -->
                                                         </div>
                                                         <div>
                                                             <table class="table table-striped" border="1">
@@ -554,7 +550,10 @@
                                                                     </select>
                                                                 </div>
                                                             </div>
-                                                            <button style="background-color:green; margin-left: 925px;" onclick="saveWork()" class="add_field_button btn btn-info active">Save</button>
+                                                            <div class="buttonnext-container">
+                                                                <button style="background-color: rgb(109, 20, 20); font-size: 20px" onclick="saveWork()" class="add_field_button btn btn-info active">Save</button>
+                                                            </div>
+                                                            <!-- <button style="background-color:green; margin-left: 925px;" onclick="saveWork()" class="add_field_button btn btn-info active">Save</button> -->
                                                         </div>
                                                         <div>
                                                             <table class="table table-striped" border="1">
@@ -605,7 +604,10 @@
                                                                     </select>
                                                                 </div>
                                                             </div>
-                                                            <button style="background-color:green; margin-left: 925px;" onclick="saveLanguage()" class="add_field_button btn btn-info active">Save</button>
+                                                            <div class="buttonnext-container">
+                                                                <button style="background-color: rgb(109, 20, 20); font-size: 20px" onclick="saveLanguage()" class="add_field_button btn btn-info active">Save</button>
+                                                            </div>
+                                                            <!-- <button style="background-color:green; margin-left: 925px;" onclick="saveLanguage()" class="add_field_button btn btn-info active">Save</button> -->
                                                         </div>
                                                         <div>
                                                             <table class="table table-striped" border="1">
@@ -650,16 +652,21 @@
                                                                 <div class="form-group">
                                                                     <label for="exampleInputEmail1">Financed by</label>
                                                                     <div class="form-check">
-                                                                        <input class="form-check-input"  id="financedby" name="financedby" type="radio" value="Company">
+                                                                        <input class="form-check-input" onclick="showCompany()" id="financedbyCompany" name="financedby" type="radio" value="Company">
                                                                         <label class="form-check-label">Company</label>
                                                                     </div>
                                                                     <div class="form-check">
-                                                                        <input class="form-check-input"  id="financedby" name="financedby" type="radio" value="Personal">
+                                                                        <input class="form-check-input" onclick="showCompany()" id="financedbyPersonal" name="financedby" type="radio" value="Personal">
                                                                         <label class="form-check-label">Personal</label>
                                                                     </div>
                                                                 </div>
+                                                                <div id="formCompany">
+                                                                </div>
                                                             </div>
-                                                            <button style="background-color:green; margin-left: 925px;" onclick="saveTraining()" class="add_field_button btn btn-info active">Save</button>
+                                                            <div class="buttonnext-container">
+                                                                <button style="background-color: rgb(109, 20, 20); font-size: 20px" onclick="saveTraining()" class="add_field_button btn btn-info active">Save</button>
+                                                            </div>
+                                                            <!-- <button style="background-color:green; margin-left: 925px;" onclick="saveTraining()" class="add_field_button btn btn-info active">Save</button> -->
                                                         </div>
                                                         <div>
                                                             <table class="table table-striped" border="1">
@@ -718,7 +725,7 @@
                                                                     <div class="table table-striped files" id="previews">
                                                                         <div id="template" class="row mt-2">
                                                                             <div class="col-auto">
-                                                                                <span class="preview"><img src="data:," alt="" data-dz-thumbnail /></span>
+                                                                                <span class="preview"><img src="data:," alt="" data-dz-thumbnail/></span>
                                                                             </div>
                                                                             <div class="col d-flex align-items-center">
                                                                                 <p class="mb-0">
@@ -733,11 +740,20 @@
                                                                                 </div>
                                                                             </div>
                                                                             <div class="col-auto d-flex align-items-center">
-                                                                                <div class="btn-group">
-                                                                                    <button class="btn btn-primary start">
+                                                                                <div class="button-container">
+                                                                                    <select id="kategoriSelect" class="form-select" style="width: 112%; height: 40px;">
+                                                                                        <option selected="selected" disabled>Select Category</option>
+                                                                                        <option value="Training">Training</option>
+                                                                                        <option value="Language">Language</option>
+                                                                                        <option value="Insurance">Insurance</option>
+                                                                                        <option value="Health">Health</option>
+                                                                                    </select>
+                                                                                    <button class="btn btn-primary start" style="display: none;">
                                                                                         <i class="fas fa-upload"></i>
                                                                                         <span>Input</span>
                                                                                     </button>
+                                                                                </div>
+                                                                                <div class="button-container">
                                                                                     <button data-dz-remove class="btn btn-warning cancel">
                                                                                         <i class="fas fa-times-circle"></i>
                                                                                         <span>Cancel</span>
@@ -748,6 +764,9 @@
                                                                                     </button>
                                                                                 </div>
                                                                             </div>
+                                                                            <div>
+                                                                                <p class="text-danger">The file size must be less than 5MB</p>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -755,7 +774,7 @@
                                                             </div>
                                                         </div>
                                                         <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
-                                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                                        <a class="btn btn-primary" href="/profile">Submit</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -810,6 +829,7 @@
         <!-- CheckBox Form -->
         <!--script src="js/jquery-latest.min.js"></script-->
         <script src="/js/save.js"></script>
+        <script src="/js/training.js"></script>
         <script>
             $(function(){
                 $(".checkme").click(function(event) {
@@ -831,6 +851,8 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
         
         <script>
+            const profileid = localStorage.getItem("profile");
+            console.log(profileid);
             $("body").on("change", "#browse_image", function(e) {
                 var files = e.target.files;
                 var done = function(url) {        
@@ -1098,14 +1120,18 @@
         previewNode.parentNode.removeChild(previewNode)
         
         var myDropzone = new Dropzone(document.body, { // Make the whole body a dropzone
-            url: "/target-url", // Set the url
+            url: "/profile/profile-wizard/files", // Set the url
             thumbnailWidth: 80,
             thumbnailHeight: 80,
             parallelUploads: 20,
             previewTemplate: previewTemplate,
             autoQueue: false, // Make sure the files aren't queued until manually added
             previewsContainer: "#previews", // Define the container to display the previews
-            clickable: ".fileinput-button" // Define the element that should be used as click trigger to select files.
+            clickable: ".fileinput-button", // Define the element that should be used as click trigger to select files.
+            sending: function (file, xhr, formData) {
+            // Tambahkan variabel profileid ke formData
+            formData.append("profileid", profileid);
+        }
         })
         
         myDropzone.on("addedfile", function(file) {

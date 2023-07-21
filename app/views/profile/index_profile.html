@@ -1,43 +1,43 @@
 <script>
     const handleDelete = (id) => {
-      const isConfirmed = confirm("Are you sure?");
-      if (isConfirmed) {
+        const isConfirmed = confirm("Are you sure?");
+        if (isConfirmed) {
         return fetch(`/profile/${id}`, {
-          method: "DELETE",
+            method: "DELETE",
         }).then(() => {
-          alert("Data deleted successufuly");
-          document.location.reload();
+            alert("Data deleted successufuly");
+            document.location.reload();
         });
-      }
+        }
     };
-  
+
     function handleSearch() {
-      const search = document.querySelector("#search")?.value ?? "";
-      const urlParams = new URLSearchParams(window.location.search);
-      urlParams.set("search", search);
-      document.location.search = urlParams;
+        const search = document.querySelector("#search")?.value ?? "";
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.set("search", search);
+        document.location.search = urlParams;
     }
-  
+
     function handleNext() {
-      const urlParams = new URLSearchParams(window.location.search);
-      urlParams.set("page", Number(urlParams.get("page") ?? 1) + 1);
-      document.location.search = urlParams;
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.set("page", Number(urlParams.get("page") ?? 1) + 1);
+        document.location.search = urlParams;
     }
-  
+
     function handlePrev() {
     const urlParams = new URLSearchParams(window.location.search);
     urlParams.set("page", Number(urlParams.get("page") ?? 1) - 1);
     document.location.search = urlParams;
-  }
-  
+    }
+
     window.onload = () => {
-      const urlSearchParams = new URLSearchParams(window.location.search);
-      const params = Object.fromEntries(urlSearchParams.entries());
-      const search = document.querySelector("#search");
-      console.log(params.search);
-      search.value = params.search??"";
+        const urlSearchParams = new URLSearchParams(window.location.search);
+        const params = Object.fromEntries(urlSearchParams.entries());
+        const search = document.querySelector("#search");
+        console.log(params.search);
+        search.value = params.search??"";
     };
-  </script>
+</script>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -155,10 +155,10 @@
                             <li class="breadcrumb-item active"> Profile Home</li>
                         </ol>
                         <div class="card-header">
-                        <a class="btn btn-primary" href="/profile/profile_wizard_step-1">Profile Wizard</a>
+                        <a class="btn btn-primary" href="/profile/profile-wizard">Profile Wizard</a>
                         <div class="card-tools">
                             <div class="input-group input-group-sm" style="width: 150px;">
-                                <input type="text" name="search" class="form-control float-right" placeholder="Search">
+                                <input type="text" id="search" name="search" class="form-control float-right" placeholder="Search">
                                 <div class="input-group-append">
                                     <button type="submit" class="btn btn-default" onClick="handleSearch()">
                                         <i class="fas fa-search"></i>
@@ -193,7 +193,7 @@
                                             </thead>
                                             <tbody>                                              
                                                 {{if .Data}} {{range $index, $e := .Data}}                                          
-                                                  <tr>
+                                                <tr>
                                                     <td>{{ nomorTabel $index $.Page $.PerPage }}</td>
                                                     <td>{{ .Fullname }}</td>
                                                     <td>{{ .Gender }}</td>
@@ -202,21 +202,21 @@
                                                     <td>{{ .Email }}</td>
                                                     <td>{{ .Dob }}</td>
                                                     <td>{{ .Address }}</td>
-                                                      <td>
-                                                          <a href="/profile/{{.ID}}" class="edit">
-                                                              <i class="material-icons" title="Edit">&#xE254;</i>
-                                                          </a>
-                                                          <a href="handleDelete({{.ID}})" onClick="handleDelete({{.ID}})" class="delete" data-toggle="modal">
-                                                              <i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i>
-                                                          </a>
-                                                          <a href="master-skills3.html" class="view">
-                                                              <i class="material-icons" title="view">&#xE8f4;</i>
-                                                          </a>
-                                                      </td>
+                                                    <td>
+                                                        <a href="/profile/{{.ID}}" class="edit">
+                                                            <i class="material-icons" title="Edit">&#xE254;</i>
+                                                        </a>
+                                                        <a href="handleDelete({{.ID}})" onClick="handleDelete({{.ID}})" class="delete" data-toggle="modal">
+                                                            <i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i>
+                                                        </a>
+                                                        <a href="master-skills3.html" class="view">
+                                                            <i class="material-icons" title="view">&#xE8f4;</i>
+                                                        </a>
+                                                    </td>
                                                     </tr>
-                                                  {{end}}         
-                                                  {{end}}
-                                              </tbody>
+                                                {{end}}         
+                                                {{end}}
+                                            </tbody>
                                         </table>
                                         <div class="clearfix">
                                             <div class="hint-text">showing <b>{{.Page}}</b> out of <b>{{.TotalPages}}</b></div>

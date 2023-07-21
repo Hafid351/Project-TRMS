@@ -11241,3 +11241,38 @@ body {
   font-size: 0.75rem;
   border-radius: 0.375rem !important;
 }
+
+.col-auto {
+  display: flex;
+}
+
+.col-auto > * {
+  margin-right: 10px;
+}
+
+.upload-warning {
+  color: red;
+  font-weight: bold;
+}
+
+.buttonnext-container {
+    text-align: right;
+}
+
+.button1-container {
+    display: flex;
+    gap: 5px;
+}
+
+.text-danger {
+    color: red;
+    margin-top: 5px;
+    text-align: right;
+    right: 5;
+}
+
+.buttonnext-container button {
+background-color: rgb(109, 20, 20);
+font-size: 20px;
+border: none;
+}

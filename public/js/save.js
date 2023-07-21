@@ -217,20 +217,24 @@ function saveLanguage() {
 }
 
 function saveTraining() {
-    const profileid =  localStorage.getItem("profile")
+    const profileid = localStorage.getItem("profile");
     const trainingtittle = document.querySelector('#trainingtittle')?.value;
     const vendor = document.querySelector('#vendor')?.value;
     const trainingyear = document.querySelector('#trainingyear')?.value;
     const durationday = document.querySelector('#durationday')?.value;
-    const financedby = document.querySelector('#financedby')?.value;
+    const financedByCompany = document.getElementById('financedbyCompany').checked;
+    const financedByPersonal = document.getElementById('financedbyPersonal').checked;
+    const financedBy = financedByCompany ? 'Company' : (financedByPersonal ? 'Personal' : '');
+    const companyname = document.querySelector('#company')?.value;
     const payload = {
-        "profileid": Number(profileid)?? '',
-        "trainingtittle": trainingtittle?? '',
-        "vendor": vendor?? '',
-        "trainingyear": Number(trainingyear)?? '',
-        "durationday": Number(durationday)?? '',
-        "financedby": financedby?? '',
-    }
+        "profileid": Number(profileid) || '',
+        "trainingtittle": trainingtittle || '',
+        "vendor": vendor || '',
+        "trainingyear": Number(trainingyear) || '',
+        "durationday": Number(durationday) || '',
+        "financedby": financedBy || '',
+        "companyname": companyname || ''
+    };
     fetch(`/profile/profile-wizard/training`, {
         method: `POST`,
         headers: {
@@ -240,18 +244,16 @@ function saveTraining() {
     })
     .then((response) => response.json())
     .then((value) => {
-        if (value.Data == "Ok") {
-            const profileid =  localStorage.getItem("profile")
-            fetch(`/profile/profile-wizard/training?`+
+        if (value.Data === "Ok") {
+            fetch(`/profile/profile-wizard/training?` +
                 new URLSearchParams({
-                profileid: profileid,
-            }))
+                    profileid: profileid,
+                }))
             .then((response) => response.json())
             .then((value) => {
-                const data = value.Data
-                const container = document.getElementById("tableTraining")
-                console.log(data)
-                let Data = ""
+                const data = value.Data;
+                const container = document.getElementById("tableTraining");
+                let Data = "";
                 let no = 1;
                 data.forEach(item => {
                     Data += `
@@ -263,11 +265,10 @@ function saveTraining() {
                         <th>${item.Vendor}</th>
                         <th>${item.FinancedBy}</th>
                     </tr>
-                    `
-                })
-                container.innerHTML = Data
-                console.log(container)
-            })  
+                    `;
+                });
+                container.innerHTML = Data;
+            });
         }
-    })       
+    });
 }
