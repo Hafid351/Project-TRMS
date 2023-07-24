@@ -20,6 +20,9 @@ func GetAllCompany(c *fiber.Ctx) error {
 	if err != nil {
 		return c.SendString("page harus angka")
 	}
+	if page < 1 {
+		page = 1
+	}
 	offset := (page - 1) * perPage
 	result := services.DB.Db
 	if search != "" {
@@ -34,12 +37,40 @@ func GetAllCompany(c *fiber.Ctx) error {
 	} else {
 		services.DB.Db.Model(&model.Company{}).Count(&total)
 	}
+
+	// Perbaikan paginasi halaman
+	currentPage := int(page)
+	totalPages := int(math.Ceil(float64(total) / float64(perPage)))
+
+	const maxPagesToShow = 5
+	startPage := currentPage - maxPagesToShow/2
+	endPage := currentPage + maxPagesToShow/2
+
+	if startPage < 1 {
+		endPage = endPage + (1 - startPage)
+		startPage = 1
+	}
+
+	if endPage > totalPages {
+		startPage = startPage - (endPage - totalPages)
+		endPage = totalPages
+	}
+
+	var pages []int
+	for i := startPage; i <= endPage; i++ {
+		pages = append(pages, i)
+	}
+	
 	return c.Render("company/index_company", fiber.Map{
 		"Data":       data,
 		"TotalData":  total,
-		"Page":       int(page),
-		"TotalPages": int(math.Ceil(float64(total) / float64(perPage))),
+		"Page":       currentPage,
+		"TotalPages": totalPages,
 		"PerPage":    perPage,
+		"PrevPage":   currentPage - 1,
+		"NextPage":   currentPage + 1,
+		"Pages":      pages,
+		"Search":     search,
 	})
 }
 
