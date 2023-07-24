@@ -34,12 +34,50 @@ func GetAllPositionCategory(c *fiber.Ctx) error {
 	} else {
 		services.DB.Db.Model(&model.PositionCategory{}).Count(&total)
 	}
+
+		// Perbaikan paginasi halaman
+		currentPage := int(page)
+		totalPages := int(math.Ceil(float64(total) / float64(perPage)))
+		prevPage := currentPage - 1
+		nextPage := currentPage + 1
+	
+		if prevPage < 1 {
+			prevPage = 1
+		}
+	
+		if nextPage > totalPages {
+			nextPage = totalPages
+		}
+	
+		const maxPagesToShow = 5
+		startPage := currentPage - maxPagesToShow/2
+		endPage := currentPage + maxPagesToShow/2
+	
+		if startPage < 1 {
+			endPage = endPage + (1 - startPage)
+			startPage = 1
+		}
+	
+		if endPage > totalPages {
+			startPage = startPage - (endPage - totalPages)
+			endPage = totalPages
+		}
+	
+		var pages []int
+		for i := startPage; i <= endPage; i++ {
+			pages = append(pages, i)
+		}
+
 	return c.Render("position_category/index_positioncategory", fiber.Map{
 		"Data":       data,
 		"TotalData":  total,
 		"Page":       int(page),
 		"TotalPages": int(math.Ceil(float64(total) / float64(perPage))),
 		"PerPage":    perPage,
+		"PrevPage":   prevPage,
+		"NextPage":   nextPage,
+		"Pages":      pages,
+		"Search":     search,
 	})
 }
 

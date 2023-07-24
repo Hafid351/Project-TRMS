@@ -35,12 +35,49 @@ func GetAllSkill(c *fiber.Ctx) error {
 		services.DB.Db.Model(&model.Skill{}).Select("skills.id, skills.name, skill_categories.name as category").Joins("JOIN skill_categories ON skills.category_id = skill_categories.id").Count(&total)
 		//SELECT skills.id, skills.name, skill_categories.name as category FROM skills JOIN skill_categories ON skills.kategori_id = skill_categories.id
 	}
+	// Perbaikan paginasi halaman
+	currentPage := int(page)
+	totalPages := int(math.Ceil(float64(total) / float64(perPage)))
+	prevPage := currentPage - 1
+	nextPage := currentPage + 1
+
+	if prevPage < 1 {
+		prevPage = 1
+	}
+
+	if nextPage > totalPages {
+		nextPage = totalPages
+	}
+
+	const maxPagesToShow = 5
+	startPage := currentPage - maxPagesToShow/2
+	endPage := currentPage + maxPagesToShow/2
+
+	if startPage < 1 {
+		endPage = endPage + (1 - startPage)
+		startPage = 1
+	}
+
+	if endPage > totalPages {
+		startPage = startPage - (endPage - totalPages)
+		endPage = totalPages
+	}
+
+	var pages []int
+	for i := startPage; i <= endPage; i++ {
+		pages = append(pages, i)
+	}
+
 	return c.Render("skill/index_skill", fiber.Map{
 		"Data":       data,
 		"TotalData":  total,
 		"Page":       int(page),
 		"TotalPages": int(math.Ceil(float64(total) / float64(perPage))),
 		"PerPage":    perPage,
+		"PrevPage":   prevPage,
+		"NextPage":   nextPage,
+		"Pages":      pages,
+		"Search":     search,
 	})
 }
 
