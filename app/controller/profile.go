@@ -2,9 +2,18 @@ package controller
 
 import (
 	"fmt"
+<<<<<<< Updated upstream
+=======
+	"io"
+	"io/ioutil"
+>>>>>>> Stashed changes
 	_ "log"
 	"math"
 	"strconv"
+<<<<<<< Updated upstream
+=======
+	"strings"
+>>>>>>> Stashed changes
 	"trms/app/model"
 	"trms/app/services"
 
@@ -16,6 +25,7 @@ func GetAllProfile(c *fiber.Ctx) error {
 	data := []model.Profile{}
 	search := c.Query("search")
 	perPage, err := strconv.Atoi(c.Query("perPage", "20"))
+
 	if err != nil {
 		return c.SendString("perPage harus angka")
 	}
@@ -257,6 +267,48 @@ func CreateProfileWizard(c *fiber.Ctx) error {
 				"Data": "Email Already Exists!",
 			})
 		}
+<<<<<<< Updated upstream
+=======
+		hash := sha1.New()
+		hash.Write([]byte(payload.Image))
+		hashedImage := hex.EncodeToString(hash.Sum(nil)) + ".png"
+		data := model.Profile{
+			Fullname:          payload.Fullname,
+			Gender:            payload.Gender,
+			Photo:             payload.Photo,
+			Avatar:            hashedImage,
+			Filename:          payload.Filename,
+			CountryId:         payload.CountryId,
+			ProvinceId:        payload.ProvinceId,
+			CityId:            payload.CityId,
+			Address:           payload.Address,
+			NationalityId:     payload.NationalityId,
+			Height:            payload.Height,
+			Weight:            payload.Weight,
+			ReligionId:        payload.ReligionId,
+			MaritalStatus:     payload.MaritalStatus,
+			IdentificationId:  payload.IdentificationId,
+			IdCardNo:          payload.IdCardNo,
+			PhoneNumber:       payload.PhoneNumber,
+			OtherPhoneNumber:  payload.OtherPhoneNumber,
+			Email:             payload.Email,
+			SalaryExpectation: payload.SalaryExpectation,
+			JobTitle:          payload.JobTitle,
+			About:             payload.About,
+			InstagramProfile:  payload.InstagramProfile,
+			FacebookProfile:   payload.FacebookProfile,
+			LinkedinProfile:   payload.LinkedinProfile,
+			Dob:               payload.Dob,
+			Pob:               payload.Pob,
+		}
+		filePath := "./public/assets/img/" + hashedImage
+		err := ioutil.WriteFile(filepath.Clean(filePath), []byte(payload.Image), 0644)
+		if err != nil {
+			return c.Status(500).JSON(fiber.Map{
+				"Data": "Failed to save image file!",
+			})
+		}
+>>>>>>> Stashed changes
 		result := services.DB.Db.Create(&data)
 		if result.Error != nil {
 			return c.Status(500).JSON(fiber.Map{
@@ -412,6 +464,7 @@ func ProfileWizardProfileView(c *fiber.Ctx) error {
 	})
 }
 
+<<<<<<< Updated upstream
 func CreateProfileWizardProfile(c *fiber.Ctx) error {
 	// Ambil data gambar dari body request
 	var requestData struct {
@@ -441,6 +494,8 @@ func CreateProfileWizardProfile(c *fiber.Ctx) error {
 	})
 }
 
+=======
+>>>>>>> Stashed changes
 func ProfileWizardEducationView(c *fiber.Ctx) error {
 	data := []model.ProfileEducation{}
 	id := c.QueryInt("profileid")
@@ -650,5 +705,70 @@ func GetQualification(c *fiber.Ctx) error {
 		"Message":     "Success",
 		"University":  university,
 		"Departement": departement,
+	})
+}
+
+func UploadFiles(c *fiber.Ctx) error {
+	formData := new(model.ProfileFile)
+	if err := c.BodyParser(formData); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "Error parsing form data",
+		})
+	}
+
+	formData.ProfileId++
+
+	// Ambil file dari permintaan
+	file, err := c.FormFile("file")
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "Error uploading file",
+		})
+	}
+
+	fileContent, err := file.Open()
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message": "Error reading file",
+		})
+	}
+	defer fileContent.Close()
+
+	// Membaca isi file sebagai []byte
+	payload, err := io.ReadAll(fileContent)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message": "Error reading file content",
+		})
+	}
+
+	// Mendapatkan ekstensi file yang asli
+	extension := filepath.Ext(file.Filename)
+	// Menghilangkan tanda titik (.) dari ekstensi
+	extension = strings.TrimPrefix(extension, ".")
+
+	hash := sha1.New()
+	hash.Write([]byte(file.Filename))
+	hashedFile := hex.EncodeToString(hash.Sum(nil)) + "." + extension
+
+	// Simpan file ke sistem file
+	filePath := "./public/assets/uploads/" + hashedFile
+	err = ioutil.WriteFile(filePath, payload, 0644)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message": "Error saving file",
+		})
+	}
+
+	data := model.ProfileFile{Filename: file.Filename, Files: hashedFile, ProfileId: formData.ProfileId}
+	result := services.DB.Db.Create(&data)
+	if result.Error != nil {
+		return c.Status(500).JSON(fiber.Map{
+			"Data": "Create Data Error!",
+		})
+	}
+
+	return c.JSON(fiber.Map{
+		"message": "File uploaded successfully",
 	})
 }

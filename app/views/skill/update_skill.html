@@ -1,26 +1,26 @@
 <script>
     const handleSubmit = (id) => {
-      const name = document.querySelector('#name')?.value;
-      const categoryid = document.querySelector('#categoryid')?.value;
-      const payload = {
+        const name = document.querySelector('#name')?.value;
+        const categoryid = document.querySelector('#categoryid')?.value;
+        const payload = {
         "name": name?? '',
         "categoryid": Number(categoryid)?? ''
-      }
-      return fetch(`/skill/${id}`, {
+        }
+        return fetch(`/skill/${id}`, {
         method: 'PATCH',
         headers: {
-          'content-Type': 'application/json'
+            
         },
         body: JSON.stringify(payload)
-      })
+        })
         .then((response) => response.json())
         .then((response) => {
-          if (response.Message !== 'Success') return alert(response.Message)
-          alert("Data updated successfuly")
-          window.location.reload()
+            if (response.Message !== 'Success') return alert(response.Message)
+            alert("Data updated successfuly")
+            window.location.reload()
         })
     }
-  </script>
+</script>
 
 <!DOCTYPE html>
 <html lang="en">

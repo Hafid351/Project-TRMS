@@ -53,7 +53,6 @@ function showForm() {
     var qualification = document.getElementById("qualificationid").value;
     var formContainer = document.getElementById("formContainer");
     formContainer.innerHTML = "";
-    console.log(qualification)
 
     if (qualification === "1" || qualification === "2") {
         formContainer.appendChild(createInput("School Name", "text", "origindasar", "origindasar", "Enter Your School Name"));

@@ -166,6 +166,7 @@ type Profile struct {
 	Photo             string    `json:"Photo"`
 	Filename          string    `json:"Filename"`
 	Avatar            string    `json:"Avatar"`
+	Image             string    `json:"Image"`
 	CountryId         int       `json:"CountryId"`
 	ProvinceId        int       `json:"ProvinceId"`
 	CityId            int       `json:"CityId"`
@@ -251,12 +252,12 @@ type ProfileTraining struct {
 
 type ProfileFile struct {
 	gorm.Model
-	ProfileId    int    `json:"ProfileId"`
-	ProfileFiles int    `json:"ProfileFiles"`
-	Files        string `json:"Files"`
-	Filename     string `json:"Filename"`
-	Avatar       string `json:"Avatar"`
-	Name         string `json:"Name"`
+	ProfileId    int               `json:"ProfileId" form:"profileid"`
+	ProfileFiles int               `json:"ProfileFiles"`
+	Files        string            `json:"Files"`
+	Filename     string            `json:"Filename"`
+	Avatar       string            `json:"Avatar"`
+	Name         string            `json:"Name"`
 }
 
 type ProfileWorkExperience1 struct {
