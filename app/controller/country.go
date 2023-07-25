@@ -52,14 +52,25 @@ func GetAllCountry(c *fiber.Ctx) error {
 	startPage := currentPage - maxPagesToShow/2
 	endPage := currentPage + maxPagesToShow/2
 
+	// Pengecekan agar tidak menampilkan nomor halaman minus
 	if startPage < 1 {
 		endPage = endPage + (1 - startPage)
 		startPage = 1
+
+		// Pengecekan lagi agar halaman akhir tidak melebihi total halaman
+		if endPage > totalPages {
+			endPage = totalPages
+		}
 	}
 
 	if endPage > totalPages {
 		startPage = startPage - (endPage - totalPages)
 		endPage = totalPages
+
+		// Pengecekan lagi agar halaman awal tidak kurang dari 1
+		if startPage < 1 {
+			startPage = 1
+		}
 	}
 
 	var pages []int

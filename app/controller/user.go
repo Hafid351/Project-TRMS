@@ -43,12 +43,61 @@ func GetAllUser(c *fiber.Ctx) error {
 	} else {
 		services.DB.Db.Model(&model.User{}).Select("users.id, users.username, users.fullname, users.email, roles.name AS role").Joins("JOIN roles ON users.roles_id = roles.id").Count(&total)
 	}
+
+	// Perbaikan paginasi halaman
+	currentPage := int(page)
+	totalPages := int(math.Ceil(float64(total) / float64(perPage)))
+	prevPage := currentPage - 1
+	nextPage := currentPage + 1
+
+	if prevPage < 1 {
+		prevPage = 1
+	}
+
+	if nextPage > totalPages {
+		nextPage = totalPages
+	}
+
+	const maxPagesToShow = 5
+	startPage := currentPage - maxPagesToShow/2
+	endPage := currentPage + maxPagesToShow/2
+
+	// Pengecekan agar tidak menampilkan nomor halaman minus
+	if startPage < 1 {
+		endPage = endPage + (1 - startPage)
+		startPage = 1
+
+		// Pengecekan lagi agar halaman akhir tidak melebihi total halaman
+		if endPage > totalPages {
+			endPage = totalPages
+		}
+	}
+
+	if endPage > totalPages {
+		startPage = startPage - (endPage - totalPages)
+		endPage = totalPages
+
+		// Pengecekan lagi agar halaman awal tidak kurang dari 1
+		if startPage < 1 {
+			startPage = 1
+		}
+	}
+
+	var pages []int
+	for i := startPage; i <= endPage; i++ {
+		pages = append(pages, i)
+	}
+
 	return c.Render("user/index_user", fiber.Map{
 		"Data":       data,
 		"TotalData":  total,
 		"Page":       int(page),
 		"TotalPages": int(math.Ceil(float64(total) / float64(perPage))),
 		"PerPage":    perPage,
+		"PrevPage":   prevPage,
+		"NextPage":   nextPage,
+		"Pages":      pages,
+		"Search":     search,
 	})
 }
 

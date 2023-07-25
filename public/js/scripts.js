@@ -30,7 +30,8 @@ function nextEducation(step) {
         const fullname = document.querySelector('#fullname')?.value;
         const gender = document.querySelector('#gender')?.value;
         const photo = document.querySelector('#photo')?.value;
-        const filename = document.querySelector('#avatar')?.value;
+        //const filename = document.querySelector('#avatar')?.value;
+        const filename = $("#browse_image").prop("files")[0].name;
         const countryid = document.querySelector('#countryid')?.value;
         const provinceid = document.querySelector('#provinceid')?.value;
         const cityid = document.querySelector('#cityid')?.value;

@@ -421,7 +421,7 @@
                                                                     <br>
                                                                     <button type="button" class="btn btn-success" id="crop_button">Crop</button>
                                                                     <!--button type="button" class="btn btn-danger" id="download_button" onclick="download()">Download</button-->
-                                                                    <button type="button" class="btn btn-warning" id="upload_button">Upload</button>
+                                                                    <!-- <button type="button" class="btn btn-warning" id="upload_button">Upload</button> -->
                                                                 </div>	
                                                             </div><!--  end row -->
                                                         </div><!-- end container -->
@@ -934,30 +934,30 @@
                 downloadLink.click();
             }
 
-            function upload() {
-                const image = document.querySelector("#cropped_image_result img");
-                const base64data = image.src;
-                console.log(image)
-                // Kirim base64data ke server menggunakan Fetch API (GoFiber)
-                fetch("/profile/profile-wizard/profile", {
-                    method: "POST",
-                    headers: {
-                    "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({ image: base64data }),
-                })
-                    .then((response) => response.json())
-                    .then((data) => {
-                    if (data.status === true) {
-                        alert(data.msg);
-                    } else {
-                        alert("Image not uploaded.");
-                    }
-                    })
-                    .catch((error) => {
-                    console.error("Error:", error);
-                    });
-                }
+            // function upload() {
+            //     const image = document.querySelector("#cropped_image_result img");
+            //     const base64data = image.src;
+            //     console.log(image)
+            //     // Kirim base64data ke server menggunakan Fetch API (GoFiber)
+            //     fetch("/profile/profile-wizard/profile", {
+            //         method: "POST",
+            //         headers: {
+            //         "Content-Type": "application/json",
+            //         },
+            //         body: JSON.stringify({ image: base64data }),
+            //     })
+            //         .then((response) => response.json())
+            //         .then((data) => {
+            //         if (data.status === true) {
+            //             alert(data.msg);
+            //         } else {
+            //             alert("Image not uploaded.");
+            //         }
+            //         })
+            //         .catch((error) => {
+            //         console.error("Error:", error);
+            //         });
+            //     }
 
             // function upload() {
             //     const image = document.querySelector("#cropped_image_result img");

@@ -1,19 +1,16 @@
 package controller
 
 import (
+	"crypto/sha1"
+	"encoding/hex"
 	"fmt"
-<<<<<<< Updated upstream
-=======
 	"io"
 	"io/ioutil"
->>>>>>> Stashed changes
 	_ "log"
 	"math"
+	"path/filepath"
 	"strconv"
-<<<<<<< Updated upstream
-=======
 	"strings"
->>>>>>> Stashed changes
 	"trms/app/model"
 	"trms/app/services"
 
@@ -46,38 +43,38 @@ func GetAllProfile(c *fiber.Ctx) error {
 		services.DB.Db.Model(&model.Profile{}).Count(&total)
 	}
 
-		// Perbaikan paginasi halaman
-		currentPage := int(page)
-		totalPages := int(math.Ceil(float64(total) / float64(perPage)))
-		prevPage := currentPage - 1
-		nextPage := currentPage + 1
-	
-		if prevPage < 1 {
-			prevPage = 1
-		}
-	
-		if nextPage > totalPages {
-			nextPage = totalPages
-		}
-	
-		const maxPagesToShow = 5
-		startPage := currentPage - maxPagesToShow/2
-		endPage := currentPage + maxPagesToShow/2
-	
-		if startPage < 1 {
-			endPage = endPage + (1 - startPage)
-			startPage = 1
-		}
-	
-		if endPage > totalPages {
-			startPage = startPage - (endPage - totalPages)
-			endPage = totalPages
-		}
-	
-		var pages []int
-		for i := startPage; i <= endPage; i++ {
-			pages = append(pages, i)
-		}
+	// Perbaikan paginasi halaman
+	currentPage := int(page)
+	totalPages := int(math.Ceil(float64(total) / float64(perPage)))
+	prevPage := currentPage - 1
+	nextPage := currentPage + 1
+
+	if prevPage < 1 {
+		prevPage = 1
+	}
+
+	if nextPage > totalPages {
+		nextPage = totalPages
+	}
+
+	const maxPagesToShow = 5
+	startPage := currentPage - maxPagesToShow/2
+	endPage := currentPage + maxPagesToShow/2
+
+	if startPage < 1 {
+		endPage = endPage + (1 - startPage)
+		startPage = 1
+	}
+
+	if endPage > totalPages {
+		startPage = startPage - (endPage - totalPages)
+		endPage = totalPages
+	}
+
+	var pages []int
+	for i := startPage; i <= endPage; i++ {
+		pages = append(pages, i)
+	}
 
 	return c.Render("profile/index_profile", fiber.Map{
 		"Data":       data,
@@ -250,25 +247,23 @@ func CreateProfileWizard(c *fiber.Ctx) error {
 	step := c.QueryInt("step")
 	switch step {
 	case 1:
-		data := new(model.Profile)
-		if err := c.BodyParser(data); err != nil {
+		payload := new(model.Profile)
+		if err := c.BodyParser(payload); err != nil {
 			return c.Status(500).JSON(fiber.Map{
 				"Data": err.Error(),
 			})
 		}
-		if data.Email == "" {
+		if payload.Email == "" {
 			return c.Status(500).JSON(fiber.Map{
 				"Data": "Email Cannot be Empty!",
 			})
 		}
 		var profile model.Profile
-		if data.Email == profile.Email {
+		if payload.Email == profile.Email {
 			return c.Status(500).JSON(fiber.Map{
 				"Data": "Email Already Exists!",
 			})
 		}
-<<<<<<< Updated upstream
-=======
 		hash := sha1.New()
 		hash.Write([]byte(payload.Image))
 		hashedImage := hex.EncodeToString(hash.Sum(nil)) + ".png"
@@ -308,12 +303,9 @@ func CreateProfileWizard(c *fiber.Ctx) error {
 				"Data": "Failed to save image file!",
 			})
 		}
->>>>>>> Stashed changes
 		result := services.DB.Db.Create(&data)
 		if result.Error != nil {
-			return c.Status(500).JSON(fiber.Map{
-				"Data": "Create Data Error!",
-			})
+			return c.Status(500).JSON(fiber.Map{})
 		}
 		fmt.Printf("User ID : %d\n", data.ID)
 		return c.Status(200).JSON(fiber.Map{
@@ -464,38 +456,6 @@ func ProfileWizardProfileView(c *fiber.Ctx) error {
 	})
 }
 
-<<<<<<< Updated upstream
-func CreateProfileWizardProfile(c *fiber.Ctx) error {
-	// Ambil data gambar dari body request
-	var requestData struct {
-		Image string `json:"image"`
-	}
-	if err := c.BodyParser(&requestData); err != nil {
-		return c.Status(500).JSON(fiber.Map{
-			"Data": "Failed to parse request body!",
-		})
-	}
-
-	// Simpan informasi gambar ke dalam basis data
-	data := model.Profile{
-		// Isi dengan data lain yang diperlukan
-		Photo: requestData.Image,
-	}
-	result := services.DB.Db.Create(&data)
-	if result.Error != nil {
-		return c.Status(500).JSON(fiber.Map{
-			"Data": "Create Data Error!",
-		})
-	}
-
-	return c.Status(200).JSON(fiber.Map{
-		"status": true,
-		"msg":    "Image uploaded successfully",
-	})
-}
-
-=======
->>>>>>> Stashed changes
 func ProfileWizardEducationView(c *fiber.Ctx) error {
 	data := []model.ProfileEducation{}
 	id := c.QueryInt("profileid")

@@ -12,31 +12,63 @@
   };
 
   function handleSearch() {
-    const search = document.querySelector("#search")?.value ?? "";
+        const search = document.querySelector("#search")?.value ?? "";
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.set("search", search);
+        urlParams.set("page", "1");
+        document.location.search = urlParams;
+    }
+
+    // Tambahkan event listener untuk mendeteksi key press pada input search
+    document.addEventListener("DOMContentLoaded", function () {
+    const searchInput = document.getElementById("search");
+    searchInput.addEventListener("keypress", function (event) {
+        if (event.key === "Enter") {
+        event.preventDefault();
+        handleSearch();
+        }
+    });
+    });
+  
+    function handleNext() {
+        const urlParams = new URLSearchParams(window.location.search);
+        let currentPage = Number(urlParams.get("page") ?? 1);
+        const totalPages = Number("{{.TotalPages}}"); // Ambil nilai total halaman dari Go template
+        currentPage++;
+
+        // Pengecekan apakah halaman berikutnya ada atau tidak
+        if (currentPage <= totalPages) {
+            urlParams.set("page", currentPage);
+            document.location.search = urlParams;
+        }
+    }
+  
+    function handlePrev() {
     const urlParams = new URLSearchParams(window.location.search);
-    urlParams.set("search", search);
-    document.location.search = urlParams;
-  }
+    let currentPage = Number(urlParams.get("page") ?? 1);
 
-  function handleNext() {
-    const urlParams = new URLSearchParams(window.location.search);
-    urlParams.set("page", Number(urlParams.get("page") ?? 1) + 1);
-    document.location.search = urlParams;
-  }
+    // Pastikan halaman tidak kurang dari 1
+    if (currentPage > 1) {
+        currentPage--;
+        urlParams.set("page", currentPage);
+        document.location.search = urlParams;
+    }
+    }
 
-  function handlePrev() {
-  const urlParams = new URLSearchParams(window.location.search);
-  urlParams.set("page", Number(urlParams.get("page") ?? 1) - 1);
-  document.location.search = urlParams;
-}
+    function handlePage(page) {
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.set("page", page);
+        document.location.search = urlParams;
+    }
 
-  window.onload = () => {
-    const urlSearchParams = new URLSearchParams(window.location.search);
-    const params = Object.fromEntries(urlSearchParams.entries());
-    const search = document.querySelector("#search");
-    console.log(params.search);
-    search.value = params.search??"";
-  };
+  
+    window.onload = () => {
+      const urlSearchParams = new URLSearchParams(window.location.search);
+      const params = Object.fromEntries(urlSearchParams.entries());
+      const search = document.querySelector("#search");
+      console.log(params.search);
+      search.value = params.search ?? "";
+    };
 </script>
 
 <!doctype html>
@@ -166,16 +198,25 @@
                             {{end}}
 						</tbody>
                     </table>
+                    {{if not .Data}}
+                    <div class="text-center font-bold">No Data</div>
+                    {{end}}
                     <div class="clearfix">
-                        <div class="hint-text">showing <b>{{.Page}}</b> out of <b>{{.TotalPages}}</b></div>
-                        <ul class="pagination pagination-sm m-0 float-right">
-                            <li class="page-item"><a class="page-link" onclick="handlePrev()">&laquo;</a></li>
-                            <!-- <li class="page-item"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li> -->
-                            <li class="page-item"><a class="page-link" onclick="handleNext()">&raquo;</a></li>
-                        </ul>
-                    </div>
+                      <div class="hint-text">showing <b>{{.Page}}</b> out of <b>{{.TotalPages}}</b></div>
+                      <ul class="pagination pagination-sm m-0 float-right">
+                        {{if gt .PrevPage 0}}
+                          <li class="page-item"><a class="page-link" onclick="handlePrev()">&laquo;</a></li>
+                        {{end}}
+                        
+                        {{range .Pages}}
+                          <li class="page-item {{if eq . $.Page}}active{{end}}"><a class="page-link" onclick="handlePage({{.}})">{{.}}</a></li>
+                        {{end}}
+                        
+                        {{if gt .NextPage 0}}
+                          <li class="page-item"><a class="page-link" onclick="handleNext()">&raquo;</a></li>
+                        {{end}}
+                      </ul>
+                  </div>  
                 </div>
             </div>
         </div>

@@ -12,11 +12,11 @@
     };
 
     function handleSearch() {
-      const search = document.querySelector("#search")?.value ?? "";
-      const urlParams = new URLSearchParams(window.location.search);
-      urlParams.set("search", search);
-      urlParams.set("page", "1");
-      document.location.search = urlParams;
+        const search = document.querySelector("#search")?.value ?? "";
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.set("search", search);
+        urlParams.set("page", "1");
+        document.location.search = urlParams;
     }
 
     // Tambahkan event listener untuk mendeteksi key press pada input search
@@ -33,20 +33,26 @@
     function handleNext() {
         const urlParams = new URLSearchParams(window.location.search);
         let currentPage = Number(urlParams.get("page") ?? 1);
+        const totalPages = Number("{{.TotalPages}}"); // Ambil nilai total halaman dari Go template
         currentPage++;
-        urlParams.set("page", currentPage);
-        document.location.search = urlParams;
-    }
-  
-    function handlePrev() {
-        const urlParams = new URLSearchParams(window.location.search);
-        let currentPage = Number(urlParams.get("page") ?? 1);
-        // Pastikan halaman tidak kurang dari 1
-        if (currentPage > 1) {
-            currentPage--;
+
+        // Pengecekan apakah halaman berikutnya ada atau tidak
+        if (currentPage <= totalPages) {
             urlParams.set("page", currentPage);
             document.location.search = urlParams;
         }
+    }
+  
+    function handlePrev() {
+    const urlParams = new URLSearchParams(window.location.search);
+    let currentPage = Number(urlParams.get("page") ?? 1);
+
+    // Pastikan halaman tidak kurang dari 1
+    if (currentPage > 1) {
+        currentPage--;
+        urlParams.set("page", currentPage);
+        document.location.search = urlParams;
+    }
     }
 
     function handlePage(page) {
