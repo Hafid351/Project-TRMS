@@ -254,13 +254,13 @@ func CreateProfileWizard(c *fiber.Ctx) error {
 			})
 		}
 		if payload.Email == "" {
-			return c.Status(500).JSON(fiber.Map{
+			return c.Status(400).JSON(fiber.Map{
 				"Data": "Email Cannot be Empty!",
 			})
 		}
 		var profile model.Profile
 		if payload.Email == profile.Email {
-			return c.Status(500).JSON(fiber.Map{
+			return c.Status(409).JSON(fiber.Map{
 				"Data": "Email Already Exists!",
 			})
 		}
@@ -299,13 +299,15 @@ func CreateProfileWizard(c *fiber.Ctx) error {
 		filePath := "./public/assets/img/" + hashedImage
 		err := ioutil.WriteFile(filepath.Clean(filePath), []byte(payload.Image), 0644)
 		if err != nil {
-			return c.Status(500).JSON(fiber.Map{
+			return c.Status(400).JSON(fiber.Map{
 				"Data": "Failed to save image file!",
 			})
 		}
 		result := services.DB.Db.Create(&data)
 		if result.Error != nil {
-			return c.Status(500).JSON(fiber.Map{})
+			return c.Status(500).JSON(fiber.Map{
+				"Data": "Failed to save data to database!",
+			})
 		}
 		fmt.Printf("User ID : %d\n", data.ID)
 		return c.Status(200).JSON(fiber.Map{

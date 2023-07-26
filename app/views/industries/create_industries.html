@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Industries</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+<!-- <section class="bg-white dark:bg-gray-900">
+<nav x-data="{ isOpen: false }" class="container mx-auto p-6 lg:flex lg:items-center lg:justify-between">
+        <div class="flex items-center justify-between">
+        <div>
+            <a class="text-2xl font-bold text-gray-800 hover:text-gray-700 dark:text-white dark:hover:text-gray-300 lg:text-3xl font-mono">SwimmingCool Tenancy</a>
+        </div> -->
+
+        <!-- Mobile menu button -->
+        <!-- <div class="flex lg:hidden">
+            <button x-cloak @click="isOpen = !isOpen" type="button" class="text-gray-500 hover:text-gray-600 focus:text-gray-600 focus:outline-none dark:text-gray-200 dark:hover:text-gray-400 dark:focus:text-gray-400" aria-label="toggle menu">
+            <svg x-show="!isOpen" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 8h16M4 16h16" />
+            </svg> -->
+
+            <!-- <svg x-show="isOpen" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+            </button>
+        </div>
+        </div> -->
+
+        <!-- Mobile Menu open: "block", Menu closed: "hidden" -->
+        <!-- <div x-cloak :class="[isOpen ? 'translate-x-0 opacity-100 ' : 'opacity-0 -translate-x-full']" class="absolute inset-x-0 z-20 w-full bg-white px-6 py-4 shadow-md transition-all duration-300 ease-in-out dark:bg-gray-900 lg:relative lg:top-0 lg:mt-0 lg:flex lg:w-auto lg:translate-x-0 lg:items-center lg:bg-transparent lg:p-0 lg:opacity-100 lg:shadow-none lg:dark:bg-transparent">
+        <div class="lg:-px-8 flex flex-col space-y-4 lg:mt-0 lg:flex-row lg:space-y-0">
+            <a class="transform text-gray-700 transition-colors duration-300 hover:text-blue-500 dark:text-gray-200 dark:hover:text-blue-400 lg:mx-8" href="profile.php">Profile</a>
+            <a class="transform text-gray-700 transition-colors duration-300 hover:text-blue-500 dark:text-gray-200 dark:hover:text-blue-400 lg:mx-8" href="data_produk.php">Data Produk</a>
+            <a class="transform text-gray-700 transition-colors duration-300 hover:text-blue-500 dark:text-gray-200 dark:hover:text-blue-400 lg:mx-8" href="data_customer.php">Data Customer</a>
+        </div> -->
+<!-- 
+        <a class="mt-4 block rounded-lg bg-blue-600 px-6 py-2.5 text-center font-medium capitalize leading-5 text-white hover:bg-blue-500 lg:mt-0 lg:w-auto" href="login.php"> LOGIN </a>
+        </div>
+    </nav>
+</section> -->
+
+<div class="text-center text-4xl font-bold text-gray-900 mb-5 mt-5 p-10">Create Industries</div>
+    <div class="overflow-hidden rounded-lg border border-gray-900 shadow-md m-5">
+        <form action="/industries/create_industries" method="POST">
+            <input type="text" name="Name" placeholder="Name" class="input_control" required>
+            <input type="text" name="Status" placeholder="Status" class="input_control" required>
+    </div>
+            <button type="submit" name="submit" class="m-5 group relative h-12 w-48 overflow-hidden rounded-lg bg-white text-lg shadow">
+                <div class="absolute inset-0 w-3 bg-slate-300 transition-all duration-[250ms] ease-out group-hover:w-full">
+                </div>
+                <a class="relative font-medium text-gray-700 group-hover:bg-slate-300">Create Industries
+                </a>
+            </button>
+        </form>
+</body>
+</html>
