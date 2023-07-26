@@ -25,8 +25,34 @@ window.addEventListener('DOMContentLoaded', event => {
 
 });
 
+function validateEmail() {
+    const emailInput = document.getElementById('email');
+    const emailError = document.getElementById('emailError');
+
+    // Regular expression for email validation
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (emailPattern.test(emailInput.value)) {
+      // Email is valid
+    emailError.textContent = '';
+    emailInput.style.borderColor = 'green';
+      return true; // Return true if email is valid
+    } else {
+      // Email is invalid
+    emailError.textContent = 'Invalid email address';
+    emailInput.style.borderColor = 'red';
+      return false; // Return false if email is invalid
+    }
+}
+
 function nextEducation(step) {
     if (step == 1) {
+        const isValidEmail = validateEmail();
+        if (!isValidEmail) {
+            // Show alert if email is invalid
+            alert('Please enter a valid email address.');
+            return; // Stop further execution if email is invalid
+        }
         const fullname = document.querySelector('#fullname')?.value;
         const gender = document.querySelector('#gender')?.value;
         const photo = document.querySelector('#photo')?.value;
