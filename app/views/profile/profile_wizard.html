@@ -252,10 +252,27 @@
                                                             <input type="email" class="form-control" id="email" name="email" placeholder="Enter Your Email">
                                                             <span id="emailError" style="color: red;"></span>
                                                         </div>
+                                                        <!-- (Bagian sebelumnya seperti HTML form dan elemen lainnya) -->
+
                                                         <div class="form-group">
                                                             <label for="exampleInputPassword1">Fullname</label>
-                                                            <input type="text" class="form-control" id="fullname" name="fullname" placeholder="Enter Your Fullname">
+                                                            <input type="text" class="form-control" id="fullname" name="fullname" placeholder="Enter Your Fullname" oninput="validateFullname()">
                                                         </div>
+                                                        <script>
+                                                        function validateFullname() {
+                                                            const fullnameInput = document.getElementById('fullname');
+                                                            const fullname = fullnameInput.value;
+
+                                                            // Regular expression to match only alphabetical characters
+                                                            const regex = /^[A-Za-z\s]+$/;
+
+                                                            if (!regex.test(fullname)) {
+                                                                alert('Fullname should contain only alphabetical characters (letters). Numbers and symbols are not allowed.');
+                                                                fullnameInput.value = fullname.replace(/[^A-Za-z\s]/g, ''); // Remove non-alphabetical characters
+                                                            }
+                                                        }
+                                                        </script>
+
                                                         <div class="form-group">
                                                             <label>Country</label>
                                                             <select class="form-select" id="countryid" name="countryid" onchange="showIndo()" style="width: 100%;">
