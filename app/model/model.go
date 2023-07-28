@@ -11,6 +11,7 @@ type User struct {
 	Username           string `json:"Username"`
 	Fullname           string `json:"Fullname"`
 	AuthKey            string `json:"AuthKey"`
+	Password           string `json:"Password"`
 	PasswordHash       string `json:"PasswordHash"`
 	PasswordResetToken string `json:"PasswordResetToken"`
 	Email              string `json:"Email"`

@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"log"
 	"trms/app/model"
 	"trms/app/services"
 
@@ -27,16 +28,28 @@ func Login(c *fiber.Ctx) error {
 			"Message": err.Error(),
 		})
 	}
+
 	var user model.User
-	result := services.DB.Db.Where("username = ?", data.Username).First(&user)
+	data.Password = hashAndSalt([]byte(data.Password))
+
+	result := services.DB.Db.Where("username = ?", data.Username).Select("password_hash").First(&user)
 	if result.Error != nil {
-		c.Status(fiber.StatusNotFound)
-		return c.Status(404).SendString("Username or Password is Wrong!")
+		// User not found in the database, return error response
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+			"Message": "Username is Wrong!",
+		})
 	}
-	if err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(data.PasswordHash)); err != nil {
-		c.Status(fiber.StatusBadRequest)
-		return c.Status(404).SendString("Username or Password is Wrong!")
+	log.Print(user.PasswordHash)
+	log.Print(data.Password)
+	// Compare the user's entered password with the one stored in the database
+	if err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(data.Password)); err != nil {
+		// Passwords do not match, return error response
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+			"Message": "Password is Wrong!",
+		})
 	}
+
+	// If both username and password match, redirect to the dashboard
 	return c.Render("dashboard/dist/index", fiber.Map{
 		"Username": data.Username,
 	})

@@ -234,3 +234,56 @@ function nextFiles(step) {
         alert (value.Data)
     }
 }
+
+$(document).ready(function() {
+    // Fungsi untuk melakukan proses pengunggahan file ke server
+    function uploadFile(formData) {
+        $.ajax({
+            url: 'upload.php', // Ganti 'upload.php' dengan URL script server-side yang sesuai
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                alert('File berhasil diunggah ke server.');
+                // Lakukan tindakan lain sesuai kebutuhan setelah pengunggahan berhasil
+            },
+            error: function() {
+                alert('Terjadi kesalahan saat mengunggah file.');
+            }
+        });
+    }
+
+    // Ketika tombol "Add files" diklik, kita akan mem-trigger event klik pada input file yang sebenarnya
+    $('.fileinput-button').on('click', function() {
+        $('#file-input').click();
+    });
+
+    // Ketika file dipilih, update nama file yang dipilih untuk ditampilkan
+    $('#file-input').on('change', function() {
+        var fileName = $(this).val().split('\\').pop();
+        $('#selected-file-name').text(fileName);
+    });
+
+    // Ketika tombol "Start upload" diklik, kita akan memulai proses pengungahan
+    $('.start').on('click', function() {
+        var files = $('#file-input').prop('files');
+        if (files.length === 0) {
+            alert('Harap pilih file terlebih dahulu.');
+            return;
+        }
+
+        var formData = new FormData();
+        formData.append('file', files[0]); // Hanya memilih satu file (index 0)
+
+        // Memanggil fungsi untuk melakukan proses pengungahan file ke server
+        uploadFile(formData);
+    });
+
+    // Ketika tombol "Cancel upload" diklik, kita akan mengatur ulang input file
+    $('.cancel').on('click', function() {
+        $('#file-input').val('');
+        $('#selected-file-name').text('No file selected');
+    });
+});
+
