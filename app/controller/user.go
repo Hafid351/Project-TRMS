@@ -19,6 +19,7 @@ func hashAndSalt(pwd []byte) string {
 	return string(hash)
 }
 
+
 func GetAllUser(c *fiber.Ctx) error {
 	data := []model.User{}
 	search := c.Query("search")
@@ -125,14 +126,26 @@ func CreateUserView(c *fiber.Ctx) error {
 }
 
 func CreateUser(c *fiber.Ctx) error {
-	data := new(model.User)
-	if err := c.BodyParser(data); err != nil {
+	payload := new(model.User)
+	if err := c.BodyParser(payload); err != nil {
 		return c.Render("", fiber.Map{"Error": err.Error()})
 	}
-	if data.Username == "" {
+	if payload.Username == "" {
 		return c.Render("", fiber.Map{"Error": "Username is Required!"})
 	}
-	data.PasswordHash = hashAndSalt([]byte(data.PasswordHash))
+	payload.PasswordHash = hashAndSalt([]byte(payload.Password))
+	data := model.User{
+		Username:           payload.Username,
+		Fullname:           payload.Fullname,
+		AuthKey:            payload.AuthKey,
+		PasswordHash:       payload.PasswordHash,
+		PasswordResetToken: payload.PasswordResetToken,
+		Email:              payload.Email,
+		VerificationToken:  payload.VerificationToken,
+		RolesId:            payload.RolesId,
+		Role:               payload.Role,
+	}
+
 	services.DB.Db.Create(&data)
 	return c.Redirect("/user")
 }

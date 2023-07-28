@@ -193,9 +193,9 @@ func ProfileWizardView(c *fiber.Ctx) error {
 		skillcategory := []model.SkillCategory{}
 		skill := []model.Skill{}
 		services.DB.Db.Find(&data)
-		services.DB.Db.Select("id, name").Limit(100).Find(&company)
-		services.DB.Db.Find(&country)
-		services.DB.Db.Find(&province)
+		services.DB.Db.Select("id, name").Limit(200).Find(&company)
+		services.DB.Db.Order("name ASC").Find(&country)
+		services.DB.Db.Order("name ASC").Find(&province)
 		services.DB.Db.Find(&positionlevel)
 		services.DB.Db.Find(&position)
 		services.DB.Db.Find(&skillcategory)
@@ -216,7 +216,7 @@ func ProfileWizardView(c *fiber.Ctx) error {
 		language := []model.Language{}
 		languagelevel := []model.LanguageLevel{}
 		services.DB.Db.Find(&data)
-		services.DB.Db.Find(&language)
+		services.DB.Db.Order("name ASC").Find(&language)
 		services.DB.Db.Find(&languagelevel)
 		return c.Status(200).JSON(fiber.Map{
 			"Message":       "Success",
@@ -661,8 +661,8 @@ func GetProfileSkill(c *fiber.Ctx) error {
 func GetQualification(c *fiber.Ctx) error {
 	university := []model.University{}
 	departement := []model.Departement{}
-	services.DB.Db.Find(&university)
-	services.DB.Db.Find(&departement)
+	services.DB.Db.Order("name ASC").Find(&university)
+	services.DB.Db.Order("name ASC").Find(&departement)
 	return c.Status(200).JSON(fiber.Map{
 		"Message":     "Success",
 		"University":  university,
@@ -732,5 +732,15 @@ func UploadFiles(c *fiber.Ctx) error {
 
 	return c.JSON(fiber.Map{
 		"message": "File uploaded successfully",
+	})
+}
+
+func GetProfileCountry(c *fiber.Ctx) error {
+	id := c.QueryInt("countryid")
+	province := []model.Province{}
+	services.DB.Db.Where("country_id = ?", id).Find(&province)
+	return c.Status(200).JSON(fiber.Map{
+		"Message": "Success",
+		"Province":   province,
 	})
 }

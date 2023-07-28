@@ -8,7 +8,6 @@
 // 
 
 window.addEventListener('DOMContentLoaded', event => {
-
     // Toggle the side navigation
     const sidebarToggle = document.body.querySelector('#sidebarToggle');
     if (sidebarToggle) {
@@ -22,16 +21,13 @@ window.addEventListener('DOMContentLoaded', event => {
             localStorage.setItem('sb|sidebar-toggle', document.body.classList.contains('sb-sidenav-toggled'));
         });
     }
-
 });
 
 function validateEmail() {
     const emailInput = document.getElementById('email');
     const emailError = document.getElementById('emailError');
-
     // Regular expression for email validation
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
     if (emailPattern.test(emailInput.value)) {
       // Email is valid
     emailError.textContent = '';
@@ -46,12 +42,12 @@ function validateEmail() {
 }
 
 function nextEducation(step) {
-    if (step == 1) {
+if (step == 1) {
         const isValidEmail = validateEmail();
         if (!isValidEmail) {
-            // Show alert if email is invalid
-            alert('Please enter a valid email address.');
-            return; // Stop further execution if email is invalid
+        // Show alert if email is invalid
+        alert('Please enter a valid email address.');
+        return; // Stop further execution if email is invalid
         }
         const fullname = document.querySelector('#fullname')?.value;
         const gender = document.querySelector('#gender')?.value;
@@ -130,6 +126,7 @@ function nextEducation(step) {
             const qualification = value.Qualification
             const container = document.getElementById("qualificationid");
             let Qualification = ""
+            Qualification += `<option selected disabled>Select Education Level</option>`
             qualification.forEach(item => {
                 Qualification += `<option value="${item.ID}">${item.Name}</option>`
             })
@@ -165,26 +162,32 @@ function nextWork(step) {
         const container6 = document.getElementById("lastpositionjobtittle")
         const container7 = document.getElementById("skillid")
         let Company = ""
+        Company +=  `<option selected disabled>Select Company</option>`
         company.forEach(item => {
             Company += `<option value="${item.ID}">${item.Name}</option>`
         })
         let Country = ""
+        Country += `<option selected disabled>Select Country</option>`
         country.forEach(item => {
             Country += `<option value="${item.ID}">${item.Name}</option>`
         })
         let Province = ""
+        Province += `<option selected disabled>Select Province</option>`
         province.forEach(item => {
             Province += `<option value="${item.ID}">${item.Name}</option>`
         })
         let PositionLevel = ""
+        PositionLevel += `<option selected disabled>Select Position Level</option>`
         positionlevel.forEach(item => {
             PositionLevel += `<option value="${item.ID}">${item.Name}</option>`
         })
         let StartPosition = ""
+        StartPosition += `<option selected disabled>Select Start Position</option>`
         position.forEach(item => {
             StartPosition += `<option value="${item.ID}">${item.Name}</option>`
         })
         let LastPosition = ""
+        LastPosition += `<option selected disabled>Select Last Position</option>`
         position.forEach(item => {
             LastPosition += `<option value="${item.ID}">${item.Name}</option>`
         })
@@ -219,18 +222,22 @@ function nextLanguage(step) {
         const container3 = document.getElementById("writtenlevel")
         const container4 = document.getElementById("listeninglevel")
         let Language = ""
+        Language += `<option selected disabled>Select Language</option>`
         language.forEach(item => {
             Language += `<option value="${item.ID}">${item.Name}</option>`
         })
         let SpokenLevel = ""
+        SpokenLevel += `<option selected disabled>Select Spoken Level</option>`
         languagelevel.forEach(item => {
             SpokenLevel += `<option value="${item.ID}">${item.Name}</option>`
         })
         let WrittenLevel = ""
+        WrittenLevel += `<option selected disabled>Select Written Level</option>`
         languagelevel.forEach(item => {
             WrittenLevel += `<option value="${item.ID}">${item.Name}</option>`
         })
         let ListeningLevel = ""
+        ListeningLevel += `<option selected disabled>Select Listening Level</option>`
         languagelevel.forEach(item => {
             ListeningLevel += `<option value="${item.ID}">${item.Name}</option>`
         })

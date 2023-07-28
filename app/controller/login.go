@@ -38,25 +38,38 @@ func Login(c *fiber.Ctx) error {
 	result := services.DB.Db.Where("username = ?", data.Username).First(&user)
 	if result.Error != nil {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-			"Message": "Nama Pengguna atau Kata Sandi salah",
+			"Message": "Username Doesn't Exist!",
 		})
 	}
 
-	// Membandingkan kata sandi yang diberikan dengan kata sandi yang telah di-hash
-	err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(data.PasswordHash))
+	// Membandingkan password yang diberikan dengan password yang telah di-hash di database
+	err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(data.Password))
 	if err != nil {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-			"Message": "Nama Pengguna atau Kata Sandi salah",
+			"Message": "Password Incorrect!",
 		})
 	}
 
 	// Membuat sesi untuk menandakan bahwa pengguna sudah login
-	session, _ := sess.Get(c)
+	session, err := sess.Get(c)
+	if err != nil {
+		// Tangani kesalahan saat mendapatkan sesi
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"Message": "Failed to create session.",
+		})
+	}
+
 	session.Set("isLoggedIn", true)
 	session.Set("username", data.Username)
-	session.Save()
+	if err := session.Save(); err != nil {
+		// Tangani kesalahan saat menyimpan sesi
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"Message": "Failed to save session.",
+		})
+	}
 
 	return c.Render("dashboard/dist/index", fiber.Map{
+		"Message":  "Sucess",
 		"Username": data.Username,
 	})
 }
@@ -67,32 +80,41 @@ func Logout(c *fiber.Ctx) error {
 	session.Delete("isLoggedIn")
 	session.Delete("username")
 	session.Save()
+	if err := session.Save(); err != nil {
+		// Tangani kesalahan saat menyimpan sesi
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"Message": "Failed to save session.",
+		})
+	}
 
 	return c.JSON(fiber.Map{
 		"Message": "Logout berhasil",
 	})
 }
 
-// AuthMiddleware adalah fungsi middleware untuk melindungi rute-rute yang membutuhkan otentikasi
-func AuthMiddleware(c *fiber.Ctx) error {
-	session, _ := sess.Get(c)
-
-	// Memeriksa apakah pengguna sudah login
-	isLoggedIn := session.Get("isLoggedIn")
-	if isLoggedIn == nil || isLoggedIn.(bool) == false {
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-			"Message": "Anda harus login untuk mengakses rute ini",
-		})
-	}
-
-	// Lanjut ke middleware berikutnya jika pengguna sudah login
-	return c.Next()
-}
-
 // ProtectedRoute adalah contoh rute yang dilindungi dan memerlukan otentikasi
-func ProtectedRoute(c *fiber.Ctx) error {
-	// Logika rute yang dilindungi di sini
-	return c.JSON(fiber.Map{
-		"Message": "Ini adalah rute dilindungi, dan hanya pengguna yang sudah login yang dapat mengaksesnya.",
-	})
-}
+// func ProtectedRoute(c *fiber.Ctx) error {
+// 	session, err := sess.Get(c)
+// 	if err != nil {
+// 		// Tangani kesalahan saat mendapatkan sesi
+// 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+// 			"Message": "Failed to get session.",
+// 		})
+// 	}
+
+// 	// Memeriksa apakah pengguna sudah login
+// 	isLoggedIn := session.Get("isLoggedIn")
+// 	if isLoggedIn == nil || isLoggedIn.(bool) == false {
+// 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+// 			"Message": "Anda harus login untuk mengakses rute ini",
+// 		})
+// 	}
+
+// 	// Jika pengguna sudah login, Anda dapat memberikan respons dengan data yang relevan.
+// 	// Misalnya, Anda dapat menampilkan pesan "Selamat datang" atau data lain yang diperlukan.
+// 	username := session.Get("username")
+// 	return c.JSON(fiber.Map{
+// 		"Message":  "Ini adalah rute dilindungi, dan hanya pengguna yang sudah login yang dapat mengaksesnya.",
+// 		"Username": username,
+// 	})
+// }

@@ -11,6 +11,7 @@ type User struct {
 	Username           string `json:"Username"`
 	Fullname           string `json:"Fullname"`
 	AuthKey            string `json:"AuthKey"`
+	Password           string `json:"Password"`
 	PasswordHash       string `json:"PasswordHash"`
 	PasswordResetToken string `json:"PasswordResetToken"`
 	Email              string `json:"Email"`
@@ -97,7 +98,7 @@ type Company struct {
 
 type Industry struct {
 	gorm.Model
-	Name   string `json:"Name"`
+	Name string `json:"Name"`
 }
 
 type Country struct {
@@ -150,7 +151,8 @@ type Dashboard3 struct {
 
 type Province struct {
 	gorm.Model
-	Name string `json:"Name"`
+	Name      string `json:"Name"`
+	CountryId int    `json:"CountryId"`
 }
 
 type City struct {
@@ -252,12 +254,12 @@ type ProfileTraining struct {
 
 type ProfileFile struct {
 	gorm.Model
-	ProfileId    int               `json:"ProfileId" form:"profileid"`
-	ProfileFiles int               `json:"ProfileFiles"`
-	Files        string            `json:"Files"`
-	Filename     string            `json:"Filename"`
-	Avatar       string            `json:"Avatar"`
-	Name         string            `json:"Name"`
+	ProfileId    int    `json:"ProfileId" form:"profileid"`
+	ProfileFiles int    `json:"ProfileFiles"`
+	Files        string `json:"Files"`
+	Filename     string `json:"Filename"`
+	Avatar       string `json:"Avatar"`
+	Name         string `json:"Name"`
 }
 
 type ProfileWorkExperience1 struct {

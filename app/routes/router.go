@@ -5,7 +5,33 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
+	_"github.com/gofiber/fiber/v2/middleware/session"
 )
+
+// Membuat manajer sesi baru
+// var sess = session.New()
+
+// // AuthMiddleware adalah fungsi middleware untuk melindungi rute-rute yang membutuhkan otentikasi
+// func AuthMiddleware(c *fiber.Ctx) error {
+// 	session, err := sess.Get(c)
+// 	if err != nil {
+// 		// Tangani kesalahan saat mendapatkan sesi
+// 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+// 			"Message": "Failed to get session.",
+// 		})
+// 	}
+
+// 	// Memeriksa apakah pengguna sudah login
+// 	isLoggedIn := session.Get("isLoggedIn")
+// 	if isLoggedIn == nil || isLoggedIn.(bool) == false {
+// 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+// 			"Message": "Anda harus login untuk mengakses rute ini",
+// 		})
+// 	}
+
+// 	// Lanjut ke middleware berikutnya jika pengguna sudah login
+// 	return c.Next()
+// }
 
 func Handlers(app *fiber.App) {
 	app.Use(cors.New())
@@ -13,6 +39,8 @@ func Handlers(app *fiber.App) {
 	app.Get("/index", controller.IndexTRMS)
 	app.Post("/login", controller.Login)
 	app.Get("/", controller.Logout)
+
+	// app.Group("/", AuthMiddleware).Get("/protected", controller.ProtectedRoute)
 
 	dashboard := app.Group("dashboard")
 	dashboard.Get("/", controller.DashboardView)
@@ -147,4 +175,5 @@ func Handlers(app *fiber.App) {
 	profile.Post("/profile-wizard/training", controller.CreateProfileWizardTraining)
 	profile.Get("/profile-wizard/training", controller.ProfileWizardTrainingView)
 	profile.Post("/profile-wizard/files", controller.UploadFiles)
+	profile.Get("/profile-wizard/country", controller.GetProfileCountry)
 }
