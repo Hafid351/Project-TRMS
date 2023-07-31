@@ -26,7 +26,11 @@ function createInput(labelText, inputType, inputName, inputId, placeholder) {
 function showIndo() {
     var countryid = document.getElementById("countryid").value;
     var formCountry = document.getElementById('formCountry');
-    formCountry.innerHTML = "";
+    formCountry.innerHTML = ""; 
+    // var defaultProvinceOption = document.createElement("option");
+    // defaultProvinceOption.value = "";
+    // defaultProvinceOption.textContent = "Select City";
+    // formCountry.appendChild(defaultProvinceOption);
     console.log(countryid)
     if (countryid === "102") {
         fetch(`/profile/profile-wizard/country?` +
@@ -35,18 +39,29 @@ function showIndo() {
         }))
             .then((response) => response.json())
             .then((value) => {
-                formCountry.appendChild(createSelect("Select Province", "provinceid", "provinceid", value.Province));
-                var provinceid = document.getElementById("provinceid").value;
-                console.log(provinceid)
-                fetch(`/profile/profile_wizard/country/city?` +
-                    new URLSearchParams({
-                    provinceid: provinceid,
-                })
-                )
-                .then((response) => response.json())
-                .then((value) => {
-                    formCountry.appendChild(createSelect("Select City", "cityid", "cityid", value.City));
-                })
-            })
+                formCountry.appendChild(createSelect("Select Province", "provinceid", "provinceid", value.Province, "Select Province"));
+                var citySelect = createSelect("Select City", "cityid", "cityid", []);
+                formCountry.appendChild(citySelect);
+                document.getElementById("provinceid").onchange = function () {
+                fetchCities(citySelect);
+            }
+        });
     }
+}
+
+function fetchCities(citySelect) {
+    var selectedProvince = document.getElementById("provinceid").value;
+    citySelect.innerHTML = "";
+    // var defaultCityOption = document.createElement("option");
+    // defaultCityOption.value = "";
+    // defaultCityOption.textContent = "Select City";
+    // citySelect.appendChild(defaultCityOption);
+    fetch(`/profile/profile_wizard/country/city?` +
+        new URLSearchParams({
+            provinceid: selectedProvince,
+        }))
+        .then((response) => response.json())
+        .then((value) => {
+            citySelect.appendChild(createSelect("Select City", "cityid", "cityid", value.City, "Select City"));
+        });
 }

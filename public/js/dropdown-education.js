@@ -33,11 +33,17 @@ function createNumericInput(labelText, inputName, inputId, placeholder) {
     return createFormGroup(labelText, input);
 }
 
-function createSelect(labelText, selectId, selectName, options) {
+function createSelect(labelText, selectId, selectName, options, label) {
     var select = document.createElement("select");
     select.classList.add("form-control");
     select.name = selectName;
     select.id = selectId;
+
+    var defaultOption = document.createElement("option");
+    defaultOption.value = "";
+    defaultOption.textContent = label;
+    defaultOption.disabled = true;
+    select.appendChild(defaultOption);
 
     for (var i = 0; i < options.length; i++) {
     var option = document.createElement("option");
