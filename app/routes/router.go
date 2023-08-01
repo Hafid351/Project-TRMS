@@ -145,13 +145,6 @@ func Handlers(app *fiber.App) {
 	language.Patch("/:id", controller.UpdateLanguage)
 	language.Get("/:id", controller.GetLanguage)
 
-	certificatecategory := app.Group("certificatecategory")
-	certificatecategory.Get("/", controller.GetAllCertificateCategory)
-	certificatecategory.Get("/create_certificatecategory", controller.CreateCertificateCategoryView)
-	certificatecategory.Post("/create_certificatecategory", controller.CreateCertificateCategory)
-	certificatecategory.Delete("/:id", controller.DeleteCertificateCategory)
-	certificatecategory.Patch("/:id", controller.UpdateCertificateCategory)
-	certificatecategory.Get("/:id", controller.GetCertificateCategory)
 
 	profile := app.Group("profile")
 	profile.Get("/", controller.GetAllProfile)
@@ -176,4 +169,12 @@ func Handlers(app *fiber.App) {
 	profile.Get("/profile-wizard/training", controller.ProfileWizardTrainingView)
 	profile.Post("/profile-wizard/files", controller.UploadFiles)
 	profile.Get("/profile-wizard/country", controller.GetProfileCountry)
+
+	categoryfile := app.Group("categoryfile")
+	categoryfile.Get("/", controller.GetAllCategoryFile)
+	categoryfile.Get("/create_categoryfile", controller.CreateCategoryFileView)
+	categoryfile.Post("/create_categoryfile", controller.CreateCategoryFile)
+	categoryfile.Delete("/:id", controller.DeleteCategoryFile)
+	categoryfile.Patch("/:id", controller.UpdateCategoryFile)
+	categoryfile.Get("/:id", controller.GetCategoryFile)
 }

@@ -676,3 +676,50 @@ document.addEventListener('DOMContentLoaded', function() {
 
 //company
 
+//categoryfile
+
+document.addEventListener('DOMContentLoaded', function() {
+	document.getElementById('categoryfileForm').addEventListener('submit', function(event) {
+		event.preventDefault();
+		var nameInput = document.getElementById('name');
+		var nameError = document.getElementById('nameError');
+
+		// Validate Industry Name
+		var categoryfileName = nameInput.value.trim();
+		if (categoryfileName === '') {
+			nameError.textContent = 'Category File Name must be filled';
+			nameError.style.display = 'block';
+
+		} else {
+			nameError.textContent = '';
+			nameError.style.display = 'none';
+
+			// Submit the form
+			var form = document.getElementById('categoryfileForm');
+			var formData = new FormData(form);
+
+			fetch('/categoryfile/create_categoryfile', {
+				method: 'POST',
+				body: formData,
+			})
+				.then(function(response) {
+					if (response.ok) {
+						// Redirect to the desired page
+						window.location.href = '/categoryfile';
+						alert('Category File Created Successfully!'); // Notifikasi pop-up sukses
+					} else {
+						return response.json();
+					}
+				})
+				.then(function(data) {
+					if (data && data.nameError) {
+						nameError.textContent = data.nameError;
+						nameError.style.display = 'block';
+					}
+				})
+				.catch(function(error) {
+					console.log(error);
+				});
+		}
+	});
+});

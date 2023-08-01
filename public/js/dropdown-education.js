@@ -42,6 +42,7 @@ function createSelect(labelText, selectId, selectName, options, label) {
     var defaultOption = document.createElement("option");
     defaultOption.value = "";
     defaultOption.textContent = label;
+    defaultOption.selected = true;
     defaultOption.disabled = true;
     select.appendChild(defaultOption);
 

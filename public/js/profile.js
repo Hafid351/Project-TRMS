@@ -27,10 +27,6 @@ function showIndo() {
     var countryid = document.getElementById("countryid").value;
     var formCountry = document.getElementById('formCountry');
     formCountry.innerHTML = ""; 
-    // var defaultProvinceOption = document.createElement("option");
-    // defaultProvinceOption.value = "";
-    // defaultProvinceOption.textContent = "Select City";
-    // formCountry.appendChild(defaultProvinceOption);
     console.log(countryid)
     if (countryid === "102") {
         fetch(`/profile/profile-wizard/country?` +
@@ -52,10 +48,6 @@ function showIndo() {
 function fetchCities(citySelect) {
     var selectedProvince = document.getElementById("provinceid").value;
     citySelect.innerHTML = "";
-    // var defaultCityOption = document.createElement("option");
-    // defaultCityOption.value = "";
-    // defaultCityOption.textContent = "Select City";
-    // citySelect.appendChild(defaultCityOption);
     fetch(`/profile/profile_wizard/country/city?` +
         new URLSearchParams({
             provinceid: selectedProvince,

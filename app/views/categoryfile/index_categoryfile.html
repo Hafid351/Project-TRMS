@@ -2,7 +2,7 @@
   const handleDelete = (id) => {
     const isConfirmed = confirm("Are you sure?");
     if (isConfirmed) {
-      return fetch(`/certificatecategory/${id}`, {
+      return fetch(`/categoryfile/${id}`, {
         method: "DELETE",
       }).then(() => {
         alert("Data deleted successufuly");
@@ -79,7 +79,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Master Certificate Categories</title>
+        <title>Master Category Files</title>
         <link href="/css/styles.css" rel="stylesheet" />
         <link rel="stylesheet" href="/css/all.min.css">
         <link rel="stylesheet" href="/css/adminlte.min.css">
@@ -168,9 +168,9 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-language"></i></div>
                                 Language
                             </a>
-                            <a class="nav-link active" href="/certificatecategory">
+                            <a class="nav-link active" href="/categoryfile">
                                 <div class="sb-nav-link-icon"><i class="fas fa-certificate"></i></div>
-                                Category Certificate
+                                Category Files
                             </a>
                             <div class="sb-sidenav-menu-heading">Other Menu</div>
                             <a class="nav-link" href="charts.html">
@@ -184,13 +184,13 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4"> Master Certificate Categories</h1>
+                        <h1 class="mt-4"> Master Category Files</h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
-                            <li class="breadcrumb-item active"> Master Certificate Categories</li>
+                            <li class="breadcrumb-item active"> Master Category Files</li>
                         </ol>
                         <div class="card-header">
-                        <a class="btn btn-primary" href="/certificatecategory/create_certificatecategory">Add Certificate Category</a>
+                        <a class="btn btn-primary" href="/categoryfile/create_categoryfile">Add Category Files</a>
                         <div class="card-tools">
                             <div class="input-group input-group-sm" style="width: 150px;">
                                 <input type="text" id="search" name="search" class="form-control float-right" placeholder="Search">
@@ -216,9 +216,7 @@
                                             <thead>
                                                 <tr>
                                                 <th>No</th>
-                                                <th>Certificate Category Name</th>
-                                                <th>Skill Name</th>
-                                                <th>File Type</th>
+                                                <th>Category Files Name</th>
                                                 <th>Action</th>
                                                 </tr>
                                             </thead>
@@ -227,18 +225,13 @@
                                                 <tr>
                                                   <td>{{ nomorTabel $index $.Page $.PerPage }}</td>
                                                   <td>{{ .Name }}</td>
-                                                  <td>{{ .Skill }}</td>
-                                                  <td>{{ .Files }}</td>
                                                     <td>
-                                                        <a href="/certificatecategory/{{.ID}}" class="edit">
+                                                        <a href="/categoryfile/{{.ID}}" class="edit">
                                                             <i class="material-icons" title="Edit">&#xE254;</i>
                                                         </a>
                                                         <a href="handleDelete({{.ID}})" onClick="handleDelete({{.ID}})" class="delete" data-toggle="modal">
                                                             <i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i>
                                                         </a>
-                                                        <!-- <a href="master-skills3.html" class="view">
-                                                            <i class="material-icons" title="view">&#xE8f4;</i>
-                                                        </a> -->
                                                     </td>
                                                   </tr>
                                                 {{end}}         
@@ -273,7 +266,7 @@
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title">Delete Certificate Category</h5>
+                                    <h5 class="modal-title">Delete Category Files</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>

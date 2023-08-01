@@ -144,9 +144,9 @@ type Dashboard2 struct {
 }
 
 type Dashboard3 struct {
-	Name                         string `json:"Name"`
-	ProfileWorkExperiencesSalary int    `json:"ProfileWorkExperienceSalary"`
-	Total                        int    `json:"Total"`
+	Name           string `json:"Name"`
+	SalaryCategory string `json:"SalaryCategory"`
+	Total          int    `json:"Total"`
 }
 
 type Province struct {
@@ -262,10 +262,10 @@ type ProfileFile struct {
 	Name         string `json:"Name"`
 }
 
-type ProfileWorkExperience1 struct {
-	Name   string `json:"Name"`
-	Salary int    `json:"Salary"`
-	Total  int    `json:"Total"`
+type Position2 struct {
+	Name           string `json:"Name"`
+	SalaryCategory int    `json:"SalaryCategory"`
+	Total          int    `json:"Total"`
 }
 
 type Religion struct {
@@ -295,6 +295,11 @@ type JobPositionLevel struct {
 }
 
 type LanguageLevel struct {
+	gorm.Model
+	Name string `json:"Name"`
+}
+
+type CategoryFile struct {
 	gorm.Model
 	Name string `json:"Name"`
 }
